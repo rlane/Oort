@@ -36,7 +36,7 @@ function check_gun_ready(idx)
 end
 
 function sensor_contacts(query)
-	error("NYI")
+	return sys_sensor_contacts(query)
 end
 
 function sensor_contact(id)
@@ -131,6 +131,7 @@ function sandbox(f)
 		unpack = unpack,
 
 		vec = vec,
+		team = team,
 	}
 
 	env._G = env

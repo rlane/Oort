@@ -16,6 +16,7 @@ extern "C" {
 
 #include "sim/game.h"
 #include "sim/ship.h"
+#include "sim/team.h"
 #include "sim/bullet.h"
 #include "common/log.h"
 #include "common/resources.h"
@@ -180,6 +181,37 @@ int api_check_gun_ready(lua_State *L) {
 	return 1;
 }
 
+void push_sensor_contact(lua_State *L, const std::shared_ptr<Ship> contact) {
+	lua_createtable(L, 0, 5);
+	int table_idx = lua_gettop(L);
+	auto p = contact->get_position();
+
+	lua_pushliteral(L, "x");
+	lua_pushnumber(L, p.x);
+	lua_settable(L, table_idx);
+
+	lua_pushliteral(L, "y");
+	lua_pushnumber(L, p.y);
+	lua_settable(L, table_idx);
+
+	lua_pushliteral(L, "team");
+	lua_pushstring(L, contact->team->name.c_str());
+	lua_settable(L, table_idx);
+}
+
+int api_sensor_contacts(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	lua_newtable(L);
+	int table_idx = lua_gettop(L);
+	int i = 1;
+	BOOST_FOREACH(auto &contact, ship.game->ships) {
+		push_sensor_contact(L, contact);
+		lua_rawseti(L, table_idx, i);
+		i += 1;
+	}
+	return 1;
+}
+
 void LuaAI::register_api() {
 	lua_register(G, "sys_position", api_position);
 	lua_register(G, "sys_velocity", api_velocity);
@@ -190,6 +222,10 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_thrust_angular", api_acc_angular);
 	lua_register(G, "sys_fire_gun", api_fire_gun);
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
+	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
+
+	lua_pushstring(G, ship.team->name.c_str());
+	lua_setglobal(G, "team");
 }
 
 }
