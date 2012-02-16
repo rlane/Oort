@@ -173,6 +173,13 @@ int api_fire_gun(lua_State *L) {
 	return 0;
 }
 
+int api_check_gun_ready(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	int idx = luaL_checkinteger(L, 1);
+	lua_pushboolean(L, ship.gun_ready(idx));
+	return 1;
+}
+
 void LuaAI::register_api() {
 	lua_register(G, "sys_position", api_position);
 	lua_register(G, "sys_velocity", api_velocity);
@@ -182,6 +189,7 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_thrust_lateral", api_acc_lateral);
 	lua_register(G, "sys_thrust_angular", api_acc_angular);
 	lua_register(G, "sys_fire_gun", api_fire_gun);
+	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 }
 
 }

@@ -67,6 +67,9 @@ void Ship::handle_collision(const Ship &s) {
 }
 
 bool Ship::gun_ready(int idx) {
+	if (idx >= (int)klass.guns.size()) {
+		return false;
+	}
 	const GunDef &gun = klass.guns[idx];
 	float lft = last_fire_times[idx];
 	return lft + gun.reload_time <= game->time;

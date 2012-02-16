@@ -31,8 +31,8 @@ function fire_gun(idx, a)
 	sys_fire_gun(idx, a)	
 end
 
-function check_gun_ready(name)
-	error("NYI")
+function check_gun_ready(idx)
+	return sys_check_gun_ready(idx)
 end
 
 function sensor_contacts(query)
