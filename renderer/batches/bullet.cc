@@ -41,8 +41,8 @@ BulletBatch::BulletBatch(Renderer &renderer)
 }
 
 void BulletBatch::snapshot(const Game &game) {
-	vec4 color1(0.27f, 0.27f, 0.27f, 0.33f);
-	vec4 color2(0.27f, 0.27f, 0.27f, 1.0f);
+	vec4 color1(0, 0, 0, 0);
+	vec4 color2(0.96f, 0.73f, 0.25f, 1.0f);
 
 	priv->bullets.clear();
 	BOOST_FOREACH(auto bullet, game.bullets) {

@@ -31,10 +31,10 @@ void ShipClass::initialize() {
 		def.model = Model::load("fighter");
 		GunDef gun;
 		gun.type = GunType::SLUG;
-		gun.mass = 0.015f;
+		gun.mass = 0.015f*3;
 		gun.velocity = 3000.0f;
 		gun.ttl = 1.0f;
-		gun.reload_time = Game::tick_length*2;
+		gun.reload_time = Game::tick_length*6;
 		gun.deviation = 0.02;
 		gun.angle = 0.0;
 		gun.coverage = 0.8 * pi;
@@ -97,7 +97,7 @@ void ShipClass::initialize() {
 			gun.mass = 0.0075;
 			gun.velocity = 3000.0f;
 			gun.ttl = 1.0f;
-			gun.reload_time = Game::tick_length*2;
+			gun.reload_time = Game::tick_length*1;
 			gun.deviation = 0.01;
 			gun.angle = 0.0;
 			gun.coverage = 2*pi;
@@ -107,7 +107,7 @@ void ShipClass::initialize() {
 		{
 			GunDef gun;
 			gun.type = GunType::SLUG;
-			gun.mass = 0.0075f;
+			gun.mass = 0.0075f/2;
 			gun.velocity = 3000.0f;
 			gun.ttl = 1.0f;
 			gun.reload_time = Game::tick_length*2;
@@ -124,7 +124,7 @@ void ShipClass::initialize() {
 		ShipClassDef def;
 		def.name = "missile";
 		def.mass = 200;
-		def.hull = 30e3;
+		def.hull = 3e3;
 		def.max_main_acc = 300;
 		def.max_lateral_acc = 150;
 		def.max_angular_acc = 3;
