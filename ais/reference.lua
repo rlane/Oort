@@ -8,8 +8,10 @@ function find_target()
 end
 
 while true do
+	clear_debug_lines()
 	local target = find_target()
 	if target then
+		debug_square(target.x, target.y, 20)
 		drive_towards(100, target.x, target.y)
 		if check_gun_ready(0) then
 			local a = lead_vec(position_vec(), vec(target.x, target.y), velocity_vec(), vec(0, 0), 3000, 10)

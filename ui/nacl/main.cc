@@ -138,6 +138,7 @@ class OortInstance : public pp::Instance {
 		case 88: return 'x';
 		case 66: return 'b';
 		case 78: return 'n';
+		case 89: return 'y';
 		}
 		log("unexpected keycode %d", keycode);
 		return 0;

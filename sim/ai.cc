@@ -212,6 +212,23 @@ int api_sensor_contacts(lua_State *L) {
 	return 1;
 }
 
+// XXX limit number of lines
+int api_debug_line(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	float x1 = (float) luaL_checknumber(L, 1);
+	float y1 = (float) luaL_checknumber(L, 2);
+	float x2 = (float) luaL_checknumber(L, 3);
+	float y2 = (float) luaL_checknumber(L, 4);
+	ship.debug_line(vec2(x1, y1), vec2(x2, y2));
+	return 0;
+}
+
+int api_clear_debug_lines(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	ship.clear_debug_lines();
+	return 0;
+}
+
 void LuaAI::register_api() {
 	lua_register(G, "sys_position", api_position);
 	lua_register(G, "sys_velocity", api_velocity);
@@ -223,6 +240,8 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_fire_gun", api_fire_gun);
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
+	lua_register(G, "sys_debug_line", api_debug_line);
+	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
 
 	lua_pushstring(G, ship.team->name.c_str());
 	lua_setglobal(G, "team");

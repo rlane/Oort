@@ -151,6 +151,14 @@ void Ship::acc_angular(float acc) {
 	angular_acc = glm::clamp(acc, -klass.max_angular_acc, klass.max_angular_acc);
 }
 
+void Ship::clear_debug_lines() {
+	debug_lines.clear();
+}
+
+void Ship::debug_line(glm::vec2 a, glm::vec2 b) {
+	debug_lines.emplace_back(DebugLine{a, b});
+}
+
 void Ship::update_forces() {
 	b2MassData md;
 	body->GetMassData(&md);

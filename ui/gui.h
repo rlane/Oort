@@ -179,6 +179,9 @@ public:
 		case 'b':
 			renderer->benchmark = !renderer->benchmark;
 			break;
+		case 'y':
+			renderer->render_all_debug_lines = !renderer->render_all_debug_lines;
+			break;
 		case 'n':
 			log("%0.2f fps", framerate.hz);
 			log("%0.2f tps", tickrate.hz);

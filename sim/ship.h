@@ -19,6 +19,10 @@ enum {
 	INVALID_SHIP_ID = (uint32_t)-1
 };
 
+struct DebugLine {
+	glm::vec2 a, b;
+};
+
 class Ship : public Entity {
 	public:
 	const ShipClass &klass;
@@ -26,6 +30,7 @@ class Ship : public Entity {
 	float creation_time;
 	float hull;
 	std::unique_ptr<AI> ai;
+	std::vector<DebugLine> debug_lines;
 
 	Ship(Game *game, const ShipClass &klass, std::shared_ptr<Team> team, uint32_t creator_id=INVALID_SHIP_ID);
 	~Ship();
@@ -44,6 +49,9 @@ class Ship : public Entity {
 	void acc_main(float acc);
 	void acc_lateral(float acc);
 	void acc_angular(float acc); // rad/s^2
+
+	void clear_debug_lines();
+	void debug_line(glm::vec2 a, glm::vec2 b);
 
 	private:
 	float main_acc;

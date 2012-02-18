@@ -12,7 +12,7 @@ noinst_HEADERS = \
 	renderer/batch.h renderer/batches/ship.h renderer/batches/tail.h \
 	renderer/batches/bullet.h renderer/batches/beam.h renderer/batches/text.h \
 	renderer/batches/particle.h common/perf.h renderer/batches/clear.h \
-	test/testcase.h
+	renderer/batches/debug_lines.h test/testcase.h
 
 AM_CXXFLAGS = \
 	-include $(CONFIG_HEADER) \
@@ -52,6 +52,7 @@ RENDERER_SRCS = \
 	renderer/batches/text.cc \
 	renderer/batches/particle.cc \
 	renderer/batches/clear.cc \
+	renderer/batches/debug_lines.cc \
 	$(NULL)
 
 TEST_SRCS := $(wildcard $(top_srcdir)/test/*.cc)

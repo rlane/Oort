@@ -15,9 +15,23 @@ public:
 	    prng(ship.id) {}
 
 	void tick() {
+		ship.clear_debug_lines();
 		auto t = find_target(ship);
 
 		if (t) {
+			{
+				float s = 30;
+				auto tp = t->get_position();
+				auto a = tp + vec2(-s, -s);
+				auto b = tp + vec2(-s, s);
+				auto c = tp + vec2(s, s);
+				auto d = tp + vec2(s, -s);
+				ship.debug_line(a, b);
+				ship.debug_line(b, c);
+				ship.debug_line(c, d);
+				ship.debug_line(d, a);
+			}
+
 			if (&ship.klass == fighter.get()) {
 				boost::uniform_real<> missile_dist(0, 256);
 				drive_towards(ship, t->get_position(), ship.klass.max_main_acc*5);

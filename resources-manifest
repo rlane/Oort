@@ -7,6 +7,8 @@ shaders/beam.f.glsl
 shaders/beam.v.glsl
 shaders/bullet.f.glsl
 shaders/bullet.v.glsl
+shaders/debug_line.f.glsl
+shaders/debug_line.v.glsl
 shaders/particle.f.glsl
 shaders/particle.v.glsl
 shaders/ship.f.glsl

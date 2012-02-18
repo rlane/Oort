@@ -31,6 +31,7 @@ public:
 	PerfHistogram render_perf;
 	PerfHistogram snapshot_perf;
 	bool benchmark;
+	bool render_all_debug_lines;
 
 	Renderer();
 	void reshape(int screen_width, int screen_height);

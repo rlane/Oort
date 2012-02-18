@@ -13,6 +13,7 @@
 #include "renderer/batches/text.h"
 #include "renderer/batches/particle.h"
 #include "renderer/batches/clear.h"
+#include "renderer/batches/debug_lines.h"
 
 using glm::vec2;
 using glm::vec4;
@@ -25,12 +26,14 @@ namespace Oort {
 
 Renderer::Renderer() {
 	benchmark = false;
+	render_all_debug_lines = false;
 	add_batch<ClearBatch>();
 	add_batch<TailBatch>();
 	add_batch<BulletBatch>();
 	add_batch<BeamBatch>();
 	add_batch<ParticleBatch>();
 	add_batch<ShipBatch>();
+	add_batch<DebugLinesBatch>();
 	add_batch<TextBatch>();
 }
 
