@@ -17,52 +17,8 @@ function velocity_vec()
 	return vec(vx, vy)
 end
 
-function thrust_main(acc,exhaust_velocity)
-	sys_thrust_main(acc)
-end
-
-function thrust_lateral(acc,exhaust_velocity)
-	sys_thrust_lateral(acc)
-end
-
-function thrust_angular(acc,exhaust_velocity)
-	sys_thrust_angular(acc)
-end
-
-function fire_gun(idx, a)
-	sys_fire_gun(idx, a)	
-end
-
-function check_gun_ready(idx)
-	return sys_check_gun_ready(idx)
-end
-
-function sensor_contacts(query)
-	return sys_sensor_contacts(query)
-end
-
-function sensor_contact(id)
+function NYI()
 	error("NYI")
-end
-
-function send(msg)
-	error("NYI")
-end
-
-function recv()
-	error("NYI")
-end
-
-function spawn(class, orders)
-	error("NYI")
-end
-
-function explode()
-	sys_explode()
-end
-
-function yield()
-	coroutine.yield()
 end
 
 logbuf_head = 0
@@ -78,26 +34,26 @@ function log(...)
 end
 
 sandbox_api = {
-	thrust_main = thrust_main,
-	thrust_lateral = thrust_lateral,
-	thrust_angular = thrust_angular,
+	thrust_main = sys_thrust_main,
+	thrust_lateral = sys_thrust_lateral,
+	thrust_angular = sys_thrust_angular,
 	position = sys_position,
 	position_vec = position_vec,
 	heading = sys_heading,
 	velocity = sys_velocity,
 	velocity_vec = velocity_vec,
 	angular_velocity = sys_angular_velocity,
-	reaction_mass = reaction_mass,
-	energy = energy,
-	fire_gun = fire_gun,
-	check_gun_ready = check_gun_ready,
-	yield = yield,
-	sensor_contacts = sensor_contacts,
-	sensor_contact = sensor_contact,
-	send = send,
-	recv = recv,
-	spawn = spawn,
-	explode = explode,
+	reaction_mass = NYI,
+	energy = NYI,
+	fire_gun = sys_fire_gun,
+	check_gun_ready = sys_check_gun_ready,
+	yield = coroutine.yield,
+	sensor_contacts = sys_sensor_contacts,
+	sensor_contact = NYI,
+	send = NYI,
+	recv = NYI,
+	spawn = NYI,
+	explode = sys_explode,
 	debug_line = sys_debug_line,
 	clear_debug_lines = sys_clear_debug_lines,
 	time = time,
