@@ -34,6 +34,7 @@ function log(...)
 end
 
 sandbox_api = {
+	-- functions
 	thrust_main = sys_thrust_main,
 	thrust_lateral = sys_thrust_lateral,
 	thrust_angular = sys_thrust_angular,
@@ -58,6 +59,16 @@ sandbox_api = {
 	clear_debug_lines = sys_clear_debug_lines,
 	time = time,
 	log = log,
+
+	-- values
+	id = id,
+	--hex_id = hex_id,
+	--orders = orders,
+	class = class,
+	team = team,
+	--scenario_radius = scenario_radius,
+	--tick_length = tick_length,
+	--ships = copy_table(ships, {}),
 }
 
 function copy_table(t, t2)

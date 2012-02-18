@@ -16,6 +16,7 @@ extern "C" {
 
 #include "sim/game.h"
 #include "sim/ship.h"
+#include "sim/ship_class.h"
 #include "sim/team.h"
 #include "sim/bullet.h"
 #include "common/log.h"
@@ -269,6 +270,12 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_explode", api_explode);
 	lua_register(G, "sys_debug_line", api_debug_line);
 	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
+
+	lua_pushnumber(G, ship.id);
+	lua_setglobal(G, "id");
+
+	lua_pushstring(G, ship.klass.name.c_str());
+	lua_setglobal(G, "class");
 
 	lua_pushstring(G, ship.team->name.c_str());
 	lua_setglobal(G, "team");
