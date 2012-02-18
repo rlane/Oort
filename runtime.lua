@@ -1,8 +1,10 @@
+_time = 0
+
 lib()
 vector()
 
 function time()
-	error("NYI")
+	return _time
 end
 
 function position_vec()
