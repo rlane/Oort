@@ -7,9 +7,21 @@ function find_target()
 	return nil
 end
 
+local target_id = nil
 while true do
 	clear_debug_lines()
-	local target = find_target()
+
+	local target = nil
+	if target_id then
+		target = sensor_contact(target_id)
+	end
+
+	if not target then
+		target = find_target()
+		if target then target_id = target.id end
+		print("new target ", target_id)
+	end
+
 	if target then
 		debug_square(target.x, target.y, 20)
 		drive_towards(100, target.x, target.y)

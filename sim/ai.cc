@@ -184,9 +184,13 @@ int api_check_gun_ready(lua_State *L) {
 }
 
 void push_sensor_contact(lua_State *L, const std::shared_ptr<Ship> contact) {
-	lua_createtable(L, 0, 5);
+	lua_createtable(L, 0, 4);
 	int table_idx = lua_gettop(L);
 	auto p = contact->get_position();
+
+	lua_pushliteral(L, "id");
+	lua_pushnumber(L, (double)contact->id);
+	lua_settable(L, table_idx);
 
 	lua_pushliteral(L, "x");
 	lua_pushnumber(L, p.x);
@@ -212,6 +216,18 @@ int api_sensor_contacts(lua_State *L) {
 		i += 1;
 	}
 	return 1;
+}
+
+int api_sensor_contact(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	uint32_t id = luaL_checkinteger(L, 1);
+	BOOST_FOREACH(auto &contact, ship.game->ships) {
+		if (contact->id == id) {
+			push_sensor_contact(L, contact);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 int api_explode(lua_State *L) {
@@ -249,6 +265,7 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_fire_gun", api_fire_gun);
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
+	lua_register(G, "sys_sensor_contact", api_sensor_contact);
 	lua_register(G, "sys_explode", api_explode);
 	lua_register(G, "sys_debug_line", api_debug_line);
 	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
