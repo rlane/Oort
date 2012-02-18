@@ -58,7 +58,7 @@ function spawn(class, orders)
 end
 
 function explode()
-	error("NYI")
+	sys_explode()
 end
 
 function yield()

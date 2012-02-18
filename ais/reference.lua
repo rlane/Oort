@@ -8,7 +8,6 @@ function find_target()
 end
 
 while true do
-	print(time())
 	clear_debug_lines()
 	local target = find_target()
 	if target then

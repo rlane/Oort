@@ -214,6 +214,13 @@ int api_sensor_contacts(lua_State *L) {
 	return 1;
 }
 
+int api_explode(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	ship.explode();
+	lua_yield(L, 0);
+	return 0;
+}
+
 // XXX limit number of lines
 int api_debug_line(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
@@ -242,6 +249,7 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_fire_gun", api_fire_gun);
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
+	lua_register(G, "sys_explode", api_explode);
 	lua_register(G, "sys_debug_line", api_debug_line);
 	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
 
