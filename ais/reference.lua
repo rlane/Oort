@@ -1,6 +1,6 @@
 function find_target()
 	for i, t in ipairs(sensor_contacts({})) do
-		if t.team ~= team then
+		if t:team() ~= team then
 			return t
 		end
 	end
@@ -18,15 +18,16 @@ while true do
 
 	if not target then
 		target = find_target()
-		if target then target_id = target.id end
+		if target then target_id = target:id() end
 		print("new target ", target_id)
 	end
 
 	if target then
-		debug_square(target.x, target.y, 20)
-		drive_towards(100, target.x, target.y)
+		local tp = target:position_vec()
+		debug_square(tp.x, tp.y, 20)
+		drive_towards(100, tp.x, tp.y)
 		if check_gun_ready(0) then
-			local a = lead_vec(position_vec(), vec(target.x, target.y), velocity_vec(), vec(0, 0), 3000, 10)
+			local a = lead_vec(position_vec(), target:position_vec(), velocity_vec(), target:velocity_vec(), 3000, 10)
 			if a then
 				fire_gun(0, a)
 			end

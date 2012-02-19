@@ -32,6 +32,142 @@ void AI::tick() {}
 CxxAI::CxxAI(Ship &ship) : AI(ship) {}
 void CxxAI::tick() {}
 
+static void push_vector(lua_State *L, vec2 v) {
+	lua_createtable(L, 2, 0);
+
+	lua_pushnumber(L, v.x);
+	lua_rawseti(L, -2, 1);
+
+	lua_pushnumber(L, v.y);
+	lua_rawseti(L, -2, 2);
+
+	lua_getglobal(L, "vector_metatable"); // XXX optimize
+	lua_setmetatable(L, -2);
+}
+
+struct LuaSensorContact { 
+	const void *magic;
+	const uint32_t id;
+	const Team &team;
+	const ShipClass &klass;
+	const vec2 p;
+	const vec2 v;
+
+	static constexpr void *RKEY = (void*)0xAABBCC01;
+
+	static int api_id(lua_State *L) {
+		auto c = cast(L, 1);
+		lua_pushnumber(L, c->id);
+		return 1;
+	}
+
+	static int api_team(lua_State *L) {
+		auto c = cast(L, 1);
+		lua_pushstring(L, c->team.name.c_str());
+		return 1;
+	}
+
+	static int api_class(lua_State *L) {
+		auto c = cast(L, 1);
+		lua_pushstring(L, c->klass.name.c_str());
+		return 1;
+	}
+
+	static int api_position(lua_State *L) {
+		auto c = cast(L, 1);
+		lua_pushnumber(L, c->p.x);
+		lua_pushnumber(L, c->p.y);
+		return 2;
+	}
+
+	static int api_position_vec(lua_State *L) {
+		auto c = cast(L, 1);
+		push_vector(L, c->p);
+		return 1;
+	}
+
+	static int api_velocity(lua_State *L) {
+		auto c = cast(L, 1);
+		lua_pushnumber(L, c->v.x);
+		lua_pushnumber(L, c->v.y);
+		return 2;
+	}
+
+	static int api_velocity_vec(lua_State *L) {
+		auto c = cast(L, 1);
+		push_vector(L, c->v);
+		return 1;
+	}
+
+	static void register_api(lua_State *L) {
+		lua_pushlightuserdata(L, RKEY);
+		lua_createtable(L, 0, 1);
+
+		lua_pushstring(L, "__index");
+		lua_createtable(L, 0, 7);
+
+		lua_pushstring(L, "id");
+		lua_pushcfunction(L, api_id);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "team");
+		lua_pushcfunction(L, api_team);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "class");
+		lua_pushcfunction(L, api_class);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "position");
+		lua_pushcfunction(L, api_position);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "position_vec");
+		lua_pushcfunction(L, api_position_vec);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "velocity");
+		lua_pushcfunction(L, api_velocity);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "velocity_vec");
+		lua_pushcfunction(L, api_velocity_vec);
+		lua_settable(L, -3);
+
+		lua_settable(L, -3);
+		lua_settable(L, LUA_REGISTRYINDEX);
+	}
+
+	static void push_metatable(lua_State *L) {
+		lua_pushlightuserdata(L, RKEY);
+		lua_gettable(L, LUA_REGISTRYINDEX);
+	}
+
+	static void push(lua_State *L, const Ship &ship, int metatable_idx) {
+		void *ud = lua_newuserdata(L, sizeof(LuaSensorContact));
+		lua_pushvalue(L, metatable_idx);
+		lua_setmetatable(L, -2);
+		new (ud) LuaSensorContact(ship);
+	}
+
+	static LuaSensorContact *cast(lua_State *L, int narg) {
+		auto c = static_cast<LuaSensorContact*>(lua_touserdata(L, narg));
+		if (c != NULL && c->magic != RKEY) c = NULL;
+		if (c == NULL) luaL_argerror(L, narg, "sensor contact expected");
+		return c;
+	}
+
+	LuaSensorContact(const Ship &ship)
+		: magic(RKEY),
+		  id(ship.id),
+			team(*ship.team),
+			klass(ship.klass),
+			p(ship.get_position()),
+			v(ship.get_velocity())
+	{
+	}
+};
+
 LuaAIFactory::LuaAIFactory(std::string filename, std::string code)
 	: AIFactory(),
 	  filename(filename),
@@ -108,16 +244,6 @@ static LuaAI &lua_ai(lua_State *L) {
 	void *v = lua_touserdata(L, -1);
 	lua_pop(L, 1);
 	return *(LuaAI*)v;
-}
-
-void api_push_vector(lua_State *L, vec2 v) {
-	lua_createtable(L, 2, 0);
-
-	lua_pushnumber(L, v.x);
-	lua_rawseti(L, -2, 1);
-
-	lua_pushnumber(L, v.y);
-	lua_rawseti(L, -2, 2);
 }
 
 int api_position(lua_State *L) {
@@ -211,20 +337,25 @@ int api_sensor_contacts(lua_State *L) {
 	lua_newtable(L);
 	int table_idx = lua_gettop(L);
 	int i = 1;
+	LuaSensorContact::push_metatable(L);
+	int mt_idx = lua_gettop(L);
 	BOOST_FOREACH(auto &contact, ship.game->ships) {
-		push_sensor_contact(L, contact);
+		LuaSensorContact::push(L, *contact, mt_idx);
 		lua_rawseti(L, table_idx, i);
 		i += 1;
 	}
+	lua_pop(L, 1);
 	return 1;
 }
 
 int api_sensor_contact(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
 	uint32_t id = luaL_checkinteger(L, 1);
+	LuaSensorContact::push_metatable(L);
+	int mt_idx = lua_gettop(L);
 	BOOST_FOREACH(auto &contact, ship.game->ships) {
 		if (contact->id == id) {
-			push_sensor_contact(L, contact);
+			LuaSensorContact::push(L, *contact, mt_idx);
 			return 1;
 		}
 	}
@@ -279,6 +410,8 @@ void LuaAI::register_api() {
 
 	lua_pushstring(G, ship.team->name.c_str());
 	lua_setglobal(G, "team");
+
+	LuaSensorContact::register_api(G);
 }
 
 }

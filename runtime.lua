@@ -100,7 +100,6 @@ function sandbox(f)
 		unpack = unpack,
 
 		vec = vec,
-		team = team,
 	}
 
 	env._G = env
