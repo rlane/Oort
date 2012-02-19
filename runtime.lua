@@ -48,7 +48,7 @@ function stub_reaction_mass()
 end
 
 function stub_energy()
-	return my_ship.energy.max
+	return my_ship.energy.limit
 end
 
 function stub_spawn()
