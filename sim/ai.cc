@@ -375,6 +375,16 @@ int api_sensor_contact(lua_State *L) {
 	return 0;
 }
 
+// NYI
+int api_send(lua_State *L) {
+	return 0;
+}
+
+// NYI
+int api_recv(lua_State *L) {
+	return 0;
+}
+
 int api_explode(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
 	ship.explode();
@@ -411,6 +421,8 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
 	lua_register(G, "sys_sensor_contact", api_sensor_contact);
+	lua_register(G, "sys_send", api_send);
+	lua_register(G, "sys_recv", api_recv);
 	lua_register(G, "sys_explode", api_explode);
 	lua_register(G, "sys_debug_line", api_debug_line);
 	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
