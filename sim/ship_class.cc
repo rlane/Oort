@@ -29,18 +29,20 @@ void ShipClass::initialize() {
 		def.scale = 10;
 		def.tail_alpha = 0.1f;
 		def.model = Model::load("fighter");
-		GunDef gun;
-		gun.name = "main";
-		gun.type = GunType::SLUG;
-		gun.mass = 0.015f*3;
-		gun.velocity = 3000.0f;
-		gun.ttl = 1.0f;
-		gun.reload_time = Game::tick_length*6;
-		gun.deviation = 0.02;
-		gun.angle = 0.0;
-		gun.coverage = 0.8 * pi;
-		gun.origin = vec2(9, 0);
-		def.guns.push_back(gun);
+		{
+			GunDef gun;
+			gun.name = "main";
+			gun.type = GunType::SLUG;
+			gun.mass = 0.015f*3;
+			gun.velocity = 3000.0f;
+			gun.ttl = 1.0f;
+			gun.reload_time = Game::tick_length*6;
+			gun.deviation = 0.02;
+			gun.angle = 0.0;
+			gun.coverage = 0.8 * pi;
+			gun.origin = vec2(9, 0);
+			def.guns.push_back(gun);
+		}
 		fighter = std::unique_ptr<ShipClass>(new ShipClass(def));
 	}
 
