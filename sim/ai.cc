@@ -182,7 +182,7 @@ std::unique_ptr<AI> LuaAIFactory::instantiate(Ship &ship) {
 static void *AI_RKEY = (void*)0xAABBCC02;
 
 LuaAI::LuaAI(Ship &ship, std::string filename, std::string code)
-	: AI(ship)
+	: AI(ship), dead(false)
 {
 	G = luaL_newstate();
 	if (!G) {
@@ -226,6 +226,10 @@ LuaAI::~LuaAI() {
 }
 
 void LuaAI::tick() {
+	if (dead) {
+		return;
+	}
+
 	lua_pushnumber(G, ship.game->time);
 	lua_setglobal(G, "_time");
 	auto result = lua_resume(L, 0);
@@ -233,8 +237,17 @@ void LuaAI::tick() {
 		throw std::runtime_error("AI exited");
 	} else if (result == LUA_YIELD) {
 	} else {
-		std::string msg(lua_tostring(L, -1));
-		throw std::runtime_error("AI error" + msg); // XXX traceback
+		log("ship %#x error %s", ship.id, lua_tostring(L, -1));
+		log("backtrace:");
+		lua_Debug ar;
+		for (int i = 0; lua_getstack(L, i, &ar); i++) {
+			if (!lua_getinfo(L, "nSl", &ar)) {
+				log("  %d: error", i);
+			} else {
+				log("  %d: %s %s %s @ %s:%d", i, ar.what, ar.namewhat, ar.name, ar.short_src, ar.currentline);
+			}
+		}
+		dead = true;
 	}
 }
 

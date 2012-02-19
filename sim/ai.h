@@ -63,6 +63,7 @@ public:
 
 private:
 	lua_State *G, *L;
+	bool dead;
 };
 
 }
