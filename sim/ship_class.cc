@@ -45,7 +45,7 @@ void ShipClass::initialize() {
 
 	{
 		ShipClassDef def;
-		def.name = "ion cannon frigate";
+		def.name = "ion_cannon_frigate";
 		def.mass = 160e3;
 		def.hull = 90e6;
 		def.max_main_acc = 20;
@@ -69,7 +69,7 @@ void ShipClass::initialize() {
 
 	{
 		ShipClassDef def;
-		def.name = "assault frigate";
+		def.name = "assault_frigate";
 		def.mass = 160e3;
 		def.hull = 135e6;
 		def.max_main_acc = 20;
