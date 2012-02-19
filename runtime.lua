@@ -104,8 +104,9 @@ function sandbox(f)
 
 	env._G = env
 	env.math = copy_table(math, {})
-	env.math.random = sys_random
-	env.math.randomseed = nil
+	-- NYI
+	--env.math.random = sys_random
+	--env.math.randomseed = nil
 	env.table = copy_table(table, {})
 	env.string = copy_table(string, {})
 	env.string.dump = nil
