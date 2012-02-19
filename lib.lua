@@ -1,4 +1,4 @@
-local my_ship = {
+my_ship = {
 	radius = 10, -- m
 	mass = 10e3, -- kg
 	reaction_mass = 20e3, -- kg
