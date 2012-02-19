@@ -109,7 +109,7 @@ ships.assault_frigate = {
 			reload_time = 0.6,
 			cost = 1e9,
 		},
-		laser = {
+		turret1 = {
 			type = "bullet",
 			graphics = bullets.slug,
 			mass = 0.0075,

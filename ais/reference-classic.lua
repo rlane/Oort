@@ -187,7 +187,8 @@ function weapons.carrier()
 end
 
 function weapons.assault_frigate()
-	point_defense("laser")
+	point_defense("turret1")
+	point_defense("turret2")
 	pick_secondary_target(my_ship.guns.main.velocity*my_ship.guns.main.ttl*1.5)
 
 	if primary_target and chance(1) then
@@ -227,7 +228,14 @@ end
 
 -- Fire short-range defensive weapon at missiles
 function point_defense(gun_name)
-	local range = my_ship.guns[gun_name].length
+	local gun = my_ship.guns[gun_name]
+	local range
+	if gun.type == "beam" then
+		range = gun.length
+	else
+		range = gun.ttl * gun.velocity
+	end
+
 	local t = sensor_contacts{ distance_lt = range, enemy = true, class = "torpedo", limit = 1 }[1] or
 	          sensor_contacts{ distance_lt = range, enemy = true, class = "missile", limit = 1 }[1]
 

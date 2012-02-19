@@ -98,9 +98,9 @@ void ShipClass::initialize() {
 		}
 		{
 			GunDef gun;
-			gun.name = "laser"; // XXX
+			gun.name = "turret1";
 			gun.type = GunType::SLUG;
-			gun.mass = 0.0075;
+			gun.mass = 0.0075f/2;
 			gun.velocity = 3000.0f;
 			gun.ttl = 1.0f;
 			gun.reload_time = Game::tick_length*1;
@@ -117,7 +117,7 @@ void ShipClass::initialize() {
 			gun.mass = 0.0075f/2;
 			gun.velocity = 3000.0f;
 			gun.ttl = 1.0f;
-			gun.reload_time = Game::tick_length*2;
+			gun.reload_time = Game::tick_length*1;
 			gun.deviation = 0.01;
 			gun.angle = 0.0;
 			gun.coverage = 2*pi;
