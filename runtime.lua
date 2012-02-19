@@ -51,6 +51,9 @@ function stub_energy()
 	return my_ship.energy.max
 end
 
+function stub_spawn()
+end
+
 sandbox_api = {
 	-- functions
 	thrust_main = sys_thrust_main,
@@ -71,7 +74,7 @@ sandbox_api = {
 	sensor_contact = sys_sensor_contact,
 	send = sys_send,
 	recv = sys_recv,
-	spawn = NYI,
+	spawn = stub_spawn,
 	explode = sys_explode,
 	debug_line = sys_debug_line,
 	clear_debug_lines = sys_clear_debug_lines,
