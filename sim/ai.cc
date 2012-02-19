@@ -443,6 +443,9 @@ void LuaAI::register_api() {
 	lua_pushnumber(G, ship.game->radius);
 	lua_setglobal(G, "scenario_radius");
 
+	lua_pushnumber(G, Game::tick_length);
+	lua_setglobal(G, "tick_length");
+
 	LuaSensorContact::register_api(G);
 }
 
