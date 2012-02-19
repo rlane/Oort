@@ -388,8 +388,44 @@ int api_sensor_contacts(lua_State *L) {
 	int i = 1;
 	LuaSensorContact::push_metatable(L);
 	int mt_idx = lua_gettop(L);
+	int query_argnum = 1;
+
+	float has_distance_lt = false;
+	float distance_lt = 0;
+	bool has_enemy = false;
+	bool enemy = false;
+	int limit = 10000;
+
+	if (lua_istable(L, query_argnum)) {
+		lua_getfield(L, query_argnum, "distance_lt");
+		if (lua_isnumber(L, -1)) {
+			has_distance_lt = true;
+			distance_lt = lua_tonumber(L, -1);
+		}
+		lua_pop(L, 1);
+
+		lua_getfield(L, query_argnum, "enemy");
+		if (lua_isboolean(L, -1)) {
+			has_enemy = true;
+			enemy = lua_toboolean(L, -1);
+		}
+		lua_pop(L, 1);
+
+		lua_getfield(L, query_argnum, "limit");
+		if (lua_isnumber(L, -1)) {
+			limit = lua_tointeger(L, -1);
+		}
+		lua_pop(L, 1);
+	} else if (lua_isnil(L, query_argnum)) {
+	} else {
+		luaL_argerror(L, query_argnum, "expected table or nil");
+	}
+
 	BOOST_FOREACH(auto &contact, ship.game->ships) {
-		if (contact->team == ship.team) continue; // XXX
+		if (i > limit) break;
+		if (has_enemy && (contact->team != ship.team) != enemy) continue;
+		if (has_distance_lt &&
+				glm::distance(contact->get_position(), ship.get_position()) > distance_lt) continue;
 		LuaSensorContact::push(L, *contact, mt_idx);
 		lua_rawseti(L, table_idx, i);
 		i += 1;
