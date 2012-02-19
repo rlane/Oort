@@ -204,9 +204,13 @@ LuaAI::LuaAI(Ship &ship, std::string filename, std::string code)
 		lua_setglobal(G, lib.c_str());
 	}
 
-	auto runtime_code = load_resource("runtime.lua");
-	luaL_loadbuffer(G, runtime_code.c_str(), runtime_code.length(), "runtime.lua");
-	lua_call(G, 0, 0);
+	std::vector<std::string> libs2 = { "ships", "runtime" };
+	BOOST_FOREACH(auto &lib, libs2) {
+		std::string filename = lib + ".lua";
+		auto lib_code = load_resource(filename);
+		luaL_loadbuffer(G, lib_code.c_str(), lib_code.length(), filename.c_str());
+		lua_call(G, 0, 0);
+	}
 
 	L = lua_newthread(G);
 
@@ -435,6 +439,9 @@ void LuaAI::register_api() {
 
 	lua_pushstring(G, ship.team->name.c_str());
 	lua_setglobal(G, "team");
+
+	lua_pushnumber(G, ship.game->radius);
+	lua_setglobal(G, "scenario_radius");
 
 	LuaSensorContact::register_api(G);
 }

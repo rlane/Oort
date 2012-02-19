@@ -1,39 +1,5 @@
-my_ship = {
-	radius = 10, -- m
-	mass = 10e3, -- kg
-	reaction_mass = 20e3, -- kg
-	refuelable = true,
-	hull = 450e3, -- J
-	max_main_acc = 100, -- m/s^2
-	max_lateral_acc = 10, -- m/s^2
-	max_angular_acc = 1, -- radians/s^2
-	cost = 10e9, -- J
-	cpu = 500e3, -- bytecodes/s
-	guns = {
-		main = {
-			type = "bullet", -- bullet or beam
-			--graphics = bullets.slug,
-			mass = 0.001, -- kg
-			radius = 1.0/32, -- m
-			velocity = 3000, -- m/s
-			ttl = 0.2, -- s
-			spread = 0.1, -- radians
-			angle = 0.0, -- radians
-			coverage = 0.8*math.pi, -- radians
-			reload_time = 0.03, -- s
-			cost = 4.5e3, -- J
-		}
-	},
-	count_for_victory = true,
-	energy = {
-		initial = 5e9, -- J
-		rate = 5e9, -- Watts
-		limit = 15e9, -- J
-	},
-	spawnable = {
-		missile = 5, -- cooldown time, s
-	}
-}
+local my_class = class
+local my_ship = ships[my_class]
 local two_pi = math.pi * 2
 
 

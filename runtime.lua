@@ -33,6 +33,13 @@ function log(...)
 	logbuf_lines[logbuf_head] = line
 end
 
+function copy_table(t, t2)
+	for k,v in pairs(t) do
+		t2[k] = v
+	end
+	return t2
+end
+
 sandbox_api = {
 	-- functions
 	thrust_main = sys_thrust_main,
@@ -66,9 +73,9 @@ sandbox_api = {
 	--orders = orders,
 	class = class,
 	team = team,
-	--scenario_radius = scenario_radius,
+	scenario_radius = scenario_radius,
 	--tick_length = tick_length,
-	--ships = copy_table(ships, {}),
+	ships = copy_table(ships, {}),
 }
 
 function copy_table(t, t2)
