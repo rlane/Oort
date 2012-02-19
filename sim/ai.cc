@@ -380,6 +380,7 @@ void push_sensor_contact(lua_State *L, const std::shared_ptr<Ship> contact) {
 	lua_settable(L, table_idx);
 }
 
+// TODO parse query
 int api_sensor_contacts(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
 	lua_newtable(L);
@@ -388,6 +389,7 @@ int api_sensor_contacts(lua_State *L) {
 	LuaSensorContact::push_metatable(L);
 	int mt_idx = lua_gettop(L);
 	BOOST_FOREACH(auto &contact, ship.game->ships) {
+		if (contact->team == ship.team) continue; // XXX
 		LuaSensorContact::push(L, *contact, mt_idx);
 		lua_rawseti(L, table_idx, i);
 		i += 1;
