@@ -1,3 +1,6 @@
+local my_class = class
+local my_ship = ships[my_class]
+
 _time = 0
 
 lib()
@@ -40,6 +43,14 @@ function copy_table(t, t2)
 	return t2
 end
 
+function stub_reaction_mass()
+	return my_ship.reaction_mass
+end
+
+function stub_energy()
+	return my_ship.energy.max
+end
+
 sandbox_api = {
 	-- functions
 	thrust_main = sys_thrust_main,
@@ -51,8 +62,8 @@ sandbox_api = {
 	velocity = sys_velocity,
 	velocity_vec = velocity_vec,
 	angular_velocity = sys_angular_velocity,
-	reaction_mass = NYI,
-	energy = NYI,
+	reaction_mass = stub_reaction_mass,
+	energy = stub_energy,
 	fire_gun = sys_fire_gun,
 	check_gun_ready = sys_check_gun_ready,
 	yield = coroutine.yield,
