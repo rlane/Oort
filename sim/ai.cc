@@ -336,9 +336,9 @@ int api_fire(lua_State *L) {
 	float a = luaL_checknumber(L, 2);
 	int idx;
 
-	if ((idx = find_gun(ship, name) != -1)) {
+	if ((idx = find_gun(ship, name)) != -1) {
 		ship.fire_gun(idx, a);
-	} else if ((idx = find_beam(ship, name) != -1)) {
+	} else if ((idx = find_beam(ship, name)) != -1) {
 		ship.fire_beam(idx, a);
 	} else {
 		return luaL_argerror(L, 1, "no such gun");
