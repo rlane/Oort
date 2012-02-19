@@ -3,6 +3,7 @@
 #define OORT_SIM_WEAPON_H_
 
 #include <memory>
+#include <string>
 #include "sim/entity.h"
 
 namespace Oort {
@@ -11,6 +12,7 @@ class Game;
 class Ship;
 
 struct WeaponDef {
+	std::string name;
 	float angle;       // radians
 	float coverage;    // radians
 	glm::vec2 origin;  // meters

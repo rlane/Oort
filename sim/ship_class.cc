@@ -30,6 +30,7 @@ void ShipClass::initialize() {
 		def.tail_alpha = 0.1f;
 		def.model = Model::load("fighter");
 		GunDef gun;
+		gun.name = "main";
 		gun.type = GunType::SLUG;
 		gun.mass = 0.015f*3;
 		gun.velocity = 3000.0f;
@@ -56,6 +57,7 @@ void ShipClass::initialize() {
 		def.model = Model::load("ion_cannon_frigate");
 		{
 			BeamDef beam;
+			beam.name = "main";
 			beam.damage = 10e6;
 			beam.length = 1e3;
 			beam.width = 6;
@@ -80,6 +82,7 @@ void ShipClass::initialize() {
 		def.model = Model::load("assault_frigate");
 		{
 			GunDef gun;
+			gun.name = "main";
 			gun.type = GunType::PLASMA;
 			gun.mass = 10.0f;
 			gun.velocity = 800.0f;
@@ -93,6 +96,7 @@ void ShipClass::initialize() {
 		}
 		{
 			GunDef gun;
+			gun.name = "laser"; // XXX
 			gun.type = GunType::SLUG;
 			gun.mass = 0.0075;
 			gun.velocity = 3000.0f;
@@ -106,6 +110,7 @@ void ShipClass::initialize() {
 		}
 		{
 			GunDef gun;
+			gun.name = "turret2";
 			gun.type = GunType::SLUG;
 			gun.mass = 0.0075f/2;
 			gun.velocity = 3000.0f;

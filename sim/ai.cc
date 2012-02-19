@@ -312,17 +312,48 @@ int api_acc_angular(lua_State *L) {
 	return 0;
 }
 
-int api_fire_gun(lua_State *L) {
+static int find_gun(const Ship &ship, const char *name) {
+	for (unsigned int i = 0; i < ship.klass.guns.size(); i++) {
+		if (!strcmp(name, ship.klass.guns[i].name.c_str())) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+static int find_beam(const Ship &ship, const char *name) {
+	for (unsigned int i = 0; i < ship.klass.beams.size(); i++) {
+		if (!strcmp(name, ship.klass.beams[i].name.c_str())) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int api_fire(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
-	int idx = luaL_checkinteger(L, 1);
+	const char *name = luaL_checkstring(L, 1);
 	float a = luaL_checknumber(L, 2);
-	ship.fire_gun(idx, a);
+	int idx;
+
+	if ((idx = find_gun(ship, name) != -1)) {
+		ship.fire_gun(idx, a);
+	} else if ((idx = find_beam(ship, name) != -1)) {
+		ship.fire_beam(idx, a);
+	} else {
+		return luaL_argerror(L, 1, "no such gun");
+	}
+
 	return 0;
 }
 
 int api_check_gun_ready(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
-	int idx = luaL_checkinteger(L, 1);
+	const char *name = luaL_checkstring(L, 1);
+	int idx = find_gun(ship, name);
+	if (idx == -1) {
+		return luaL_argerror(L, 1, "no such gun");
+	}
 	lua_pushboolean(L, ship.gun_ready(idx));
 	return 1;
 }
@@ -421,7 +452,7 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_thrust_main", api_acc_main);
 	lua_register(G, "sys_thrust_lateral", api_acc_lateral);
 	lua_register(G, "sys_thrust_angular", api_acc_angular);
-	lua_register(G, "sys_fire_gun", api_fire_gun);
+	lua_register(G, "sys_fire", api_fire);
 	lua_register(G, "sys_check_gun_ready", api_check_gun_ready);
 	lua_register(G, "sys_sensor_contacts", api_sensor_contacts);
 	lua_register(G, "sys_sensor_contact", api_sensor_contact);
