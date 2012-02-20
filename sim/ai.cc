@@ -46,14 +46,14 @@ static void push_vector(lua_State *L, vec2 v) {
 }
 
 struct LuaSensorContact { 
-	const void *magic;
+	const uint32_t magic;
 	const uint32_t id;
 	const Team &team;
 	const ShipClass &klass;
 	const vec2 p;
 	const vec2 v;
 
-	static constexpr void *RKEY = (void*)0xAABBCC01;
+	static const uint32_t RKEY = 0xAABBCC01;
 
 	static int api_id(lua_State *L) {
 		auto c = cast(L, 1);
@@ -100,7 +100,7 @@ struct LuaSensorContact {
 	}
 
 	static void register_api(lua_State *L) {
-		lua_pushlightuserdata(L, RKEY);
+		lua_pushlightuserdata(L, (void*)RKEY);
 		lua_createtable(L, 0, 1);
 
 		lua_pushstring(L, "__index");
@@ -139,7 +139,7 @@ struct LuaSensorContact {
 	}
 
 	static void push_metatable(lua_State *L) {
-		lua_pushlightuserdata(L, RKEY);
+		lua_pushlightuserdata(L, (void*)RKEY);
 		lua_gettable(L, LUA_REGISTRYINDEX);
 	}
 
