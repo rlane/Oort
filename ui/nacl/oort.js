@@ -10,3 +10,15 @@ function moduleDidLoad() {
 function handleMessage(message_event) {
 	alert(message_event.data);
 }
+
+$(document).ready(function(){
+	$("#menu-return").click(function(event){
+		$("#overlay").hide();
+		$("#show-overlay").show();
+	});
+
+	$("#show-overlay").click(function(event){
+		$("#overlay").show();
+		$("#show-overlay").hide();
+	});
+});
