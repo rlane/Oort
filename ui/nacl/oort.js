@@ -45,10 +45,6 @@ function moduleLoadAbort() {
 }
 
 function moduleDidLoad() {
-	if (event.target.lastError != undefined) {
-		return;
-	}
-
 	oort = document.getElementById('oort');
 	oort.postMessage('start');
 	oort.focus();

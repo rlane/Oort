@@ -43,7 +43,6 @@ class OortInstance : public pp::Instance {
 		//log("scheduling swap: fn=%p data=%p", static_swap_callback, this);
 		pp::CompletionCallback cb(static_swap_callback, this);
 		gl_context.SwapBuffers(cb);
-		//log("swap scheduled");
 	}
 
 	void swap_callback() {
@@ -97,6 +96,7 @@ class OortInstance : public pp::Instance {
 		log("cleared");
 
 		schedule_swap();
+		log("finished init");
 
 		return true;
 	}
@@ -160,6 +160,10 @@ class OortInstance : public pp::Instance {
 	}
 
 	virtual bool HandleInputEvent(const pp::InputEvent &event) {
+		if (!gui) {
+			return false;
+		}
+
 		PP_InputEvent_Type type = event.GetType();
 		if (type == PP_INPUTEVENT_TYPE_KEYDOWN) {
 			auto key_event = static_cast<pp::KeyboardInputEvent>(event);
