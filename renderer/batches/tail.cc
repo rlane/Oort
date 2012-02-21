@@ -52,6 +52,7 @@ TailBatch::TailBatch(Renderer &renderer)
 void TailBatch::render(float time_delta) {
 	auto &prog = priv->tail_prog;
 	prog.use();
+	glBlendFunc(GL_ONE, GL_ONE);
 	prog.enable_attrib_array("vertex");
 	prog.enable_attrib_array("color");
 	prog.uniform("p_matrix", renderer.p_matrix);
@@ -67,7 +68,10 @@ void TailBatch::render(float time_delta) {
 		prog.attrib("initial_time", bunch.initial_time);
 		prog.attrib_ptr("vertex", &v->p, stride);
 		prog.attrib_ptr("color", &v->color, stride);
-		glDrawArrays(GL_LINES, 0, bunch.size*2);
+		BOOST_FOREACH(auto jitter, Renderer::jitters) {
+			prog.attrib("jitter", jitter*(4.0f/1600));
+			glDrawArrays(GL_LINES, 0, bunch.size*2);
+		}
 	}
 	Bunch<TailSegment>::unbind();
 
@@ -87,7 +91,7 @@ void TailBatch::snapshot(const Game &game) {
 		priv->tmp_segments.emplace_back(
 			TailSegment{
 				TailVertex{ ship->get_position() - ship->get_velocity()*0.7f, vec4(ship->team->color, 0) },
-				TailVertex{ ship->get_position(), vec4(ship->team->color, ship->klass.tail_alpha) }
+				TailVertex{ ship->get_position(), vec4(ship->team->color, ship->klass.tail_alpha/Renderer::jitters.size()) }
 			}
 		);
 	}
