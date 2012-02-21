@@ -32,6 +32,7 @@ public:
 	PerfHistogram snapshot_perf;
 	bool benchmark;
 	bool render_all_debug_lines;
+	static std::vector<glm::vec2> jitters;
 
 	Renderer();
 	void reshape(int screen_width, int screen_height);

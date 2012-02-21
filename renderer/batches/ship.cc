@@ -49,30 +49,6 @@ void ShipBatch::render(float time_delta) {
 	GL::check();
 	prog.uniform("p_matrix", renderer.p_matrix);
 
-	std::vector<vec2> jitters = {
-#ifdef __native_client__
-#define SAMPLES 4
-#else
-#define SAMPLES 0
-#endif
-
-#if SAMPLES == 4
-#warning "4 samples"
-		vec2(0.375, 0.25),
-		vec2(0.125, 0.75),
-		vec2(0.875, 0.25),
-		vec2(0.625, 0.75),
-#elif SAMPLES == 16
-#warning "16 samples"
-		vec2(0.375, 0.4375), vec2(0.625, 0.0625), vec2(0.875, 0.1875), vec2(0.125, 0.0625),
-		vec2(0.375, 0.6875), vec2(0.875, 0.4375), vec2(0.625, 0.5625), vec2(0.375, 0.9375),
-		vec2(0.625, 0.3125), vec2(0.125, 0.5625), vec2(0.125, 0.8125), vec2(0.375, 0.1875),
-		vec2(0.875, 0.9375), vec2(0.875, 0.6875), vec2(0.125, 0.3125), vec2(0.625, 0.8125),
-#else
-		vec2(0, 0),
-#endif
-	};
-
 	BOOST_FOREACH(auto &ship, priv->ships) {
 		glm::mat4 mv_matrix;
 		auto p = ship.p + ship.v * time_delta;
@@ -80,7 +56,7 @@ void ShipBatch::render(float time_delta) {
 		mv_matrix = glm::translate(mv_matrix, glm::vec3(p, 0));
 		mv_matrix = glm::rotate(mv_matrix, glm::degrees(h), glm::vec3(0, 0, 1));
 		mv_matrix = glm::scale(mv_matrix, glm::vec3(1, 1, 1) * ship.klass.scale);
-		glm::vec4 color(ship.team.color, ship.klass.model->alpha/jitters.size());
+		glm::vec4 color(ship.team.color, ship.klass.model->alpha/Renderer::jitters.size());
 		GL::check();
 
 		prog.uniform("mv_matrix", mv_matrix);
@@ -97,7 +73,7 @@ void ShipBatch::render(float time_delta) {
 			vertex_buf->unbind();
 			GL::check();
 
-			BOOST_FOREACH(auto jitter, jitters) {
+			BOOST_FOREACH(auto jitter, Renderer::jitters) {
 				prog.uniform("jitter", jitter*(4.0f/1600));
 				glDrawArrays(GL_LINE_LOOP, 0, shape.vertices.size());
 			}

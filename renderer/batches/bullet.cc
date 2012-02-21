@@ -7,6 +7,7 @@
 #include "sim/game.h"
 #include "sim/bullet.h"
 #include "gl/check.h"
+#include "gl/buffer.h"
 #include "common/resources.h"
 
 using glm::vec2;
@@ -28,6 +29,7 @@ struct BulletState {
 
 struct BulletPriv {
 	GL::Program prog;
+	GL::Buffer buf;
 	std::vector<BulletState> bullets;
 
 	BulletPriv()
@@ -42,7 +44,7 @@ BulletBatch::BulletBatch(Renderer &renderer)
 
 void BulletBatch::snapshot(const Game &game) {
 	vec4 color1(0, 0, 0, 0);
-	vec4 color2(0.96f, 0.73f, 0.25f, 1.0f);
+	vec4 color2(0.96f, 0.73f, 0.25f, 1.0f/Renderer::jitters.size());
 
 	priv->bullets.clear();
 	BOOST_FOREACH(auto bullet, game.bullets) {
@@ -63,6 +65,7 @@ void BulletBatch::snapshot(const Game &game) {
 
 void BulletBatch::render(float time_delta) {
 	auto &prog = priv->prog;
+	glBlendFunc(GL_ONE, GL_ONE);
 
 	prog.use();
 	GL::check();
@@ -72,10 +75,22 @@ void BulletBatch::render(float time_delta) {
 	prog.uniform("p_matrix", renderer.p_matrix);
 	prog.uniform("mv_matrix", glm::mat4());
 
-	auto stride = sizeof(BulletVertex);
-	prog.attrib_ptr("vertex", &priv->bullets[0].a.p, stride);
-	prog.attrib_ptr("color", &priv->bullets[0].a.color, stride);
-	glDrawArrays(GL_LINES, 0, priv->bullets.size()*2);
+	// XXX dont do this every time
+	priv->buf.data(priv->bullets);
+
+	priv->buf.bind();
+
+	BulletVertex *v = NULL;
+	auto stride = sizeof(*v);
+	prog.attrib_ptr("vertex", &v->p, stride);
+	prog.attrib_ptr("color", &v->color, stride);
+
+	BOOST_FOREACH(auto jitter, Renderer::jitters) {
+		prog.attrib("jitter", jitter*(4.0f/1600));
+		glDrawArrays(GL_LINES, 0, priv->bullets.size()*2);
+	}
+
+	GL::Buffer::unbind();
 
 	prog.disable_attrib_array("vertex");
 	prog.disable_attrib_array("color");

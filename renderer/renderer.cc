@@ -24,6 +24,30 @@ using namespace Oort::RendererBatches;
 
 namespace Oort {
 
+std::vector<vec2> Renderer::jitters{
+#ifdef __native_client__
+#define SAMPLES 4
+#else
+#define SAMPLES 0
+#endif
+
+#if SAMPLES == 4
+#warning "4 samples"
+	vec2(0.375, 0.25),
+	vec2(0.125, 0.75),
+	vec2(0.875, 0.25),
+	vec2(0.625, 0.75),
+#elif SAMPLES == 16
+#warning "16 samples"
+	vec2(0.375, 0.4375), vec2(0.625, 0.0625), vec2(0.875, 0.1875), vec2(0.125, 0.0625),
+	vec2(0.375, 0.6875), vec2(0.875, 0.4375), vec2(0.625, 0.5625), vec2(0.375, 0.9375),
+	vec2(0.625, 0.3125), vec2(0.125, 0.5625), vec2(0.125, 0.8125), vec2(0.375, 0.1875),
+	vec2(0.875, 0.9375), vec2(0.875, 0.6875), vec2(0.125, 0.3125), vec2(0.625, 0.8125),
+#else
+	vec2(0, 0),
+#endif
+};
+
 Renderer::Renderer() {
 	benchmark = false;
 	render_all_debug_lines = false;
