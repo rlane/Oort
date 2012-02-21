@@ -2,6 +2,13 @@ html {
 	overflow: hidden;
 }
 
+#loading {
+  display:block;
+  position:absolute;
+  top:50%;
+  left:50%;
+}
+
 #oort {
   display:block;
   position:absolute;

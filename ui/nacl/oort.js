@@ -1,15 +1,42 @@
 oort = null;  // Global application object.
 
-// Indicate success when the NaCl module has loaded.
+function handleMessage(message_event) {
+	alert(message_event.data);
+}
+
+function moduleDidStartLoad() {
+}
+
+function moduleLoadProgress(event) {
+	var last_slash = event.url.lastIndexOf("/");
+	var filename = event.url.substring(last_slash+1);
+
+	if (event.lengthComputable && event.total > 0) {
+		var loadPercent = Math.round(event.loaded / event.total * 100.0);
+		var loadPercentString = loadPercent + '%';
+		var text = filename + ' ' + loadPercentString;
+		$("#progress").html(text)
+	}
+}
+
+function moduleLoadError() {
+}
+
+function moduleLoadAbort() {
+}
+
 function moduleDidLoad() {
 	oort = document.getElementById('oort');
 	oort.postMessage('start');
 	oort.focus();
+	$("#loading").fadeOut("slow")
 }
 
-// Handle a message coming from the NaCl module.
-function handleMessage(message_event) {
-	alert(message_event.data);
+function moduleDidEndLoad() {
+	var lastError = event.target.lastError;
+	if (lastError != undefined) {
+		$("#progress").html(lastError)
+	}
 }
 
 $(document).ready(function(){

@@ -18,11 +18,21 @@
 <div id="listener">
   <script type="text/javascript">
     var listener = document.getElementById('listener')
+    listener.addEventListener('loadstart', moduleDidStartLoad, true);
+    listener.addEventListener('progress', moduleLoadProgress, true);
+    listener.addEventListener('error', moduleLoadError, true);
+    listener.addEventListener('abort', moduleLoadAbort, true);
     listener.addEventListener('load', moduleDidLoad, true);
+    listener.addEventListener('loadend', moduleDidEndLoad, true);
     listener.addEventListener('message', handleMessage, true);
   </script>
 
   <embed name="nacl_module" id="oort" src="oort.nmf" type="application/x-nacl" tabindex="-1" />
+</div>
+
+<div id="loading">
+	<h1>Loading</h1>
+	<div id="progress"></div>
 </div>
 
 <div id="show-overlay">Menu</div>
