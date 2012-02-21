@@ -1,12 +1,29 @@
 html {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 #loading {
+  text-align: center;
   display:block;
   position:absolute;
   top:50%;
-  left:50%;
+  left: 50%;
+  width: 300px;
+  height: 20px;
+  margin-left: -150px;
+}
+
+#progress-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(100, 100, 100, 0.1);
+}
+
+#progress-bar {
+  position: relative;
+  width: 1%;
+  height: 100%;
+  background: rgba(100, 100, 100, 0.4);
 }
 
 #oort {
@@ -24,23 +41,23 @@ html {
   position:fixed;
   top:0;
   left:0;
-	font-size: 20px;
-	display: none;
-	padding: 10px;
-	background: rgba(100, 100, 100, 0.1);
-	border-right-style: solid;
-	border-bottom-style: solid;
-	border-width: 1px;
-	border-color: rgba(150, 150, 150, 0.6);
-	cursor: pointer;
+  font-size: 20px;
+  display: none;
+  padding: 10px;
+  background: rgba(100, 100, 100, 0.1);
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: rgba(150, 150, 150, 0.6);
+  cursor: pointer;
 }
 
 #show-overlay:hover {
-	background: rgba(100, 100, 100, 0.2);
+  background: rgba(100, 100, 100, 0.2);
 }
 
 #overlay {
-  display:block;
+  display:none;
   position:fixed;
   top:0;
   left:0;
@@ -52,35 +69,35 @@ html {
   position:fixed;
   width:200px;
   height:100%;
-	background: rgba(100, 100, 100, 0.4);
-	border-right-style: solid;
-	border-width: 1px;
-	border-color: rgba(50, 50, 50, 0.6);
+  background: rgba(100, 100, 100, 0.4);
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: rgba(50, 50, 50, 0.6);
 }
 
 #menu h1 {
-	color: rgb(200, 200, 200);
-	margin-top: 30px;
-	margin-left: 30px;
+  color: rgb(200, 200, 200);
+  margin-top: 30px;
+  margin-left: 30px;
 }
 
 #menu ol {
-	list-style-type: none;
-	margin-left: 0px;
+  list-style-type: none;
+  margin-left: 0px;
 }
 
 #menu ol li {
-	font-size: 20px;
-	padding-bottom: 20px;
-	padding-left: 30px;
-	border-style: none;
-	border-width: 1px;
-	border-color: rgba(150, 150, 150, 0.6);
-	padding-top: 10px;
-	padding-bottom: 10px;
-	cursor: pointer;
+  font-size: 20px;
+  padding-bottom: 20px;
+  padding-left: 30px;
+  border-style: none;
+  border-width: 1px;
+  border-color: rgba(150, 150, 150, 0.6);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
 }
 
 #menu ol li:hover {
-	background: rgba(100, 100, 100, 0.6);
+  background: rgba(100, 100, 100, 0.6);
 }
