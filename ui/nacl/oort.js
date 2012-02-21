@@ -45,6 +45,10 @@ function moduleLoadAbort() {
 }
 
 function moduleDidLoad() {
+	if (event.target.lastError != undefined) {
+		return;
+	}
+
 	oort = document.getElementById('oort');
 	oort.postMessage('start');
 	oort.focus();
@@ -56,7 +60,7 @@ function moduleDidLoad() {
 function moduleDidEndLoad() {
 	var lastError = event.target.lastError;
 	if (lastError != undefined) {
-		$("#progress").html(lastError)
+		$("#progress-filename").html(lastError)
 	}
 }
 
