@@ -4,6 +4,7 @@ oort = null;  // Global application object.
 function moduleDidLoad() {
 	oort = document.getElementById('oort');
 	oort.postMessage('start');
+	oort.focus();
 }
 
 // Handle a message coming from the NaCl module.
