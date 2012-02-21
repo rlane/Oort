@@ -26,6 +26,7 @@ $(document).ready(function(){
 	});
 
 	$("#menu-newgame").click(function(event){
+		oort.postMessage('start');
 		oort.focus();
 	});
 });

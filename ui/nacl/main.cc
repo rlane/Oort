@@ -27,6 +27,9 @@ class OortInstance : public pp::Instance {
 	GUI *gui;
 	pp::Graphics3D gl_context;
 	std::unordered_set<uint32_t> keys_down;
+	static const int initial_screen_width = 800,
+	                 initial_screen_height = 600;
+	pp::Size size;
 
 	public:
 	explicit OortInstance(PP_Instance instance)
@@ -44,7 +47,9 @@ class OortInstance : public pp::Instance {
 	}
 
 	void swap_callback() {
-		gui->render();
+		if (gui) {
+			gui->render();
+		}
 		schedule_swap();
 	}
 
@@ -60,16 +65,6 @@ class OortInstance : public pp::Instance {
 
 		log("initializing ship classes");
 		ShipClass::initialize();
-
-		log("creating game");
-		Scenario scn = Scenario::load("scenarios/basic.json");
-		std::vector<std::shared_ptr<AIFactory>> ai_factories = { builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
-		game = std::make_shared<Game>(scn, ai_factories);
-
-		log("game initialized");
-
-		const int initial_screen_width = 800,
-		          initial_screen_height = 600;
 
 		int32_t attribs[] = {
 			PP_GRAPHICS3DATTRIB_WIDTH, initial_screen_width,
@@ -97,16 +92,10 @@ class OortInstance : public pp::Instance {
 			return PP_FALSE;
 		}
 
-		gui = new GUI(game, NULL);
-
-		gui->handle_resize(initial_screen_width, initial_screen_height);
-		log("screen resized");
-
 		glClearColor(1.0f, 1.0f, 0.5, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		log("cleared");
 
-		gui->start();
 		schedule_swap();
 
 		return true;
@@ -115,14 +104,40 @@ class OortInstance : public pp::Instance {
 	// Called whenever the in-browser window changes size.
 	virtual void DidChangeView(const pp::Rect& position, const pp::Rect& clip) {
 		log("DidChangeView");
-		auto size = position.size();
+		size = position.size();
 		gl_context.ResizeBuffers(size.width(), size.height());
-		gui->handle_resize(size.width(), size.height());
+		if (gui) {
+			gui->handle_resize(size.width(), size.height());
+		}
 	}
 
 	// Called by the browser to handle the postMessage() call in Javascript.
 	virtual void HandleMessage(const pp::Var& message) {
 		log("HandleMessage");
+
+		if (gui) {
+			log("stopping old gui");
+			gui->stop();
+			log("destroying old gui");
+			delete gui;
+			log("destroyed gui");
+		}
+
+		log("creating game");
+		Scenario scn = Scenario::load("scenarios/basic.json");
+		std::vector<std::shared_ptr<AIFactory>> ai_factories = { builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
+		game = std::make_shared<Game>(scn, ai_factories);
+		log("game created");
+
+		log("creating gui");
+		gui = new GUI(game, NULL);
+
+		log("resizing gui");
+		gui->handle_resize(size.width(), size.height());
+
+		log("starting gui");
+		gui->start();
+		log("started gui");
 	}
 
 	uint32_t convert_key(uint32_t keycode) {
