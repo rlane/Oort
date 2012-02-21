@@ -16,10 +16,16 @@ $(document).ready(function(){
 	$("#menu-return").click(function(event){
 		$("#overlay").hide();
 		$("#show-overlay").show();
+		oort.focus();
 	});
 
 	$("#show-overlay").click(function(event){
 		$("#overlay").show();
 		$("#show-overlay").hide();
+		oort.focus();
+	});
+
+	$("#menu-newgame").click(function(event){
+		oort.focus();
 	});
 });
