@@ -92,7 +92,7 @@ class OortInstance : public pp::Instance {
 			return PP_FALSE;
 		}
 
-		glClearColor(1.0f, 1.0f, 0.5, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.03f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		log("cleared");
 
