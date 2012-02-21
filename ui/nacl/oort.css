@@ -4,9 +4,9 @@ html {
 
 #loading {
   text-align: center;
-  display:block;
-  position:absolute;
-  top:50%;
+  display: block;
+  position: absolute;
+  top: 50%;
   left: 50%;
   width: 300px;
   margin-left: -150px;
@@ -19,7 +19,7 @@ html {
 
 #progress-bar {
   position: relative;
-  width: 1%;
+  width: 0%;
   height: 20px;
   background: rgba(200, 200, 200, 0.4);
 }
@@ -30,20 +30,20 @@ html {
 }
 
 #oort {
-  display:block;
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:black
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black
 }
 
 #show-overlay {
-  display:block;
-  position:fixed;
-  top:0;
-  left:0;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
   font-size: 20px;
   display: none;
   padding: 10px;
@@ -60,18 +60,18 @@ html {
 }
 
 #overlay {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  height:100%;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
 }
 
 #menu {
-  display:block;
-  position:fixed;
-  width:200px;
-  height:100%;
+  display: block;
+  position: fixed;
+  width: 200px;
+  height: 100%;
   background: rgba(100, 100, 100, 0.4);
   border-right-style: solid;
   border-width: 1px;
