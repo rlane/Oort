@@ -30,10 +30,14 @@ struct BulletState {
 struct BulletPriv {
 	GL::Program prog;
 	GL::Buffer buf;
+	bool buf_valid;
 	std::vector<BulletState> bullets;
 
 	BulletPriv()
-		: prog(GL::Program::from_resources("bullet")) {}
+		: prog(GL::Program::from_resources("bullet")),
+		  buf_valid(false)
+	{
+	}
 };
 
 BulletBatch::BulletBatch(Renderer &renderer)
@@ -61,6 +65,8 @@ void BulletBatch::snapshot(const Game &game) {
 			BulletVertex{ p, color2 }
 		});
 	}
+
+	priv->buf_valid = false;
 }
 
 void BulletBatch::render(float time_delta) {
@@ -75,8 +81,10 @@ void BulletBatch::render(float time_delta) {
 	prog.uniform("p_matrix", renderer.p_matrix);
 	prog.uniform("mv_matrix", glm::mat4());
 
-	// XXX dont do this every time
-	priv->buf.data(priv->bullets);
+	if (!priv->buf_valid) {
+		priv->buf.data(priv->bullets);
+		priv->buf_valid = true;
+	}
 
 	priv->buf.bind();
 
