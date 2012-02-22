@@ -1,6 +1,9 @@
 #include "ui/gui.h"
 #include <iostream>
 #include <unordered_set>
+#include <boost/foreach.hpp>
+#include "json_spirit_reader_template.h"
+#include "json_spirit_reader.h"
 #include "gl/gl.h"
 #include "ppapi/cpp/instance.h"
 #include "ppapi/cpp/module.h"
@@ -10,6 +13,7 @@
 #include "ppapi/cpp/rect.h"
 #include "ppapi/cpp/size.h"
 #include "ppapi/cpp/input_event.h"
+#include "ppapi/cpp/var.h"
 #include "sim/game.h"
 #include "sim/scenario.h"
 #include "sim/ai.h"
@@ -21,6 +25,7 @@
 #include "sim/builtin_ai.h"
 
 using namespace Oort;
+namespace js = json_spirit; 
 
 class OortInstance : public pp::Instance {
 	std::shared_ptr<Game> game;
@@ -114,6 +119,11 @@ class OortInstance : public pp::Instance {
 	// Called by the browser to handle the postMessage() call in Javascript.
 	virtual void HandleMessage(const pp::Var& message) {
 		log("HandleMessage");
+
+		auto data = message.AsString();
+		js::mValue value;
+		js::read_string(data, value);
+		js::mObject &obj = value.get_obj();
 
 		if (gui) {
 			log("stopping old gui");

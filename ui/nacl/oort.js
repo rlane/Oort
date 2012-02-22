@@ -8,6 +8,10 @@ function handleMessage(message_event) {
 	alert(message_event.data);
 }
 
+function postMessage(msg) {
+	oort.postMessage(JSON.stringify(msg, null, 2));
+}
+
 function moduleDidStartLoad() {
 }
 
@@ -46,7 +50,7 @@ function moduleLoadAbort() {
 
 function moduleDidLoad() {
 	oort = document.getElementById('oort');
-	oort.postMessage('start');
+	postMessage({ key: "start" });
 	oort.focus();
 	updateProgressbar("", 1);
 	$("#loading").fadeOut("slow")
