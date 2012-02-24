@@ -64,21 +64,30 @@ function moduleDidEndLoad() {
 	}
 }
 
+function showMenu() {
+	$("#overlay").show();
+	$("#show-overlay").hide();
+	oort.focus();
+}
+
+function hideMenu() {
+	$("#overlay").hide();
+	$("#show-overlay").show();
+	oort.focus();
+}
+
 $(document).ready(function(){
 	$("#menu-return").click(function(event){
-		$("#overlay").hide();
-		$("#show-overlay").show();
-		oort.focus();
+		hideMenu();
 	});
 
 	$("#show-overlay").click(function(event){
-		$("#overlay").show();
-		$("#show-overlay").hide();
-		oort.focus();
+		showMenu();
 	});
 
 	$("#menu-newgame").click(function(event){
 		postMessage({ key: "start", scenario: "scenarios/basic.json" });
+		hideMenu();
 		oort.focus();
 	});
 });
