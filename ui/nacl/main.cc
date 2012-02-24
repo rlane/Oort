@@ -124,6 +124,8 @@ class OortInstance : public pp::Instance {
 		js::mValue value;
 		js::read_string(data, value);
 		js::mObject &obj = value.get_obj();
+		auto &key = obj.find("key")->second.get_str();
+		auto &scenario = obj.find("scenario")->second.get_str();
 
 		if (gui) {
 			log("stopping old gui");
@@ -134,7 +136,7 @@ class OortInstance : public pp::Instance {
 		}
 
 		log("creating game");
-		Scenario scn = Scenario::load("scenarios/demo1.json");
+		Scenario scn = Scenario::load(scenario);
 		std::vector<std::shared_ptr<AIFactory>> ai_factories = { builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
 		game = std::make_shared<Game>(scn, ai_factories);
 		log("game created");

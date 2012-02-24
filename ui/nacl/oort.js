@@ -50,7 +50,7 @@ function moduleLoadAbort() {
 
 function moduleDidLoad() {
 	oort = document.getElementById('oort');
-	postMessage({ key: "start" });
+	postMessage({ key: "start", scenario: "scenarios/demo1.json" });
 	oort.focus();
 	updateProgressbar("", 1);
 	$("#loading").fadeOut("slow")
@@ -78,7 +78,7 @@ $(document).ready(function(){
 	});
 
 	$("#menu-newgame").click(function(event){
-		oort.postMessage('start');
+		postMessage({ key: "start", scenario: "scenarios/basic.json" });
 		oort.focus();
 	});
 });
