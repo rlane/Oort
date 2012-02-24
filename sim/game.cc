@@ -131,23 +131,8 @@ Game::Game(const Scenario &scn, const vector<std::shared_ptr<AIFactory>> &ai_fac
 		}
 		auto team = make_shared<Team>(scn_team.name, ai_factory, scn_team.color);
 		BOOST_FOREACH(auto scn_ship, scn_team.ships) {
-			ShipClass *klass = NULL;
-			if (scn_ship.klass == "fighter") {
-				klass = &*fighter;
-			} else if (scn_ship.klass == "assault_frigate") {
-				klass = &*assault_frigate;
-			} else if (scn_ship.klass == "ion_cannon_frigate") {
-				klass = &*ion_cannon_frigate;
-			} else if (scn_ship.klass == "carrier") {
-				klass = &*ion_cannon_frigate; // XXX
-			} else if (scn_ship.klass == "missile") {
-				klass = &*missile;
-			} else if (scn_ship.klass == "target") {
-				klass = &*target;
-			} else {
-				throw std::runtime_error("Unknown ship class");
-			}
-			auto ship = make_shared<Ship>(this, *klass, team);
+			auto &klass = ShipClass::lookup(scn_ship.klass);
+			auto ship = make_shared<Ship>(this, klass, team);
 			ship->set_position(scn_ship.p);
 			ship->set_heading(scn_ship.h);
 			ship->set_velocity(scn_ship.v);

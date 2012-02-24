@@ -458,6 +458,19 @@ int api_recv(lua_State *L) {
 	return 0;
 }
 
+int api_spawn(lua_State *L) {
+	auto &ship = lua_ai(L).ship;
+	const char *klass_name = luaL_checkstring(L, 1);
+	const char *orders = luaL_optstring(L, 2, "");
+	auto &klass = ShipClass::lookup(klass_name); // XXX handle failure
+	auto new_ship = std::make_shared<Ship>(ship.game, klass, ship.team, ship.id, orders);
+	new_ship->set_position(ship.get_position());
+	new_ship->set_heading(ship.get_heading());
+	new_ship->set_velocity(ship.get_velocity());
+	ship.game->ships.push_back(new_ship);
+	return 0;
+}
+
 int api_explode(lua_State *L) {
 	auto &ship = lua_ai(L).ship;
 	ship.explode();
@@ -496,12 +509,16 @@ void LuaAI::register_api() {
 	lua_register(G, "sys_sensor_contact", api_sensor_contact);
 	lua_register(G, "sys_send", api_send);
 	lua_register(G, "sys_recv", api_recv);
+	lua_register(G, "sys_spawn", api_spawn);
 	lua_register(G, "sys_explode", api_explode);
 	lua_register(G, "sys_debug_line", api_debug_line);
 	lua_register(G, "sys_clear_debug_lines", api_clear_debug_lines);
 
 	lua_pushnumber(G, ship.id);
 	lua_setglobal(G, "id");
+
+	lua_pushstring(G, ship.orders.c_str());
+	lua_setglobal(G, "orders");
 
 	lua_pushstring(G, ship.klass.name.c_str());
 	lua_setglobal(G, "class");

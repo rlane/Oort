@@ -29,10 +29,11 @@ class Ship : public Entity {
 	uint32_t id;
 	float creation_time;
 	float hull;
+	std::string orders;
 	std::unique_ptr<AI> ai;
 	std::vector<DebugLine> debug_lines;
 
-	Ship(Game *game, const ShipClass &klass, std::shared_ptr<Team> team, uint32_t creator_id=INVALID_SHIP_ID);
+	Ship(Game *game, const ShipClass &klass, std::shared_ptr<Team> team, uint32_t creator_id=INVALID_SHIP_ID, const std::string &orders="");
 	~Ship();
 
 	virtual void tick();

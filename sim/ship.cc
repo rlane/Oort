@@ -26,12 +26,14 @@ static uint32_t next_id = 1;
 Ship::Ship(Game *game,
            const ShipClass &klass,
            std::shared_ptr<Team> team,
-           uint32_t creator_id)
+           uint32_t creator_id,
+					 const std::string &orders)
 	: Entity(game, team, creator_id),
 	  klass(klass),
 	  id(next_id++), // XXX
 	  creation_time(game->time),
 	  hull(klass.hull),
+		orders(orders),
 	  ai(team->ai_factory->instantiate(*this)),
 	  prng(id), // XXX
 	  last_fire_times(klass.guns.size(), -std::numeric_limits<float>::infinity()) {

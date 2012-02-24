@@ -51,9 +51,6 @@ function stub_energy()
 	return my_ship.energy.limit
 end
 
-function stub_spawn()
-end
-
 sandbox_api = {
 	-- functions
 	thrust_main = sys_thrust_main,
@@ -74,7 +71,7 @@ sandbox_api = {
 	sensor_contact = sys_sensor_contact,
 	send = sys_send,
 	recv = sys_recv,
-	spawn = stub_spawn,
+	spawn = sys_spawn,
 	explode = sys_explode,
 	debug_line = sys_debug_line,
 	clear_debug_lines = sys_clear_debug_lines,
@@ -84,7 +81,7 @@ sandbox_api = {
 	-- values
 	id = id,
 	--hex_id = hex_id,
-	--orders = orders,
+	orders = orders,
 	class = class,
 	team = team,
 	scenario_radius = scenario_radius,

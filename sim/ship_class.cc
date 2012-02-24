@@ -156,6 +156,25 @@ void ShipClass::initialize() {
 	}
 }
 
+const ShipClass &
+ShipClass::lookup(const std::string &name) {
+	if (name == "fighter") {
+		return *fighter;
+	} else if (name == "assault_frigate") {
+		return *assault_frigate;
+	} else if (name == "ion_cannon_frigate") {
+		return *ion_cannon_frigate;
+	} else if (name == "carrier") {
+		return *ion_cannon_frigate; // XXX
+	} else if (name == "missile") {
+		return *missile;
+	} else if (name == "target") {
+		return *target;
+	} else {
+		throw std::runtime_error("Unknown ship class " + name);
+	}
+}
+
 ShipClass::ShipClass(const ShipClassDef &def)
   : ShipClassDef(def)
 {

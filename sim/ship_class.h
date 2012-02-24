@@ -34,6 +34,7 @@ public:
 	b2PolygonShape shape;
 
 	static void initialize();
+	static const ShipClass &lookup(const std::string &name);
 
 	ShipClass(const ShipClassDef &def);
 };
