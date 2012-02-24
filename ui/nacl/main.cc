@@ -134,7 +134,7 @@ class OortInstance : public pp::Instance {
 		}
 
 		log("creating game");
-		Scenario scn = Scenario::load("scenarios/basic.json");
+		Scenario scn = Scenario::load("scenarios/demo1.json");
 		std::vector<std::shared_ptr<AIFactory>> ai_factories = { builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
 		game = std::make_shared<Game>(scn, ai_factories);
 		log("game created");

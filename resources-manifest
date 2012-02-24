@@ -1,3 +1,8 @@
+lib.lua
+runtime.lua
+ships.lua
+strict.lua
+vector.lua
 models/assault_frigate.json
 models/fighter.json
 models/ion_cannon_frigate.json
