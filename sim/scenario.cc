@@ -43,6 +43,10 @@ Scenario Scenario::load(std::string path) {
 		team.color.b = jcolor.find("blue")->second.get_real();
 		if (team.color.b < 0.0 || team.color.b > 1.0) throw std::runtime_error("blue out of range");
 
+		if (jteam.count("code")) {
+			team.code.reset(jteam.find("code")->second.get_str());
+		}
+
 		auto jships = jteam.find("ships")->second.get_array();
 		BOOST_FOREACH(json_spirit::mValue &e, jships) {
 			auto jship = e.get_obj();

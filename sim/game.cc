@@ -120,10 +120,15 @@ Game::Game(const Scenario &scn, const vector<std::shared_ptr<AIFactory>> &ai_fac
 	world->SetContactListener(&contact_listener);
 
 	BOOST_FOREACH(auto scn_team, scn.teams) {
-		if (player_ai_index >= ai_factories.size()) {
-			throw std::runtime_error("Not enough AIs given");
+		std::shared_ptr<AIFactory> ai_factory;
+		if (scn_team.code) {
+			ai_factory = std::make_shared<LuaAIFactory>("embedded", *scn_team.code);
+		} else {
+			if (player_ai_index >= ai_factories.size()) {
+				throw std::runtime_error("Not enough AIs given");
+			}
+			ai_factory = ai_factories[player_ai_index++];
 		}
-		auto ai_factory = ai_factories[player_ai_index++];
 		auto team = make_shared<Team>(scn_team.name, ai_factory, scn_team.color);
 		BOOST_FOREACH(auto scn_ship, scn_team.ships) {
 			ShipClass *klass = NULL;

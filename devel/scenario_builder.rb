@@ -34,6 +34,10 @@ def color r, g, b
   $cur_team['color'] = { 'red' => r, 'green' => g, 'blue' => b }
 end
 
+def code str
+  $cur_team['code'] = str
+end
+
 def ship klass
   fail "no current team" unless $cur_team
   ship = { 'klass' => klass, 'p' => [0,0], 'v' => [0,0], 'h' => 0 }
