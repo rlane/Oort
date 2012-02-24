@@ -97,7 +97,7 @@ lint:
 	find sim renderer ui gl -iname '*.cc' -o -iname '*.h' | xargs python cpplint.py --filter=-whitespace/tab,-build/header_guard,-\whitespace/blank_line,-whitespace/labels
 
 # TODO depend on resource files
-ui/nacl/embedded_resources.c: $(top_srcdir)/resources-manifest $(EXTRA_DIST) $(TEST_SCENARIOS)
+ui/nacl/embedded_resources.c: $(top_srcdir)/resources-manifest $(EXTRA_DIST) $(TEST_SCENARIOS) $(SCENARIOS)
 	$(RUBY) $(top_srcdir)/third_party/insrc/insrc.rb -d $(top_builddir) -d $(top_srcdir) $(top_srcdir)/resources-manifest > $(top_builddir)/ui/nacl/embedded_resources.c
 
 %.json: %.scn devel/scenario_builder.rb
