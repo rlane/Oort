@@ -71,7 +71,7 @@ function showMenu() {
 }
 
 function hideMenu() {
-	$("#overlay").hide();
+	$("#overlay").fadeOut("slow");
 	$("#show-overlay").show();
 	oort.focus();
 }
