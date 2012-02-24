@@ -3,6 +3,7 @@ models/fighter.json
 models/ion_cannon_frigate.json
 models/missile.json
 scenarios/basic.json
+scenarios/demo1.json
 shaders/beam.f.glsl
 shaders/beam.v.glsl
 shaders/bullet.f.glsl

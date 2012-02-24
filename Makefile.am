@@ -61,6 +61,9 @@ TESTS := $(patsubst $(top_srcdir)/test/%.cc,$(top_builddir)/test/%.so,$(TEST_SRC
 TEST_SCENARIO_SRCS = $(wildcard $(top_srcdir)/test/*.scn)
 TEST_SCENARIOS = $(patsubst $(top_srcdir)/test/%.scn,$(top_builddir)/test/%.json,$(TEST_SCENARIO_SRCS))
 
+SCENARIO_SRCS = $(wildcard $(top_srcdir)/scenarios/*.scn)
+SCENARIOS = $(patsubst $(top_srcdir)/scenarios/%.scn,$(top_builddir)/scenarios/%.json,$(SCENARIO_SRCS))
+
 GLM_DIST := $(shell find $(top_srcdir)/third_party/glm -path $(top_srcdir)/third_party/glm/.git -prune -o -type f -a -print)
 JSON_DIST := $(shell find $(top_srcdir)/third_party/json-spirit -path $(top_srcdir)/third_party/json-spirit/.git -prune -o -type f -a -print)
 INSRC_DIST := $(shell find $(top_srcdir)/third_party/insrc -path $(top_srcdir)/third_party/insrc/.git -prune -o -type f -a -print)
@@ -73,7 +76,7 @@ CLEANFILES = $(TESTS)
 bin_PROGRAMS := $(FRONTENDS)
 EXTRA_PROGRAMS := oort_headless oort_sdl oort_nacl
 
-all: $(bin_PROGRAMS) $(TESTS) $(TEST_SCENARIOS)
+all: $(bin_PROGRAMS) $(TESTS) $(TEST_SCENARIOS) $(SCENARIOS)
 
 oort_headless_SOURCES := ui/headless/main.cc $(SIM_SRCS)
 oort_headless_LDADD=$(LUA_LIBS) $(BOX2D_LIBS) $(BOOST_LIBS) -lrt
