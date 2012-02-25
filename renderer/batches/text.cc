@@ -5,6 +5,7 @@
 #include <boost/foreach.hpp>
 #include "gl/texture.h"
 #include "gl/check.h"
+#include "gl/buffer.h"
 #include "renderer/font.h"
 #include "common/resources.h"
 
@@ -46,37 +47,47 @@ TextBatch::TextBatch(Renderer &renderer)
 }
 
 void TextBatch::render(float time_delta) {
+	auto spacing = 9.0f;
+	std::vector<vec2> data;
+
+	BOOST_FOREACH(auto &text, renderer.texts) {
+		auto n = text.str.length();
+		for (unsigned int i = 0; i < n; i++) {
+			data.push_back(vec2(float(text.str[i]) /* character */, float(i) /* index */));
+		}
+	}
+
+	GL::Buffer buf;
+	buf.data(data);
+
+	prog.use();
+	font_tex.bind();
+	buf.bind();
+	prog.uniform("tex", 0);
+	prog.uniform("dist", 2.0f*spacing/renderer.screen_width);
+	vec2 *v = NULL;
+	auto stride = sizeof(*v);
+	prog.attrib_ptr("character", &v->x, stride);
+	prog.attrib_ptr("index", &v->y, stride);
+	prog.enable_attrib_array("character");
+	prog.enable_attrib_array("index");
+
+	int offset = 0;
 	BOOST_FOREACH(auto &text, renderer.texts) {
 		auto x = text.x;
 		auto y = text.y;
-		auto &str = text.str;
-
+		auto n = text.str.length();
 		auto pos = renderer.pixel2screen(vec2(x,y));
-		auto spacing = 9.0f;
-		auto n = str.length();
-
-		std::vector<float> data(2*n);
-		for (unsigned int i = 0; i < n; i++) {
-			data[2*i] = float(str[i]); // character
-			data[2*i+1] = float(i); // index
-		}
-
-		prog.use();
-		font_tex.bind();
-		prog.uniform("tex", 0);
-		prog.uniform("dist", 2.0f*spacing/renderer.screen_width);
 		prog.uniform("position", pos);
-		prog.attrib_ptr("character", &data[0], 8);
-		prog.attrib_ptr("index", &data[1], 8);
-		prog.enable_attrib_array("character");
-		prog.enable_attrib_array("index");
-		glDrawArrays(GL_POINTS, 0, n);
-		prog.disable_attrib_array("character");
-		prog.disable_attrib_array("index");
-		GL::Texture::unbind();
-		GL::Program::clear();
-		GL::check();
+		glDrawArrays(GL_POINTS, offset, n);
+		offset += n;
 	}
+
+	prog.disable_attrib_array("character");
+	prog.disable_attrib_array("index");
+	GL::Texture::unbind();
+	GL::Program::clear();
+	GL::check();
 }
 
 }
