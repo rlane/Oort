@@ -26,10 +26,21 @@ struct BeamState {
 
 struct BeamPriv {
 	GL::Program prog;
+	GL::Buffer texcoords_buf;
 	std::vector<BeamState> beams;
 
 	BeamPriv()
-		: prog(GL::Program::from_resources("beam")) {}
+		: prog(GL::Program::from_resources("beam"))
+	{
+		std::vector<vec2> texcoords{
+			vec2(0, 1),
+			vec2(0, 0),
+			vec2(1, 1),
+			vec2(1, 0)
+		};
+
+		texcoords_buf.data(texcoords);
+	}
 };
 
 BeamBatch::BeamBatch(Renderer &renderer)
@@ -56,14 +67,9 @@ void BeamBatch::render(float time_delta) {
 	prog.enable_attrib_array("vertex");
 	prog.enable_attrib_array("texcoord");
 
-	vec2 texcoords[] = {
-		vec2(0, 1),
-		vec2(0, 0),
-		vec2(1, 1),
-		vec2(1, 0)
-	};
-
-	prog.attrib_ptr("texcoord", texcoords);
+	priv->texcoords_buf.bind();
+	prog.attrib_ptr("texcoord", (vec2*)NULL);
+	GL::Buffer::unbind();
 
 	BOOST_FOREACH(auto &beam, priv->beams) {
 		glm::vec4 color = glm::vec4(0.5f, 0.5f, 1.0f, 1.0f);
