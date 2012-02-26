@@ -31,10 +31,24 @@ struct ShipState {
 
 struct ShipPriv {
 	GL::Program prog;
+	GL::Buffer vertex_buf;
 	std::list<ShipState> ships;
 
 	ShipPriv()
-		: prog(GL::Program::from_resources("ship")) {}
+		: prog(GL::Program::from_resources("ship"))
+	{
+		std::vector<vec2> vertices;
+		BOOST_FOREACH(auto &klass_pair, ShipClass::klasses) {
+			auto &klass = klass_pair.second;
+			BOOST_FOREACH(Shape &shape, klass.model->shapes) {
+				shape.offset = vertices.size();
+				vertices.insert(vertices.end(),
+				                shape.vertices.begin(), shape.vertices.end());
+			}
+		}
+
+		vertex_buf.data(vertices);
+	}
 };
 
 ShipBatch::ShipBatch(Renderer &renderer)
@@ -48,6 +62,9 @@ void ShipBatch::render(float time_delta) {
 	prog.use();
 	prog.enable_attrib_array("vertex");
 	prog.uniform("p_matrix", renderer.p_matrix);
+	priv->vertex_buf.bind();
+	prog.attrib_ptr("vertex", (vec2*)NULL);
+	priv->vertex_buf.unbind();
 
 	BOOST_FOREACH(auto &ship, priv->ships) {
 		glm::mat4 mv_matrix;
@@ -62,18 +79,9 @@ void ShipBatch::render(float time_delta) {
 		prog.uniform("color", color);
 
 		BOOST_FOREACH(Shape &shape, ship.klass.model->shapes) {
-			auto &vertex_buf = shape.vertex_buffer;
-			if (!vertex_buf) {
-				vertex_buf = std::make_shared<GL::Buffer>();
-				vertex_buf->data(shape.vertices);
-			}
-			vertex_buf->bind();
-			prog.attrib_ptr("vertex", (vec2*)NULL);
-			vertex_buf->unbind();
-
 			BOOST_FOREACH(auto jitter, Renderer::jitters) {
 				prog.uniform("jitter", jitter*(4.0f/1600));
-				glDrawArrays(GL_LINE_LOOP, 0, shape.vertices.size());
+				glDrawArrays(GL_LINE_LOOP, shape.offset, shape.vertices.size());
 			}
 		}
 	}

@@ -7,15 +7,11 @@
 #include <memory>
 #include "glm/glm.hpp"
 
-namespace GL {
-	class Buffer;
-}
-
 namespace Oort {
 
 struct Shape {
 	std::vector<glm::vec2> vertices;
-	std::shared_ptr<GL::Buffer> vertex_buffer;
+	int offset;
 };
 
 struct Model {
