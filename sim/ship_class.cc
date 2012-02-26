@@ -17,6 +17,8 @@ std::unique_ptr<ShipClass> fighter,
                            missile,
 													 target;
 
+std::map<std::string, const ShipClass&> ShipClass::klasses;
+
 void ShipClass::initialize() {
 	{
 		ShipClassDef def;
@@ -154,6 +156,13 @@ void ShipClass::initialize() {
 		def.model = Model::load("fighter");
 		target = std::unique_ptr<ShipClass>(new ShipClass(def));
 	}
+
+	klasses.insert(std::pair<std::string,const ShipClass&>("fighter", *fighter));
+	klasses.insert(std::pair<std::string,const ShipClass&>("assault_frigate", *assault_frigate));
+	klasses.insert(std::pair<std::string,const ShipClass&>("ion_cannon_frigate", *ion_cannon_frigate));
+	klasses.insert(std::pair<std::string,const ShipClass&>("carrier", *ion_cannon_frigate)); // XXX
+	klasses.insert(std::pair<std::string,const ShipClass&>("missile", *missile));
+	klasses.insert(std::pair<std::string,const ShipClass&>("target", *target));
 }
 
 const ShipClass &

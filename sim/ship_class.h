@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <map>
 #include <Box2D/Box2D.h>
 #include "glm/glm.hpp"
 #include "sim/bullet.h"
@@ -33,6 +34,7 @@ public:
 	float density;
 	b2PolygonShape shape;
 
+	static std::map<std::string, const ShipClass&> klasses;
 	static void initialize();
 	static const ShipClass &lookup(const std::string &name);
 
