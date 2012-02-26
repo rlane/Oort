@@ -107,6 +107,8 @@ void Renderer::render(float view_radius,
 			batch->render_perf.update(timer);
 		}
 	}
+
+	glFlush();
 	GL::check();
 
 	texts.clear();
