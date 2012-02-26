@@ -62,7 +62,6 @@ struct ParticlePriv {
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, n, n, 0, GL_ALPHA, GL_UNSIGNED_BYTE, &data[0]);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		GL::check();
 	}
 };
 
@@ -74,7 +73,6 @@ ParticleBatch::ParticleBatch(Renderer &renderer)
 
 void ParticleBatch::render(float time_delta) {
 	auto &prog = priv->prog;
-	GL::check();
 	glBlendFunc(GL_ONE, GL_ONE);
 	prog.use();
 	prog.uniform("p_matrix", renderer.p_matrix);
@@ -113,7 +111,6 @@ void ParticleBatch::render(float time_delta) {
 
 	glUseProgram(0);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	GL::check();
 }
 
 void ParticleBatch::snapshot(const Game &game) {

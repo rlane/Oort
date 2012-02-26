@@ -51,6 +51,15 @@ std::vector<vec2> Renderer::jitters{
 Renderer::Renderer() {
 	benchmark = false;
 	render_all_debug_lines = false;
+
+	GL::check();
+	glEnable(GL_BLEND);
+#ifndef __native_client__
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+#endif
+	GL::check();
+
 	add_batch<ClearBatch>();
 	add_batch<TailBatch>();
 	add_batch<BulletBatch>();
@@ -59,6 +68,7 @@ Renderer::Renderer() {
 	add_batch<ShipBatch>();
 	add_batch<DebugLinesBatch>();
 	add_batch<TextBatch>();
+	GL::check();
 }
 
 template <typename T>
@@ -77,15 +87,6 @@ void Renderer::render(float view_radius,
                       float time_delta) {
 	Timer timer;
 	GL::check();
-
-#ifndef __native_client__
-	glEnable(GL_POINT_SPRITE);
-	glEnable(GL_PROGRAM_POINT_SIZE);
-#endif
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(1.2f);
 
 	p_matrix = glm::ortho(view_center.x - view_radius,
 	                      view_center.x + view_radius,

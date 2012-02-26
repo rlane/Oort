@@ -51,7 +51,6 @@ void PhysicsDebugRenderer::reshape(int screen_width, int screen_height) {
 
 void PhysicsDebugRenderer::begin_render(float view_radius,
                                         glm::vec2 view_center) {
-	GL::check();
 	prog->use();
 	glEnableVertexAttribArray(prog->attrib_location("vertex"));
 
@@ -77,15 +76,11 @@ void PhysicsDebugRenderer::begin_render(float view_radius,
 	prog->uniform("mv_matrix", mv_matrix);
 
 	prog->uniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
-
-	GL::check();
 }
 
 void PhysicsDebugRenderer::end_render() {
-	GL::check();
 	glDisableVertexAttribArray(prog->attrib_location("vertex"));
 	GL::Program::clear();
-	GL::check();
 }
 
 void PhysicsDebugRenderer::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)

@@ -22,13 +22,9 @@ TextBatch::TextBatch(Renderer &renderer)
 	  prog(GL::Program::from_resources("text"))
 {
 	font_tex.bind();
-	GL::check();
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	GL::check();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	GL::check();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	GL::check();
 	const int n = 256;
 	unsigned char data[64*n];
 	for (int i = 0; i < n; i++) {
@@ -41,15 +37,14 @@ TextBatch::TextBatch(Renderer &renderer)
 		}
 	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, n*8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
-	GL::check();
 	GL::Texture::unbind();
-	GL::check();
 }
 
 void TextBatch::render(float time_delta) {
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	auto spacing = 9.0f;
-	std::vector<vec2> data;
 
+	std::vector<vec2> data;
 	BOOST_FOREACH(auto &text, renderer.texts) {
 		auto n = text.str.length();
 		for (unsigned int i = 0; i < n; i++) {
@@ -87,7 +82,6 @@ void TextBatch::render(float time_delta) {
 	prog.disable_attrib_array("index");
 	GL::Texture::unbind();
 	GL::Program::clear();
-	GL::check();
 }
 
 }

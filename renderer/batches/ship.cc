@@ -44,9 +44,9 @@ ShipBatch::ShipBatch(Renderer &renderer)
 void ShipBatch::render(float time_delta) {
 	auto &prog = priv->prog;
 	glBlendFunc(GL_ONE, GL_ONE);
+	glLineWidth(1.2f);
 	prog.use();
 	prog.enable_attrib_array("vertex");
-	GL::check();
 	prog.uniform("p_matrix", renderer.p_matrix);
 
 	BOOST_FOREACH(auto &ship, priv->ships) {
@@ -57,7 +57,6 @@ void ShipBatch::render(float time_delta) {
 		mv_matrix = glm::rotate(mv_matrix, glm::degrees(h), glm::vec3(0, 0, 1));
 		mv_matrix = glm::scale(mv_matrix, glm::vec3(1, 1, 1) * ship.klass.scale);
 		glm::vec4 color(ship.team.color, ship.klass.model->alpha/Renderer::jitters.size());
-		GL::check();
 
 		prog.uniform("mv_matrix", mv_matrix);
 		prog.uniform("color", color);
@@ -71,19 +70,16 @@ void ShipBatch::render(float time_delta) {
 			vertex_buf->bind();
 			prog.attrib_ptr("vertex", (vec2*)NULL);
 			vertex_buf->unbind();
-			GL::check();
 
 			BOOST_FOREACH(auto jitter, Renderer::jitters) {
 				prog.uniform("jitter", jitter*(4.0f/1600));
 				glDrawArrays(GL_LINE_LOOP, 0, shape.vertices.size());
 			}
-			GL::check();
 		}
 	}
 
 	prog.disable_attrib_array("vertex");
 	GL::Program::clear();
-	GL::check();
 }
 
 void ShipBatch::snapshot(const Game &game) {

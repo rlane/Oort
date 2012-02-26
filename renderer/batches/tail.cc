@@ -53,6 +53,7 @@ void TailBatch::render(float time_delta) {
 	auto &prog = priv->tail_prog;
 	prog.use();
 	glBlendFunc(GL_ONE, GL_ONE);
+	glLineWidth(1.2f);
 	prog.enable_attrib_array("vertex");
 	prog.enable_attrib_array("color");
 	prog.uniform("p_matrix", renderer.p_matrix);

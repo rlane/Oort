@@ -40,7 +40,6 @@ public:
 	void display_info_log() {
 		int len;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &len);
-		GL::check();
 		if (len > 1) {
 			auto log = new char[len];
 			glGetShaderInfoLog(id, len, &len, log);

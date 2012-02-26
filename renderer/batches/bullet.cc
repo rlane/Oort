@@ -72,9 +72,9 @@ void BulletBatch::snapshot(const Game &game) {
 void BulletBatch::render(float time_delta) {
 	auto &prog = priv->prog;
 	glBlendFunc(GL_ONE, GL_ONE);
+	glLineWidth(1.2f);
 
 	prog.use();
-	GL::check();
 
 	prog.enable_attrib_array("vertex");
 	prog.enable_attrib_array("color");
@@ -103,7 +103,6 @@ void BulletBatch::render(float time_delta) {
 	prog.disable_attrib_array("vertex");
 	prog.disable_attrib_array("color");
 	GL::Program::clear();
-	GL::check();
 }
 
 }

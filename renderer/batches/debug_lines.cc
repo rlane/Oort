@@ -52,6 +52,9 @@ void DebugLinesBatch::render(float time_delta) {
 		return;
 	}
 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glLineWidth(1.2f);
+
 	auto &prog = priv->debug_line_prog;
 	prog.use();
 	prog.enable_attrib_array("vertex");
