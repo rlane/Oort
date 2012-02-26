@@ -69,6 +69,7 @@ public:
 	bool paused;
 	bool single_step;
 	bool render_physics_debug;
+	bool show_fps;
 	float view_radius;
 	float zoom_rate;
 	glm::vec2 view_center;
@@ -99,6 +100,7 @@ public:
 		  paused(false),
 		  single_step(false),
 		  render_physics_debug(false),
+		  show_fps(false),
 		  view_radius(3000.0f),
 		  zoom_rate(0),
 		  view_center(0, 0),
@@ -177,7 +179,10 @@ public:
 			zoom_rate += zoom_const;
 			break;
 		case 'b':
-			renderer->benchmark = !renderer->benchmark;
+			show_fps = renderer->benchmark = !renderer->benchmark;
+			break;
+		case 'v':
+			show_fps = !show_fps;
 			break;
 		case 'y':
 			renderer->render_all_debug_lines = !renderer->render_all_debug_lines;
@@ -348,12 +353,15 @@ public:
 			}
 		}
 
+		if (show_fps) {
+			renderer->text(screen_width-180, 10, boost::str(boost::format("     fps: %0.2f") % framerate.hz));
+			renderer->text(screen_width-180, 20, boost::str(boost::format("     tps: %0.2f") % tickrate.hz));
+		}
+
 		if (renderer->benchmark) {
-			renderer->text(screen_width-180, 10, boost::str(boost::format("  render: %0.2f ms") % (render_time/1000.0)));
-			renderer->text(screen_width-180, 20, boost::str(boost::format("    tick: %0.2f ms") % (tick_time/1000.0)));
-			renderer->text(screen_width-180, 30, boost::str(boost::format("snapshot: %0.2f ms") % (snapshot_time/1000.0)));
-			renderer->text(screen_width-180, 50, boost::str(boost::format("     fps: %0.2f") % framerate.hz));
-			renderer->text(screen_width-180, 60, boost::str(boost::format("     tps: %0.2f") % tickrate.hz));
+			renderer->text(screen_width-180, 30, boost::str(boost::format("  render: %0.2f ms") % (render_time/1000.0)));
+			renderer->text(screen_width-180, 40, boost::str(boost::format("    tick: %0.2f ms") % (tick_time/1000.0)));
+			renderer->text(screen_width-180, 50, boost::str(boost::format("snapshot: %0.2f ms") % (snapshot_time/1000.0)));
 		}
 
 		{

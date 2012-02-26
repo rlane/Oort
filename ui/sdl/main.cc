@@ -36,8 +36,9 @@ static uint32_t convert_keycode(uint32_t sym) {
 	  case SDLK_z: return 'z';
 	  case SDLK_x: return 'x';
 	  case SDLK_b: return 'b';
-	  case SDLK_n: return 'n';
+	  case SDLK_v: return 'v';
 	  case SDLK_y: return 'y';
+	  case SDLK_n: return 'n';
 		default: return '\0';
 	}
 }
