@@ -1,0 +1,26 @@
+description "Benchmark Ship Rendering"
+author "Rich Lane"
+
+teams = {
+	"green" => [0, 1, 0],
+}
+
+d = 100
+s = 20
+
+team 'green' do
+	color 0, 1, 0
+	code <<-EOS
+while true do
+	yield()
+end
+	EOS
+	d.times do |x|
+		d.times do |y|
+			ship "fighter" do
+				position x*s-d*s/2, y*s-d*s/2
+				heading 2*Math::PI*(y*d+x)/(d*d)
+			end
+		end
+	end
+end
