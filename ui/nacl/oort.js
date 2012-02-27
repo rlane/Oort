@@ -5,7 +5,7 @@ var downloadedBytes = 0;
 var totalBytes = 31742396;
 
 function handleMessage(message_event) {
-	alert(message_event.data);
+	console.log(message_event.data);
 }
 
 function postMessage(msg) {

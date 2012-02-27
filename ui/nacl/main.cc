@@ -27,6 +27,9 @@
 using namespace Oort;
 namespace js = json_spirit; 
 
+class OortInstance;
+OortInstance *instance;
+
 class OortInstance : public pp::Instance {
 	std::shared_ptr<Game> game;
 	GUI *gui;
@@ -224,6 +227,22 @@ void OortInstance::static_swap_callback(void* user_data, int32_t result)
 	instance->swap_callback();
 }
 
+namespace Oort {
+	static void log_handler_cb(void* user_data, int32_t result) {
+		char *msg = (char*)user_data;
+		pp::Var var(msg);
+		instance->PostMessage(var);
+	}
+
+	void log_handler(char *msg) {
+		if (instance) {
+			pp::Core* core = pp::Module::Get()->core();
+			pp::CompletionCallback cb(log_handler_cb, (void*)msg);
+			core->CallOnMainThread(0, cb);
+		}
+	}
+}
+
 class OortModule : public pp::Module {
 public:
 	OortModule() : pp::Module() {}
@@ -239,7 +258,7 @@ public:
 
 	virtual pp::Instance* CreateInstance(PP_Instance instance) {
 		log("OortModule::CreateInstance");
-		return new OortInstance(instance);
+		return (::instance = new OortInstance(instance));
 	}
 };
 
