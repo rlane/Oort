@@ -87,6 +87,8 @@ class OortInstance : public pp::Instance {
 		glSetCurrentContextPPAPI(gl_context.pp_resource());
 		log("graphics bound");
 
+		log("OpenGL extensions: %s", glGetString(GL_EXTENSIONS));
+
 		int ret = RequestFilteringInputEvents(PP_INPUTEVENT_CLASS_KEYBOARD|PP_INPUTEVENT_CLASS_WHEEL);
 		if (ret != PP_OK) {
 			printf("failed to request input events\n");
