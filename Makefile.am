@@ -12,7 +12,7 @@ noinst_HEADERS = \
 	renderer/batch.h renderer/batches/ship.h renderer/batches/tail.h \
 	renderer/batches/bullet.h renderer/batches/beam.h renderer/batches/text.h \
 	renderer/batches/particle.h common/perf.h renderer/batches/clear.h \
-	renderer/batches/debug_lines.h test/testcase.h
+	renderer/batches/debug_lines.h test/testcase.h ui/nacl/oort_instance.h
 
 AM_CXXFLAGS = \
 	-include $(CONFIG_HEADER) \
@@ -84,7 +84,7 @@ oort_headless_LDADD=$(LUA_LIBS) $(BOX2D_LIBS) $(BOOST_LIBS) -lrt
 oort_sdl_SOURCES := ui/sdl/main.cc $(SIM_SRCS) $(RENDERER_SRCS)
 oort_sdl_LDADD=$(SDL_LIBS) $(GLEW_LIBS) $(LUA_LIBS) $(BOX2D_LIBS) $(BOOST_LIBS) -lrt -lGL
 
-oort_nacl_SOURCES := ui/nacl/main.cc ui/nacl/embedded_resources.c $(SIM_SRCS) $(RENDERER_SRCS)
+oort_nacl_SOURCES := ui/nacl/main.cc ui/nacl/embedded_resources.c ui/nacl/messaging.cc ui/nacl/input.cc ui/nacl/graphics.cc $(SIM_SRCS) $(RENDERER_SRCS)
 oort_nacl_LDADD=$(SDL_LIBS) $(NACL_LIBS) $(LUA_LIBS) $(BOX2D_LIBS)
 
 TESTS_ENVIRONMENT = $(top_builddir)/oort_headless -t
