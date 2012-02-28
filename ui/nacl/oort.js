@@ -77,6 +77,7 @@ function hideMenu() {
 	oort.focus();
 }
 
+var ais = []
 $(document).ready(function(){
 	$("#menu-return").click(function(event){
 		hideMenu();
@@ -90,10 +91,22 @@ $(document).ready(function(){
 		$("#newgame").show();
 	});
 
+	function wire_uploader(idx) {
+		$("#ai" + idx).change(function(event){
+			var file = event.srcElement.files[0];
+			var reader = new FileReader();
+			reader.onload = function(event2){
+				ais[idx] = { filename: file.fileName, code: event2.target.result };
+			};
+			reader.readAsBinaryString(file);
+		});
+	}
+
+	wire_uploader(0);
+	wire_uploader(1);
+
 	$("#newgame-btn").click(function(event){
-		var ai01 = $("#ai01")[0].value;
-		var ai02 = $("#ai02")[0].value;
-		var ais = [{ filename: ai01 }, { filename: ai02 }];
+		console.log(ais);
 		postMessage({ key: "start", scenario: "scenarios/basic.json", ais: ais });
 		hideMenu();
 		oort.focus();

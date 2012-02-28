@@ -43,7 +43,7 @@ void OortInstance::HandleMessage(const pp::Var& message) {
 	BOOST_FOREACH(js::mValue &e, ais) {
 		js::mObject &obj = e.get_obj();
 		auto &filename = obj.find("filename")->second.get_str();
-		std::string code = load_resource(filename);
+		auto &code = obj.find("code")->second.get_str();
 		auto ai_factory = std::make_shared<LuaAIFactory>(filename, code);
 		ai_factories.push_back(ai_factory);
 	}
