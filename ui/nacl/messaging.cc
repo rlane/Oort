@@ -34,14 +34,22 @@ void OortInstance::HandleMessage(const pp::Var& message) {
 		log("destroyed gui");
 	}
 
-	log("creating game");
+	log("loading scenario");
 	Scenario scn = Scenario::load(scenario);
-	std::string filename("ais/reference-classic.lua");
-	std::string code = load_resource(filename);
-	auto ai_factory = std::make_shared<LuaAIFactory>(filename, code);
-	std::vector<std::shared_ptr<AIFactory>> ai_factories = { ai_factory, ai_factory, ai_factory };
+
+	log("loading AIs");
+	js::mArray ais = obj.find("ais")->second.get_array();
+	std::vector<std::shared_ptr<AIFactory>> ai_factories;
+	BOOST_FOREACH(js::mValue &e, ais) {
+		js::mObject &obj = e.get_obj();
+		auto &filename = obj.find("filename")->second.get_str();
+		std::string code = load_resource(filename);
+		auto ai_factory = std::make_shared<LuaAIFactory>(filename, code);
+		ai_factories.push_back(ai_factory);
+	}
+
+	log("creating game");
 	game = std::make_shared<Game>(scn, ai_factories);
-	log("game created");
 
 	log("creating gui");
 	gui = GUI::create(game, NULL);

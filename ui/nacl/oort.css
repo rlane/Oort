@@ -1,5 +1,10 @@
 html {
   overflow: hidden;
+  color: rgb(150, 150, 150);
+}
+
+label {
+  color: rgb(150, 150, 150);
 }
 
 #loading {
@@ -99,8 +104,25 @@ html {
   padding-top: 10px;
   padding-bottom: 10px;
   cursor: pointer;
+  color: rgb(150, 150, 150);
 }
 
 #menu ol li:hover {
   background: rgba(100, 100, 100, 0.6);
+}
+
+.pane {
+  display: none;
+  position: fixed;
+  left: 210px;
+  top: 5%;
+  background: rgba(100, 100, 100, 0.4);
+  padding: 30px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(150, 150, 150, 0.6);
+}
+
+.pane h2 {
+  color: rgb(200, 200, 200);
 }

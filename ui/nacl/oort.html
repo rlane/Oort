@@ -7,8 +7,7 @@
   -->
 <head>
   <title>Oort</title>
-
-	<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="http://blueimp.github.com/cdn/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="oort.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="oort.js"></script>
@@ -50,6 +49,31 @@
 	<li>Help</li>
 	<li id="menu-return">Return</li>
 </ol>
+</div>
+
+<div id="newgame" class="pane">
+	<h2>New Game</h2>
+	<form class="form-horizontal">
+	<fieldset>
+
+	<div class="control-group">
+	<label class="control-label" for="ai01">AI 1</label>
+	<div class="controls">
+	<input type="text" class="input-medium" id="ai01" value="ais/reference-classic.lua">
+	</div>
+	</div>
+
+	<div class="control-group">
+	<label class="control-label" for="ai02">AI 2</label>
+	<div class="controls">
+	<input type="text" class="input-medium" id="ai02" value="ais/reference-classic.lua">
+	</div>
+	</div>
+
+	<button id="newgame-btn" class="btn" href="#">Start</button>
+
+	</fieldset>
+	</form>
 </div>
 
 </div>

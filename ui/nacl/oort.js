@@ -9,6 +9,7 @@ function handleMessage(message_event) {
 }
 
 function postMessage(msg) {
+	console.log(["posted", msg]);
 	oort.postMessage(JSON.stringify(msg, null, 2));
 }
 
@@ -50,7 +51,7 @@ function moduleLoadAbort() {
 
 function moduleDidLoad() {
 	oort = document.getElementById('oort');
-	postMessage({ key: "start", scenario: "scenarios/demo1.json" });
+	postMessage({ key: "start", scenario: "scenarios/demo1.json", ais: [] });
 	oort.focus();
 	updateProgressbar("", 1);
 	$("#loading").fadeOut("slow")
@@ -86,8 +87,16 @@ $(document).ready(function(){
 	});
 
 	$("#menu-newgame").click(function(event){
-		postMessage({ key: "start", scenario: "scenarios/basic.json" });
+		$("#newgame").show();
+	});
+
+	$("#newgame-btn").click(function(event){
+		var ai01 = $("#ai01")[0].value;
+		var ai02 = $("#ai02")[0].value;
+		var ais = [{ filename: ai01 }, { filename: ai02 }];
+		postMessage({ key: "start", scenario: "scenarios/basic.json", ais: ais });
 		hideMenu();
 		oort.focus();
+		return false;
 	});
 });
