@@ -3,6 +3,7 @@ runtime.lua
 ships.lua
 strict.lua
 vector.lua
+ais/reference-classic.lua
 models/assault_frigate.json
 models/fighter.json
 models/ion_cannon_frigate.json

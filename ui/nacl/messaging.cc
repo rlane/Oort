@@ -11,6 +11,7 @@
 #include "sim/ship_class.h"
 #include "sim/builtin_ai.h"
 #include "common/log.h"
+#include "common/resources.h"
 
 using namespace Oort;
 namespace js = json_spirit; 
@@ -35,7 +36,10 @@ void OortInstance::HandleMessage(const pp::Var& message) {
 
 	log("creating game");
 	Scenario scn = Scenario::load(scenario);
-	std::vector<std::shared_ptr<AIFactory>> ai_factories = { builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
+	std::string filename("ais/reference-classic.lua");
+	std::string code = load_resource(filename);
+	auto ai_factory = std::make_shared<LuaAIFactory>(filename, code);
+	std::vector<std::shared_ptr<AIFactory>> ai_factories = { ai_factory, ai_factory, ai_factory };
 	game = std::make_shared<Game>(scn, ai_factories);
 	log("game created");
 
