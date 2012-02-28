@@ -1,10 +1,11 @@
 #include "ui/nacl/oort_instance.h"
-#include "ui/gui.h"
 #include <iostream>
 #include "ppapi/cpp/module.h"
 #include "ppapi/cpp/var.h"
 #include "ppapi/cpp/completion_callback.h"
 #include "ppapi/gles2/gl2ext_ppapi.h"
+#include "gl/gl.h"
+#include "sim/ship_class.h"
 #include "common/log.h"
 
 using namespace Oort;

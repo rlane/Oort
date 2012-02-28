@@ -81,10 +81,10 @@ all: $(bin_PROGRAMS) $(TESTS) $(TEST_SCENARIOS) $(SCENARIOS)
 oort_headless_SOURCES := ui/headless/main.cc $(SIM_SRCS)
 oort_headless_LDADD=$(LUA_LIBS) $(BOX2D_LIBS) $(BOOST_LIBS) -lrt
 
-oort_sdl_SOURCES := ui/sdl/main.cc $(SIM_SRCS) $(RENDERER_SRCS)
+oort_sdl_SOURCES := ui/gui.cc ui/sdl/main.cc $(SIM_SRCS) $(RENDERER_SRCS)
 oort_sdl_LDADD=$(SDL_LIBS) $(GLEW_LIBS) $(LUA_LIBS) $(BOX2D_LIBS) $(BOOST_LIBS) -lrt -lGL
 
-oort_nacl_SOURCES := ui/nacl/main.cc ui/nacl/embedded_resources.c ui/nacl/messaging.cc ui/nacl/input.cc ui/nacl/graphics.cc $(SIM_SRCS) $(RENDERER_SRCS)
+oort_nacl_SOURCES := ui/gui.cc ui/nacl/main.cc ui/nacl/embedded_resources.c ui/nacl/messaging.cc ui/nacl/input.cc ui/nacl/graphics.cc $(SIM_SRCS) $(RENDERER_SRCS)
 oort_nacl_LDADD=$(SDL_LIBS) $(NACL_LIBS) $(LUA_LIBS) $(BOX2D_LIBS)
 
 TESTS_ENVIRONMENT = $(top_builddir)/oort_headless -t

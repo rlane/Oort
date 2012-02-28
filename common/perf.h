@@ -101,6 +101,36 @@ struct PerfHistogram {
 	}
 };
 
+class FramerateCounter {
+public:
+	int count;
+	uint64_t start;
+	uint64_t prev;
+	uint64_t instant;
+	float hz;
+
+	FramerateCounter() {
+		count = 0;
+		start = prev = microseconds();
+		hz = 60;
+	}
+
+	bool update() {
+		count++;
+		auto now = microseconds();
+		instant = now - prev;
+		prev = now;
+		auto elapsed = now - start;
+		if (elapsed >= 1000000LL) {
+			hz = 1.0e6*count/elapsed;
+			count = 0;
+			start = now;
+			return true;
+		}
+		return false;
+	}
+};
+
 }
 
 #endif

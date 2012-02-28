@@ -40,7 +40,7 @@ void OortInstance::HandleMessage(const pp::Var& message) {
 	log("game created");
 
 	log("creating gui");
-	gui = new GUI(game, NULL);
+	gui = GUI::create(game, NULL);
 
 	log("resizing gui");
 	gui->handle_resize(size.width(), size.height());

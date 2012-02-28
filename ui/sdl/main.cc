@@ -1,5 +1,6 @@
 // Copyright 2011 Rich Lane
 #include <boost/program_options.hpp>
+#include <boost/foreach.hpp>
 #include "ui/gui.h"
 #include "gl/gl.h"
 #include <SDL.h>
@@ -8,6 +9,7 @@
 #include "sim/ship_class.h"
 #include "sim/scenario.h"
 #include "sim/builtin_ai.h"
+#include "common/resources.h"
 
 using glm::vec2;
 using std::make_shared;
@@ -64,7 +66,7 @@ static void handle_sdl_event(const SDL_Event &event) {
 			gui->handle_resize(event.resize.w, event.resize.h);
 			break;
 		case SDL_QUIT:
-			gui->running = false;
+			gui->stop();
 			break;
 	}
 }
@@ -155,12 +157,12 @@ int main(int argc, char **argv) {
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	gui = new GUI(game, test);
+	gui = GUI::create(game, test);
 
 	gui->handle_resize(initial_screen_width, initial_screen_height);
 	gui->start();
 
-	while (gui->running) {
+	while (gui->is_running()) {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		gui->update_mouse_position(x, y);
