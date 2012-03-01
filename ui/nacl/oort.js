@@ -77,6 +77,30 @@ function hideMenu() {
 	oort.focus();
 }
 
+function create_uploader(idx) {
+	var template = '\
+		<div class="control-group">\
+		<label class="control-label" for="ai$1">AI 1</label>\
+		<div class="controls">\
+		<input type="file" id="ai$1" />\
+		<div id="ai-desc$1">No AI selected</div>\
+		</div>\
+		</div>';
+	var html = template.replace(/\$1/g, idx);
+
+	$('#ai-uploaders').append(html)
+
+	$("#ai" + idx).change(function(event){
+		var file = event.srcElement.files[0];
+		var reader = new FileReader();
+		reader.onload = function(event2){
+			ais[idx] = { filename: file.fileName, code: event2.target.result };
+			$("#ai-desc" + idx).html(file.fileName);
+		};
+		reader.readAsBinaryString(file);
+	});
+}
+
 var ais = []
 $(document).ready(function(){
 	$("#menu-return").click(function(event){
@@ -91,20 +115,9 @@ $(document).ready(function(){
 		$("#newgame").show();
 	});
 
-	function wire_uploader(idx) {
-		$("#ai" + idx).change(function(event){
-			var file = event.srcElement.files[0];
-			var reader = new FileReader();
-			reader.onload = function(event2){
-				ais[idx] = { filename: file.fileName, code: event2.target.result };
-				$("#ai-desc" + idx).html(file.fileName);
-			};
-			reader.readAsBinaryString(file);
-		});
-	}
-
-	wire_uploader(0);
-	wire_uploader(1);
+	$("ai-uploaders").empty()
+	create_uploader(0);
+	create_uploader(1);
 
 	$("#newgame-btn").click(function(event){
 		console.log(ais);
