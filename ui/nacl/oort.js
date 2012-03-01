@@ -97,6 +97,7 @@ $(document).ready(function(){
 			var reader = new FileReader();
 			reader.onload = function(event2){
 				ais[idx] = { filename: file.fileName, code: event2.target.result };
+				$("#ai-desc" + idx).html(file.fileName);
 			};
 			reader.readAsBinaryString(file);
 		});

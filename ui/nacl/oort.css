@@ -121,6 +121,7 @@ label {
   border-style: solid;
   border-width: 1px;
   border-color: rgba(150, 150, 150, 0.6);
+  color: rgb(150, 150, 150);
 }
 
 .pane h2 {
