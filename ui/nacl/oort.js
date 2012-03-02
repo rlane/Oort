@@ -82,8 +82,9 @@ function create_uploader(idx) {
 		<div class="control-group">\
 		<label class="control-label" for="ai$1">AI 1</label>\
 		<div class="controls">\
+		<button id="ai-ref$1" href="#" class="btn">Reference AI</button>\
 		<input type="file" id="ai$1" />\
-		<div id="ai-desc$1">No AI selected</div>\
+		<div id="ai-desc$1"></div>\
 		</div>\
 		</div>';
 	var html = template.replace(/\$1/g, idx);
@@ -99,6 +100,14 @@ function create_uploader(idx) {
 		};
 		reader.readAsBinaryString(file);
 	});
+
+	$("#ai-ref" + idx).click(function(event){
+			ais[idx] = { filename: null, code: null };
+			$("#ai-desc" + idx).html("Reference AI");
+			return false;
+	});
+
+	$("#ai-ref" + idx).click();
 }
 
 var ais = []
