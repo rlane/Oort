@@ -119,11 +119,16 @@ $(document).ready(function(){
 	create_uploader(0);
 	create_uploader(1);
 
-	$("#newgame-btn").click(function(event){
+	$("#newgame-start").click(function(event){
 		console.log(ais);
 		postMessage({ key: "start", scenario: "scenarios/basic.json", ais: ais });
 		hideMenu();
 		oort.focus();
+		return false;
+	});
+
+	$("#newgame-cancel").click(function(event){
+		$("#newgame").hide();
 		return false;
 	});
 });
