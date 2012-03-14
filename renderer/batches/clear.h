@@ -9,8 +9,8 @@ namespace RendererBatches {
 
 class ClearBatch : public Batch {
 public:
-	ClearBatch(Renderer &Renderer);
-	virtual void render(float time_delta);
+  ClearBatch(Renderer &Renderer);
+  virtual void render(float time_delta);
 };
 
 }

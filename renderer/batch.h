@@ -13,15 +13,15 @@ namespace RendererBatches {
 
 class Batch {
 public:
-	Renderer &renderer;
-	PerfHistogram render_perf;
-	PerfHistogram snapshot_perf;
+  Renderer &renderer;
+  PerfHistogram render_perf;
+  PerfHistogram snapshot_perf;
 
-	Batch(Renderer &renderer)
-		: renderer(renderer) {}
+  Batch(Renderer &renderer)
+    : renderer(renderer) {}
 
-	virtual void snapshot(const Game &game) {};
-	virtual void render(float time) {};
+  virtual void snapshot(const Game &game) {};
+  virtual void render(float time) {};
 };
 
 }

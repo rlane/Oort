@@ -44,154 +44,154 @@ PhysicsDebugRenderer::PhysicsDebugRenderer()
 }
 
 void PhysicsDebugRenderer::reshape(int screen_width, int screen_height) {
-	this->screen_width = screen_width;
-	this->screen_height = screen_height;
-	this->aspect_ratio = float(screen_width)/screen_height;
+  this->screen_width = screen_width;
+  this->screen_height = screen_height;
+  this->aspect_ratio = float(screen_width)/screen_height;
 }
 
 void PhysicsDebugRenderer::begin_render(float view_radius,
                                         glm::vec2 view_center) {
-	prog->use();
-	glEnableVertexAttribArray(prog->attrib_location("vertex"));
+  prog->use();
+  glEnableVertexAttribArray(prog->attrib_location("vertex"));
 
 #ifndef __native_client__
-	glEnable(GL_POINT_SPRITE);
-	glEnable(GL_PROGRAM_POINT_SIZE);
-	glEnable(GL_BLEND);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LINE_SMOOTH);
+  glEnable(GL_POINT_SPRITE);
+  glEnable(GL_PROGRAM_POINT_SIZE);
+  glEnable(GL_BLEND);
+  glShadeModel(GL_SMOOTH);
+  glEnable(GL_LINE_SMOOTH);
 #endif
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glLineWidth(1.2f);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glLineWidth(1.2f);
 
-	glm::mat4 p_matrix = glm::ortho((view_center.x - view_radius)/Oort::SCALE,
-	                                (view_center.x + view_radius)/Oort::SCALE,
-	                                (view_center.y - view_radius/aspect_ratio)/Oort::SCALE,
-	                                (view_center.y + view_radius/aspect_ratio)/Oort::SCALE);
-	prog->uniform("p_matrix", p_matrix);
+  glm::mat4 p_matrix = glm::ortho((view_center.x - view_radius)/Oort::SCALE,
+                                  (view_center.x + view_radius)/Oort::SCALE,
+                                  (view_center.y - view_radius/aspect_ratio)/Oort::SCALE,
+                                  (view_center.y + view_radius/aspect_ratio)/Oort::SCALE);
+  prog->uniform("p_matrix", p_matrix);
 
-	glm::mat4 mv_matrix;
-	prog->uniform("mv_matrix", mv_matrix);
+  glm::mat4 mv_matrix;
+  prog->uniform("mv_matrix", mv_matrix);
 
-	prog->uniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+  prog->uniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
 }
 
 void PhysicsDebugRenderer::end_render() {
-	glDisableVertexAttribArray(prog->attrib_location("vertex"));
-	GL::Program::clear();
+  glDisableVertexAttribArray(prog->attrib_location("vertex"));
+  GL::Program::clear();
 }
 
 void PhysicsDebugRenderer::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, old_vertices);
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);	
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, old_vertices);
+  glDrawArrays(GL_LINE_LOOP, 0, vertexCount);  
 }
 
 void PhysicsDebugRenderer::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, old_vertices);
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, old_vertices);
 
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0)*0.5f);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0)*0.5f);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
 
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 }
 
 void PhysicsDebugRenderer::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-	const float32 k_segments = 16.0f;
-	int vertexCount=16;
-	const float32 k_increment = 2.0f * b2_pi / k_segments;
-	float32 theta = 0.0f;
+  const float32 k_segments = 16.0f;
+  int vertexCount=16;
+  const float32 k_increment = 2.0f * b2_pi / k_segments;
+  float32 theta = 0.0f;
 
-	GLfloat				glVertices[vertexCount*2];
-	for (int32 i = 0; i < k_segments; ++i)
-	{
-		b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-		glVertices[i*2]=v.x;
-		glVertices[i*2+1]=v.y;
-		theta += k_increment;
-	}
+  GLfloat        glVertices[vertexCount*2];
+  for (int32 i = 0; i < k_segments; ++i)
+  {
+    b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
+    glVertices[i*2]=v.x;
+    glVertices[i*2+1]=v.y;
+    theta += k_increment;
+  }
 
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, glVertices);
 
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+  glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 }
 
 void PhysicsDebugRenderer::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
 
-	const float32 k_segments = 16.0f;
-	int vertexCount=16;
-	const float32 k_increment = 2.0f * b2_pi / k_segments;
-	float32 theta = 0.0f;
+  const float32 k_segments = 16.0f;
+  int vertexCount=16;
+  const float32 k_increment = 2.0f * b2_pi / k_segments;
+  float32 theta = 0.0f;
 
-	GLfloat				glVertices[vertexCount*2];
-	for (int32 i = 0; i < k_segments; ++i)
-	{
-		b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-		glVertices[i*2]=v.x;
-		glVertices[i*2+1]=v.y;
-		theta += k_increment;
-	}
+  GLfloat        glVertices[vertexCount*2];
+  for (int32 i = 0; i < k_segments; ++i)
+  {
+    b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
+    glVertices[i*2]=v.x;
+    glVertices[i*2+1]=v.y;
+    theta += k_increment;
+  }
 
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0) * 0.5f);
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0) * 0.5f);
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
-	// Draw the axis line
-	DrawSegment(center,center+radius*axis,color);
+  // Draw the axis line
+  DrawSegment(center,center+radius*axis,color);
 }
 
 void PhysicsDebugRenderer::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
-	GLfloat				glVertices[] = {
-		p1.x, p1.y,
-		p2.x, p2.y
-	};
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_LINES, 0, 2);
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  GLfloat        glVertices[] = {
+    p1.x, p1.y,
+    p2.x, p2.y
+  };
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glDrawArrays(GL_LINES, 0, 2);
 }
 
 void PhysicsDebugRenderer::DrawTransform(const b2Transform& xf)
 {
-	b2Vec2 p1 = xf.p, p2;
-	const float32 k_axisScale = 0.4f;
+  b2Vec2 p1 = xf.p, p2;
+  const float32 k_axisScale = 0.4f;
 
-	p2 = p1 + k_axisScale * b2Vec2(xf.q.c, xf.q.s);
-	DrawSegment(p1,p2,b2Color(1,0,0));
+  p2 = p1 + k_axisScale * b2Vec2(xf.q.c, xf.q.s);
+  DrawSegment(p1,p2,b2Color(1,0,0));
 
-	p2 = p1 + k_axisScale * b2Vec2(-xf.q.s, xf.q.c);
-	DrawSegment(p1,p2,b2Color(0,1,0));
+  p2 = p1 + k_axisScale * b2Vec2(-xf.q.s, xf.q.c);
+  DrawSegment(p1,p2,b2Color(0,1,0));
 }
 
 void PhysicsDebugRenderer::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
 #ifndef __native_client__
-	glPointSize(size);
+  glPointSize(size);
 #endif
-	GLfloat				glVertices[] = {
-		p.x, p.y
-	};
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_POINTS, 0, 1);
+  GLfloat        glVertices[] = {
+    p.x, p.y
+  };
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glDrawArrays(GL_POINTS, 0, 1);
 #ifndef __native_client__
-	glPointSize(1.0f);
+  glPointSize(1.0f);
 #endif
 }
 
@@ -201,17 +201,17 @@ void PhysicsDebugRenderer::DrawString(int x, int y, const char *string, ...)
 
 void PhysicsDebugRenderer::DrawAABB(b2AABB* aabb, const b2Color& color)
 {
-	prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
+  prog->uniform("color", glm::vec4(color.r, color.g, color.b, 1.0));
 
-	GLfloat				glVertices[] = {
-		aabb->lowerBound.x, aabb->lowerBound.y,
-		aabb->upperBound.x, aabb->lowerBound.y,
-		aabb->upperBound.x, aabb->upperBound.y,
-		aabb->lowerBound.x, aabb->upperBound.y
-	};
-	glVertexAttribPointer(prog->attrib_location("vertex"),
-												2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_LINE_LOOP, 0, 8);
+  GLfloat        glVertices[] = {
+    aabb->lowerBound.x, aabb->lowerBound.y,
+    aabb->upperBound.x, aabb->lowerBound.y,
+    aabb->upperBound.x, aabb->upperBound.y,
+    aabb->lowerBound.x, aabb->upperBound.y
+  };
+  glVertexAttribPointer(prog->attrib_location("vertex"),
+                        2, GL_FLOAT, GL_FALSE, 0, glVertices);
+  glDrawArrays(GL_LINE_LOOP, 0, 8);
 
 }
 

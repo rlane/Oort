@@ -14,24 +14,24 @@ class Game;
 
 class OortInstance : public pp::Instance {
 public:
-	std::shared_ptr<Game> game;
-	GUI *gui;
-	pp::Graphics3D gl_context;
-	std::unordered_set<uint32_t> keys_down;
-	pp::Size size;
+  std::shared_ptr<Game> game;
+  GUI *gui;
+  pp::Graphics3D gl_context;
+  std::unordered_set<uint32_t> keys_down;
+  pp::Size size;
 
-	static void static_swap_callback(void* user_data, int32_t result);
-	void swap_callback();
-	void schedule_swap();
+  static void static_swap_callback(void* user_data, int32_t result);
+  void swap_callback();
+  void schedule_swap();
 
-	explicit OortInstance(PP_Instance instance);
-	void InputInit();
-	void GraphicsInit();
+  explicit OortInstance(PP_Instance instance);
+  void InputInit();
+  void GraphicsInit();
 
-	virtual bool Init(uint32_t argc, const char* argn[], const char* argv[]);
-	virtual void DidChangeView(const pp::Rect& position, const pp::Rect& clip);
-	virtual void HandleMessage(const pp::Var& message);
-	virtual bool HandleInputEvent(const pp::InputEvent &event);
+  virtual bool Init(uint32_t argc, const char* argn[], const char* argv[]);
+  virtual void DidChangeView(const pp::Rect& position, const pp::Rect& clip);
+  virtual void HandleMessage(const pp::Var& message);
+  virtual bool HandleInputEvent(const pp::InputEvent &event);
 };
 
 };

@@ -11,12 +11,12 @@ struct BeamPriv;
 
 class BeamBatch : public Batch {
 public:
-	BeamBatch(Renderer &Renderer);
-	virtual void snapshot(const Game &game);
-	virtual void render(float time_delta);
+  BeamBatch(Renderer &Renderer);
+  virtual void snapshot(const Game &game);
+  virtual void render(float time_delta);
 
 private:
-	std::shared_ptr<BeamPriv> priv;
+  std::shared_ptr<BeamPriv> priv;
 };
 
 }

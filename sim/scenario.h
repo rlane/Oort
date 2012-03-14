@@ -11,27 +11,27 @@
 namespace Oort {
 
 struct ScnShip {
-	std::string klass;
-	glm::vec2 p, v;
-	float h;
+  std::string klass;
+  glm::vec2 p, v;
+  float h;
 };
 
 struct ScnTeam {
-	std::string name;
-	glm::vec3 color;
-	boost::optional<std::string> code;
-	std::vector<ScnShip> ships;
+  std::string name;
+  glm::vec3 color;
+  boost::optional<std::string> code;
+  std::vector<ScnShip> ships;
 };
 
 class Scenario {
 public:
-	std::string description;
-	std::string author;
-	std::vector<ScnTeam> teams;
+  std::string description;
+  std::string author;
+  std::vector<ScnTeam> teams;
 
-	Scenario();
+  Scenario();
 
-	static Scenario load(std::string path);
+  static Scenario load(std::string path);
 };
 
 }

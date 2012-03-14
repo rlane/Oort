@@ -18,13 +18,13 @@ namespace Oort {
 namespace RendererBatches {
 
 ClearBatch::ClearBatch(Renderer &renderer)
-	: Batch(renderer)
+  : Batch(renderer)
 {
 }
 
 void ClearBatch::render(float time_delta) {
-	glClearColor(0.0f, 0.0f, 0.03f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor(0.0f, 0.0f, 0.03f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
 }

@@ -10,11 +10,11 @@ class Game;
 class Team;
 
 struct Explosion {
-	Team *team;
-	glm::vec2 p;
-	float e;
+  Team *team;
+  glm::vec2 p;
+  float e;
 
-	void tick(Game &game);
+  void tick(Game &game);
 };
 
 }

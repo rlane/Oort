@@ -11,12 +11,12 @@ class ShipPriv;
 
 class ShipBatch : public Batch {
 public:
-	ShipBatch(Renderer &Renderer);
-	virtual void render(float time_delta);
-	virtual void snapshot(const Game &game);
+  ShipBatch(Renderer &Renderer);
+  virtual void render(float time_delta);
+  virtual void snapshot(const Game &game);
 
 private:
-	std::shared_ptr<ShipPriv> priv;
+  std::shared_ptr<ShipPriv> priv;
 };
 
 }

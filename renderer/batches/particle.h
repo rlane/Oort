@@ -10,10 +10,10 @@
 namespace Oort {
 
 enum class ParticleType {
-	HIT = 0,
-	PLASMA = 1,
-	ENGINE = 2,
-	EXPLOSION = 3,
+  HIT = 0,
+  PLASMA = 1,
+  ENGINE = 2,
+  EXPLOSION = 3,
 };
 
 namespace RendererBatches {
@@ -22,13 +22,13 @@ class ParticlePriv;
 
 class ParticleBatch : public Batch {
 public:
-	ParticleBatch(Renderer &Renderer);
-	virtual void render(float time_delta);
-	virtual void snapshot(const Game &game);
+  ParticleBatch(Renderer &Renderer);
+  virtual void render(float time_delta);
+  virtual void snapshot(const Game &game);
 
 private:
-	std::shared_ptr<ParticlePriv> priv;
-	void shower(ParticleType type, glm::vec2 p0, glm::vec2 v0, glm::vec2 v, float s_max, float life_min, float life_max, int count);
+  std::shared_ptr<ParticlePriv> priv;
+  void shower(ParticleType type, glm::vec2 p0, glm::vec2 v0, glm::vec2 v, float s_max, float life_min, float life_max, int count);
 };
 
 }

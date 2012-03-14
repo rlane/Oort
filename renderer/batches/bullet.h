@@ -11,12 +11,12 @@ class BulletPriv;
 
 class BulletBatch : public Batch {
 public:
-	BulletBatch(Renderer &Renderer);
-	virtual void snapshot(const Game &game);
-	virtual void render(float time_delta);
+  BulletBatch(Renderer &Renderer);
+  virtual void snapshot(const Game &game);
+  virtual void render(float time_delta);
 
 private:
-	std::shared_ptr<BulletPriv> priv;
+  std::shared_ptr<BulletPriv> priv;
 };
 
 }

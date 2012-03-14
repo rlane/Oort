@@ -11,15 +11,15 @@ class Game;
 
 class Test {
 public:
-	static Test *registered;
-	static Test *load(std::string path);
+  static Test *registered;
+  static Test *load(std::string path);
 
-	Test();
-	virtual ~Test();
-	virtual void after_tick() = 0;
-	virtual std::shared_ptr<Game> get_game() = 0;
+  Test();
+  virtual ~Test();
+  virtual void after_tick() = 0;
+  virtual std::shared_ptr<Game> get_game() = 0;
 
-	bool finished;
+  bool finished;
 };
 
 }

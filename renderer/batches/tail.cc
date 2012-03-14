@@ -20,84 +20,84 @@ namespace Oort {
 namespace RendererBatches {
 
 struct TailVertex {
-	glm::vec2 p;
-	glm::vec4 color;
+  glm::vec2 p;
+  glm::vec4 color;
 };
 
 struct TailSegment {
-	TailVertex a, b;
+  TailVertex a, b;
 };
 
 template<> std::vector<GLuint> Bunch<TailSegment>::buffer_freelist = std::vector<GLuint>();
 
 struct TailPriv {
-	GL::Program tail_prog;
-	std::vector<TailSegment> tmp_segments;
-	std::list<Bunch<TailSegment>> bunches;
-	float time;
+  GL::Program tail_prog;
+  std::vector<TailSegment> tmp_segments;
+  std::list<Bunch<TailSegment>> bunches;
+  float time;
 
-	TailPriv()
-		: tail_prog(GL::Program::from_resources("tail"))
-	{
-	}
+  TailPriv()
+    : tail_prog(GL::Program::from_resources("tail"))
+  {
+  }
 
 };
 
 TailBatch::TailBatch(Renderer &renderer)
-	: Batch(renderer),
-	  priv(make_shared<TailPriv>())
+  : Batch(renderer),
+    priv(make_shared<TailPriv>())
 {
 }
 
 void TailBatch::render(float time_delta) {
-	auto &prog = priv->tail_prog;
-	prog.use();
-	glBlendFunc(GL_ONE, GL_ONE);
-	glLineWidth(1.2f);
-	prog.enable_attrib_array("vertex");
-	prog.enable_attrib_array("color");
-	prog.uniform("p_matrix", renderer.p_matrix);
-	prog.uniform("current_time", priv->time + time_delta);
-	int stride = sizeof(TailVertex);
-	TailVertex *v = (TailVertex*)NULL;
+  auto &prog = priv->tail_prog;
+  prog.use();
+  glBlendFunc(GL_ONE, GL_ONE);
+  glLineWidth(1.2f);
+  prog.enable_attrib_array("vertex");
+  prog.enable_attrib_array("color");
+  prog.uniform("p_matrix", renderer.p_matrix);
+  prog.uniform("current_time", priv->time + time_delta);
+  int stride = sizeof(TailVertex);
+  TailVertex *v = (TailVertex*)NULL;
 
-	BOOST_FOREACH(auto &bunch, priv->bunches) {
-		if (bunch.size == 0) {
-			continue;
-		}
-		bunch.bind();
-		prog.attrib("initial_time", bunch.initial_time);
-		prog.attrib_ptr("vertex", &v->p, stride);
-		prog.attrib_ptr("color", &v->color, stride);
-		BOOST_FOREACH(auto jitter, Renderer::jitters) {
-			prog.attrib("jitter", jitter*(4.0f/1600));
-			glDrawArrays(GL_LINES, 0, bunch.size*2);
-		}
-	}
-	Bunch<TailSegment>::unbind();
+  BOOST_FOREACH(auto &bunch, priv->bunches) {
+    if (bunch.size == 0) {
+      continue;
+    }
+    bunch.bind();
+    prog.attrib("initial_time", bunch.initial_time);
+    prog.attrib_ptr("vertex", &v->p, stride);
+    prog.attrib_ptr("color", &v->color, stride);
+    BOOST_FOREACH(auto jitter, Renderer::jitters) {
+      prog.attrib("jitter", jitter*(4.0f/1600));
+      glDrawArrays(GL_LINES, 0, bunch.size*2);
+    }
+  }
+  Bunch<TailSegment>::unbind();
 
-	prog.disable_attrib_array("vertex");
-	prog.disable_attrib_array("color");
-	GL::Program::clear();
+  prog.disable_attrib_array("vertex");
+  prog.disable_attrib_array("color");
+  GL::Program::clear();
 }
 
 void TailBatch::snapshot(const Game &game) {
-	priv->time = game.time;
+  priv->time = game.time;
 
-	if (priv->bunches.size() >= 128) {
-		priv->bunches.pop_back();
-	}
+  if (priv->bunches.size() >= 128) {
+    priv->bunches.pop_back();
+  }
 
-	BOOST_FOREACH(auto ship, game.ships) {
-		priv->tmp_segments.emplace_back(
-			TailSegment{
-				TailVertex{ ship->get_position() - ship->get_velocity()*0.7f, vec4(ship->team->color, 0) },
-				TailVertex{ ship->get_position(), vec4(ship->team->color, ship->klass.tail_alpha/Renderer::jitters.size()) }
-			}
-		);
-	}
+  BOOST_FOREACH(auto ship, game.ships) {
+    priv->tmp_segments.emplace_back(
+      TailSegment{
+        TailVertex{ ship->get_position() - ship->get_velocity()*0.7f, vec4(ship->team->color, 0) },
+        TailVertex{ ship->get_position(), vec4(ship->team->color, ship->klass.tail_alpha/Renderer::jitters.size()) }
+      }
+    );
+  }
 
-	priv->bunches.push_front(Bunch<TailSegment>(game.time, std::move(priv->tmp_segments)));
+  priv->bunches.push_front(Bunch<TailSegment>(game.time, std::move(priv->tmp_segments)));
 }
 
 }

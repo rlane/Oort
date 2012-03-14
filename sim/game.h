@@ -25,37 +25,37 @@ class AIFactory;
 class Weapon;
 
 struct Hit {
-	Ship *ship;
-	Weapon *weapon;
-	glm::vec2 cp;
-	float e;
+  Ship *ship;
+  Weapon *weapon;
+  glm::vec2 cp;
+  float e;
 };
 
 class Game {
-	public:
-	static constexpr float tick_length = 1.0f/32;
+  public:
+  static constexpr float tick_length = 1.0f/32;
 
-	Game(const Scenario &scn, const std::vector<std::shared_ptr<AIFactory>> &ai_factories);
-	~Game();
+  Game(const Scenario &scn, const std::vector<std::shared_ptr<AIFactory>> &ai_factories);
+  ~Game();
 
-	void tick();
-	bool check_victory(Team *&team);
-	std::shared_ptr<Ship> lookup_ship(uint32_t id);
+  void tick();
+  bool check_victory(Team *&team);
+  std::shared_ptr<Ship> lookup_ship(uint32_t id);
 
-	std::unique_ptr<b2World> world;
-	std::list<std::shared_ptr<Ship>> ships;
-	std::list<std::shared_ptr<Bullet>> bullets;
-	std::list<std::shared_ptr<Beam>> beams;
-	std::vector<Hit> hits;
-	std::vector<Explosion> explosions;
-	int ticks;
-	float time;
-	float radius;
-	PerfHistogram physics_perf;
-	PerfHistogram ai_perf;
+  std::unique_ptr<b2World> world;
+  std::list<std::shared_ptr<Ship>> ships;
+  std::list<std::shared_ptr<Bullet>> bullets;
+  std::list<std::shared_ptr<Beam>> beams;
+  std::vector<Hit> hits;
+  std::vector<Explosion> explosions;
+  int ticks;
+  float time;
+  float radius;
+  PerfHistogram physics_perf;
+  PerfHistogram ai_perf;
 
-	private:
-	void reap();
+  private:
+  void reap();
 };
 
 }

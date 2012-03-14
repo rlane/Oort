@@ -10,11 +10,11 @@ namespace RendererBatches {
 
 class TextBatch : public Batch {
 public:
-	GL::Program prog;
-	GL::Texture font_tex;
+  GL::Program prog;
+  GL::Texture font_tex;
 
-	TextBatch(Renderer &Renderer);
-	virtual void render(float time_delta);
+  TextBatch(Renderer &Renderer);
+  virtual void render(float time_delta);
 };
 
 }

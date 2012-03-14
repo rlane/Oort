@@ -16,36 +16,36 @@ namespace Oort {
 struct Model;
 
 struct ShipClassDef {
-	std::string name;
-	float mass;
-	float hull;
-	float max_main_acc;
-	float max_lateral_acc;
-	float max_angular_acc;
-	float scale;
-	float tail_alpha;
-	std::shared_ptr<Model> model;
-	std::vector<GunDef> guns;
-	std::vector<BeamDef> beams;
+  std::string name;
+  float mass;
+  float hull;
+  float max_main_acc;
+  float max_lateral_acc;
+  float max_angular_acc;
+  float scale;
+  float tail_alpha;
+  std::shared_ptr<Model> model;
+  std::vector<GunDef> guns;
+  std::vector<BeamDef> beams;
 };
 
 class ShipClass : public ShipClassDef {
 public:
-	float density;
-	b2PolygonShape shape;
+  float density;
+  b2PolygonShape shape;
 
-	static std::map<std::string, const ShipClass&> klasses;
-	static void initialize();
-	static const ShipClass &lookup(const std::string &name);
+  static std::map<std::string, const ShipClass&> klasses;
+  static void initialize();
+  static const ShipClass &lookup(const std::string &name);
 
-	ShipClass(const ShipClassDef &def);
+  ShipClass(const ShipClassDef &def);
 };
 
 extern std::unique_ptr<ShipClass> fighter,
                                   ion_cannon_frigate,
                                   assault_frigate,
                                   missile,
-																	target;
+                                  target;
 }
 
 #endif

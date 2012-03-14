@@ -14,56 +14,56 @@ class AI;
 
 class AIFactory {
 public:
-	virtual std::unique_ptr<AI> instantiate(Ship &ship) = 0;
+  virtual std::unique_ptr<AI> instantiate(Ship &ship) = 0;
 };
 
 template <class T>
 class CxxAIFactory : public AIFactory {
 public:
-	CxxAIFactory() : AIFactory() {}
+  CxxAIFactory() : AIFactory() {}
 
-	std::unique_ptr<AI> instantiate(Ship &ship) {
-		return std::unique_ptr<AI>(new T(ship));
-	}
+  std::unique_ptr<AI> instantiate(Ship &ship) {
+    return std::unique_ptr<AI>(new T(ship));
+  }
 };
 
 class LuaAIFactory : public AIFactory {
 public:
-	std::string filename;
-	std::string code;
-	LuaAIFactory(std::string filename, std::string code);
-	virtual std::unique_ptr<AI> instantiate(Ship &ship);
+  std::string filename;
+  std::string code;
+  LuaAIFactory(std::string filename, std::string code);
+  virtual std::unique_ptr<AI> instantiate(Ship &ship);
 };
 
 class AI {
 public:
-	AI(Ship &ship);
-	virtual void tick();
+  AI(Ship &ship);
+  virtual void tick();
 
-	Ship &ship;
+  Ship &ship;
 };
 
 class CxxAI : public AI {
 public:
-	CxxAI(Ship &ship);
-	virtual void tick();
+  CxxAI(Ship &ship);
+  virtual void tick();
 
-	template <class T>
-	static std::shared_ptr<AIFactory> factory() {
-		return std::make_shared<CxxAIFactory<T>>();
-	}
+  template <class T>
+  static std::shared_ptr<AIFactory> factory() {
+    return std::make_shared<CxxAIFactory<T>>();
+  }
 };
 
 class LuaAI : public AI {
 public:
-	LuaAI(Ship &ship, std::string filename, std::string code);
-	virtual ~LuaAI();
-	virtual void tick();
-	void register_api();
+  LuaAI(Ship &ship, std::string filename, std::string code);
+  virtual ~LuaAI();
+  virtual void tick();
+  void register_api();
 
 private:
-	lua_State *G, *L;
-	bool dead;
+  lua_State *G, *L;
+  bool dead;
 };
 
 }

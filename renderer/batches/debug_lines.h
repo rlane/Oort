@@ -11,11 +11,11 @@ class DebugLinesPriv;
 
 class DebugLinesBatch : public Batch {
 public:
-	DebugLinesBatch(Renderer &Renderer);
-	virtual void render(float time_delta);
-	virtual void snapshot(const Game &game);
+  DebugLinesBatch(Renderer &Renderer);
+  virtual void render(float time_delta);
+  virtual void snapshot(const Game &game);
 private:
-	std::shared_ptr<DebugLinesPriv> priv;
+  std::shared_ptr<DebugLinesPriv> priv;
 };
 
 }

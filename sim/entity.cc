@@ -14,59 +14,59 @@ using glm::vec2;
 namespace Oort {
 
 Entity::Entity(Game *game, std::shared_ptr<Team> team, uint32_t creator_id)
-	: game(game),
-	  team(team),
-	  dead(false),
-	  mass(0),
-	  creator_id(creator_id) {
-	b2BodyDef def;
-	def.type = b2_dynamicBody;
-	def.userData = this;
-	body = game->world->CreateBody(&def);
+  : game(game),
+    team(team),
+    dead(false),
+    mass(0),
+    creator_id(creator_id) {
+  b2BodyDef def;
+  def.type = b2_dynamicBody;
+  def.userData = this;
+  body = game->world->CreateBody(&def);
 }
 
 Entity::~Entity() {
-	game->world->DestroyBody(body);
+  game->world->DestroyBody(body);
 }
 
 void Entity::tick() {
-	set_heading(normalize_angle(get_heading()));
+  set_heading(normalize_angle(get_heading()));
 }
 
 bool Entity::is_weapon() const {
-	return false;
+  return false;
 }
 
 void Entity::set_position(vec2 p) {
-	body->SetTransform(n2b(p), body->GetAngle());
+  body->SetTransform(n2b(p), body->GetAngle());
 }
 
 vec2 Entity::get_position() const {
-	return b2n(body->GetPosition());
+  return b2n(body->GetPosition());
 }
 
 void Entity::set_velocity(vec2 p) {
-	body->SetLinearVelocity(n2b(p));
+  body->SetLinearVelocity(n2b(p));
 }
 
 vec2 Entity::get_velocity() const {
-	return b2n(body->GetLinearVelocity());
+  return b2n(body->GetLinearVelocity());
 }
 
 void Entity::set_heading(float angle) {
-	body->SetTransform(body->GetPosition(), angle);
+  body->SetTransform(body->GetPosition(), angle);
 }
 
 float Entity::get_heading() const {
-	return body->GetAngle();
+  return body->GetAngle();
 }
 
 void Entity::set_angular_velocity(float w) {
-	body->SetAngularVelocity(w);
+  body->SetAngularVelocity(w);
 }
 
 float Entity::get_angular_velocity() const {
-	return body->GetAngularVelocity();
+  return body->GetAngularVelocity();
 }
 
 }

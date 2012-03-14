@@ -22,13 +22,13 @@ std::shared_ptr<Ship> find_missile_target(Ship &s, float dist=1e9f);
 
 class ProportionalNavigator {
 public:
-	Ship &ship;
-	float k;
-	float a;
-	float last_bearing;
+  Ship &ship;
+  float k;
+  float a;
+  float last_bearing;
 
-	ProportionalNavigator(Ship &ship, float k, float a);
-	void seek(glm::vec2 tp, glm::vec2 tv);
+  ProportionalNavigator(Ship &ship, float k, float a);
+  void seek(glm::vec2 tp, glm::vec2 tv);
 };
 
 }

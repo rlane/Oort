@@ -17,28 +17,28 @@ namespace Oort {
 
 Beam::Beam(Game *game,
            std::shared_ptr<Team> team,
-					 uint32_t creator_id,
+           uint32_t creator_id,
            const BeamDef &def)
   : Weapon(game, team, creator_id, def) {
-	std::vector<b2Vec2> vertices = {
-		n2b(vec2(0, -def.width/2)),
-		n2b(vec2(def.length, -def.width/2)),
-		n2b(vec2(def.length, def.width/2)),
-		n2b(vec2(0, def.width/2)),
-	};
-	b2PolygonShape shape;
-	shape.Set(&vertices[0], vertices.size());
-	body->CreateFixture(&shape, 0.1)->SetSensor(true);
+  std::vector<b2Vec2> vertices = {
+    n2b(vec2(0, -def.width/2)),
+    n2b(vec2(def.length, -def.width/2)),
+    n2b(vec2(def.length, def.width/2)),
+    n2b(vec2(0, def.width/2)),
+  };
+  b2PolygonShape shape;
+  shape.Set(&vertices[0], vertices.size());
+  body->CreateFixture(&shape, 0.1)->SetSensor(true);
 }
 
 float Beam::damage(const Ship &ship) {
-	float e = get_def().damage * Game::tick_length;
-	//printf("ship %d; beam %p; damage %g\n", ship.id, this, e);
-	return e;
+  float e = get_def().damage * Game::tick_length;
+  //printf("ship %d; beam %p; damage %g\n", ship.id, this, e);
+  return e;
 }
 
 bool Beam::should_collide(const Entity &e) const {
-	return e.get_id() != creator_id;
+  return e.get_id() != creator_id;
 }
 
 }

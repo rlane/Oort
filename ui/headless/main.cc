@@ -23,78 +23,78 @@ namespace po = boost::program_options;
 namespace Oort {
 
 int main(int argc, char **argv) {
-	std::shared_ptr<Game> game;
-	Test *test = NULL;
+  std::shared_ptr<Game> game;
+  Test *test = NULL;
 
-	ShipClass::initialize();
+  ShipClass::initialize();
 
-	po::options_description desc("Allowed options");
-	desc.add_options()
-		("help,h", "produce help message")
-		("test,t", po::value<std::string>(), "test to run")
-		("scenario,s", po::value<std::string>(), "scenario")
-		;
+  po::options_description desc("Allowed options");
+  desc.add_options()
+    ("help,h", "produce help message")
+    ("test,t", po::value<std::string>(), "test to run")
+    ("scenario,s", po::value<std::string>(), "scenario")
+    ;
 
-	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);
 
-	if (vm.count("help")) {
-		std::cerr << desc << std::endl;
-		return 0;
-	}
+  if (vm.count("help")) {
+    std::cerr << desc << std::endl;
+    return 0;
+  }
 
-	if (vm.count("test") && vm.count("scenario")) {
-		fprintf(stderr, "both test or scenario specified\n");
-		return 1;
-	}
+  if (vm.count("test") && vm.count("scenario")) {
+    fprintf(stderr, "both test or scenario specified\n");
+    return 1;
+  }
 
-	if (vm.count("test")) {
-		std::string test_path = vm["test"].as<std::string>();
-		printf("Running test %s\n", test_path.c_str());
-		test = Test::load(test_path);
-		game = test->get_game();
-	} else if (vm.count("scenario")) {
-		std::string scn_path = vm["scenario"].as<std::string>();
-		printf("Running scenario %s\n", scn_path.c_str());
-		Scenario scn = Scenario::load(scn_path);
-		std::vector<std::shared_ptr<AIFactory>> ai_factories{ builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
-		game = std::make_shared<Game>(scn, ai_factories);
-	} else {
-		fprintf(stderr, "no test or scenario specified\n");
-		return 1;
-	}
+  if (vm.count("test")) {
+    std::string test_path = vm["test"].as<std::string>();
+    printf("Running test %s\n", test_path.c_str());
+    test = Test::load(test_path);
+    game = test->get_game();
+  } else if (vm.count("scenario")) {
+    std::string scn_path = vm["scenario"].as<std::string>();
+    printf("Running scenario %s\n", scn_path.c_str());
+    Scenario scn = Scenario::load(scn_path);
+    std::vector<std::shared_ptr<AIFactory>> ai_factories{ builtin_ai_factory, builtin_ai_factory, builtin_ai_factory };
+    game = std::make_shared<Game>(scn, ai_factories);
+  } else {
+    fprintf(stderr, "no test or scenario specified\n");
+    return 1;
+  }
 
-	b2Timer timer;
+  b2Timer timer;
 
-	while (true) {
-		if (test) {
-			if (test->finished) {
-				printf("Passed test in %d ticks\n", game->ticks);
-				break;
-			}
-		} else {
-			Team *winner = NULL;
-			if (game->check_victory(winner)) {
-				printf("Team %s won in %d ticks\n", winner->name.c_str(), game->ticks);
-				break;
-			}
-		}
+  while (true) {
+    if (test) {
+      if (test->finished) {
+        printf("Passed test in %d ticks\n", game->ticks);
+        break;
+      }
+    } else {
+      Team *winner = NULL;
+      if (game->check_victory(winner)) {
+        printf("Team %s won in %d ticks\n", winner->name.c_str(), game->ticks);
+        break;
+      }
+    }
 
-		game->tick();
+    game->tick();
 
-		if (test) {
-			test->after_tick();
-		}
-	}
+    if (test) {
+      test->after_tick();
+    }
+  }
 
-	printf("ms/frame: %0.2f\n", timer.GetMilliseconds()/game->ticks);
+  printf("ms/frame: %0.2f\n", timer.GetMilliseconds()/game->ticks);
 
-	return 0;
+  return 0;
 }
 
 }
 
 int main(int argc, char **argv) {
-	return Oort::main(argc, argv);
+  return Oort::main(argc, argv);
 }
