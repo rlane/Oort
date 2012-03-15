@@ -32,10 +32,11 @@ struct Hit {
 };
 
 class Game {
-  public:
+ public:
   static constexpr float tick_length = 1.0f/32;
 
-  Game(const Scenario &scn, const std::vector<std::shared_ptr<AIFactory>> &ai_factories);
+  Game(const Scenario &scn,
+       const std::vector<std::shared_ptr<AIFactory>> &ai_factories);
   ~Game();
 
   void tick();

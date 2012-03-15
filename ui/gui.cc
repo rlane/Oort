@@ -27,7 +27,7 @@
 namespace Oort {
 
 class GUIImpl : public GUI {
-public:
+ public:
   enum class State {
     RUNNING,
     FINISHED
@@ -87,8 +87,7 @@ public:
       render_time(0),
       tick_time(0),
       snapshot_time(0),
-      mouse_position(0, 0)
-  {
+      mouse_position(0, 0) {
     pthread_mutex_init(&tick_mutex, NULL);
     pthread_mutex_init(&render_mutex, NULL);
     pthread_cond_init(&snapshot_cond, NULL);
@@ -97,7 +96,8 @@ public:
     renderer->snapshot(*game);
     last_tick_time = microseconds();
 
-    physics_debug_renderer = std::unique_ptr<PhysicsDebugRenderer>(new PhysicsDebugRenderer());
+    physics_debug_renderer =
+      std::unique_ptr<PhysicsDebugRenderer>(new PhysicsDebugRenderer());
     physics_debug_renderer->SetFlags(b2Draw::e_shapeBit);
     game->world->SetDebugDraw(physics_debug_renderer.get());
 
@@ -209,7 +209,7 @@ public:
     b2Vec2 center;
     uint32_t found_id;
 
-    PickCallback(b2Vec2 center) 
+    PickCallback(b2Vec2 center)
     : center(center),
       found_id(INVALID_SHIP_ID) {}
 
@@ -226,8 +226,8 @@ public:
 
   void handle_mousebuttondown(int button, int x, int y) {
     if (button == 1) {
-      auto c = screen2world(glm::vec2(x,y));
-      glm::vec2 size(1,1);
+      auto c = screen2world(glm::vec2(x, y));
+      glm::vec2 size(1, 1);
       b2AABB aabb;
       aabb.lowerBound = n2b(c - size);
       aabb.upperBound = n2b(c + size);
@@ -282,22 +282,21 @@ public:
     zoom(zoom_rate/framerate.hz);
     pan(view_speed/framerate.hz);
 
+    std::ostringstream tmp;
     if (paused) {
-      std::ostringstream tmp;
       tmp << "(paused) tick " << game->ticks;
-      renderer->text(screen_width-tmp.str().length()*9-3, screen_height-10, tmp.str());
     } else {
-      std::ostringstream tmp;
       tmp << "tick " << game->ticks;
-      renderer->text(screen_width-tmp.str().length()*9-3, screen_height-10, tmp.str());
     }
+    renderer->text(screen_width-tmp.str().length()*9-3, screen_height-10,
+                   tmp.str());
 
     if (test) {
       if (state == State::RUNNING) {
         renderer->text(screen_width-120, screen_height-22, "test running");
       } else if (state == State::FINISHED) {
         renderer->text(screen_width-120, screen_height-22, "test finished");
-      } 
+      }
     }
 
     if (picked_id != INVALID_SHIP_ID) {
@@ -311,29 +310,43 @@ public:
         auto h = ship->get_heading();
         auto v = ship->get_velocity();
         tmp << ship->klass.name << " " << ship->id;
-        renderer->text(x, y+0*dy, tmp.str()); tmp.str("");
+        renderer->text(x, y+0*dy, tmp.str());
+        tmp.str("");
         tmp << "position: (" << p.x << "," << p.y << ")";
-        renderer->text(x, y+1*dy, tmp.str()); tmp.str("");
+        renderer->text(x, y+1*dy, tmp.str());
+        tmp.str("");
         tmp << "heading: " << h;
-        renderer->text(x, y+2*dy, tmp.str()); tmp.str("");
+        renderer->text(x, y+2*dy, tmp.str());
+        tmp.str("");
         tmp << "velocity: (" << v.x << "," << v.y << ")";
-        renderer->text(x, y+3*dy, tmp.str()); tmp.str("");
+        renderer->text(x, y+3*dy, tmp.str());
+        tmp.str("");
         tmp << "hull: " << ship->hull;
-        renderer->text(x, y+4*dy, tmp.str()); tmp.str("");
+        renderer->text(x, y+4*dy, tmp.str());
+        tmp.str("");
       } else {
         picked_id = INVALID_SHIP_ID;
       }
     }
 
     if (show_fps) {
-      renderer->text(screen_width-180, 10, boost::str(boost::format("     fps: %0.2f") % framerate.hz));
-      renderer->text(screen_width-180, 20, boost::str(boost::format("     tps: %0.2f") % tickrate.hz));
+      using boost::str;
+      using boost::format;
+      renderer->text(screen_width-180, 10,
+                     str(format("     fps: %0.2f") % framerate.hz));
+      renderer->text(screen_width-180, 20,
+                     str(format("     tps: %0.2f") % tickrate.hz));
     }
 
     if (renderer->benchmark) {
-      renderer->text(screen_width-180, 30, boost::str(boost::format("  render: %0.2f ms") % (render_time/1000.0)));
-      renderer->text(screen_width-180, 40, boost::str(boost::format("    tick: %0.2f ms") % (tick_time/1000.0)));
-      renderer->text(screen_width-180, 50, boost::str(boost::format("snapshot: %0.2f ms") % (snapshot_time/1000.0)));
+      using boost::str;
+      using boost::format;
+      renderer->text(screen_width-180, 30,
+                     str(format("  render: %0.2f ms") % (render_time/1e3)));
+      renderer->text(screen_width-180, 40,
+                     str(format("    tick: %0.2f ms") % (tick_time/1e3)));
+      renderer->text(screen_width-180, 50,
+                     str(format("snapshot: %0.2f ms") % (snapshot_time/1e3)));
     }
 
     {
@@ -348,18 +361,24 @@ public:
 
       float time_delta = float(microseconds() - last_tick_time)/(1000*1000);
       if (time_delta > 0.1f) time_delta = 0;
-      renderer->render(view_radius, view_center, paused ? last_time_delta : time_delta);
+      renderer->render(view_radius, view_center,
+                       paused ? last_time_delta : time_delta);
       if (!paused) {
         last_time_delta = time_delta;
       }
 
       if (render_physics_debug) {
         physics_debug_renderer->begin_render(view_radius, view_center);
-        for (const b2Body *body = game->world->GetBodyList(); body; body = body->GetNext()) {
-          physics_debug_renderer->DrawPoint(body->GetWorldCenter(), 2, b2Color(0.9, 0.4, 0.3));
-          physics_debug_renderer->DrawPoint(body->GetPosition(), 2, b2Color(0.3, 0.4, 0.9));
+        for (const b2Body *body = game->world->GetBodyList();
+             body; body = body->GetNext()) {
+          physics_debug_renderer->DrawPoint(body->GetWorldCenter(), 2,
+                                            b2Color(0.9, 0.4, 0.3));
+          physics_debug_renderer->DrawPoint(body->GetPosition(), 2,
+                                            b2Color(0.3, 0.4, 0.9));
         }
-        physics_debug_renderer->DrawCircle(b2Vec2(0,0), game->radius/Oort::SCALE, b2Color(0.6,0.8,0.6));
+        physics_debug_renderer->DrawCircle(b2Vec2(0, 0),
+                                           game->radius/Oort::SCALE,
+                                           b2Color(0.6, 0.8, 0.6));
         game->world->DrawDebugData();
         physics_debug_renderer->end_render();
       }

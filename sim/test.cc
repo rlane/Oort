@@ -30,7 +30,6 @@ Test *Test::load(std::string path) {
   }
 
   if (Test::registered == NULL) {
-    //throw std::runtime_error("no test registered");
     fprintf(stderr, "no test registered\n");
     exit(1);
   }

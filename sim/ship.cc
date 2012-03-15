@@ -30,13 +30,14 @@ Ship::Ship(Game *game,
            const std::string &orders)
   : Entity(game, team, creator_id),
     klass(klass),
-    id(next_id++), // XXX
+    id(next_id++),  // XXX
     creation_time(game->time),
     hull(klass.hull),
     orders(orders),
     ai(team->ai_factory->instantiate(*this)),
-    prng(id), // XXX
-    last_fire_times(klass.guns.size(), -std::numeric_limits<float>::infinity()) {
+    prng(id),  // XXX
+    last_fire_times(klass.guns.size(),
+                    -std::numeric_limits<float>::infinity()) {
   mass = klass.mass;
   body->CreateFixture(&klass.shape, klass.density);
 
@@ -98,7 +99,8 @@ void Ship::fire_gun(int idx, float angle) {
   boost::random::normal_distribution<float> v_dist(gun.velocity, 10);
   boost::random::normal_distribution<float> a_dist(angle, gun.deviation);
   angle = a_dist(prng);
-  auto p = get_position() + glm::rotate(gun.origin, glm::degrees(get_heading()));
+  auto o = glm::rotate(gun.origin, glm::degrees(get_heading()));
+  auto p = get_position() + o;
   auto v = get_velocity() + v_dist(prng) * vec2(cos(angle), sin(angle));
   auto bullet = std::make_shared<Bullet>(game, team, id, gun, p, v);
   game->bullets.push_back(bullet);
@@ -117,7 +119,8 @@ void Ship::fire_beam(int idx, float angle) {
   }
 
   auto beam = std::make_shared<Beam>(game, team, id, def);
-  auto p = get_position() + glm::rotate(def.origin, glm::degrees(get_heading()));
+  auto o = glm::rotate(def.origin, glm::degrees(get_heading()));
+  auto p = get_position() + o;
   auto v = get_velocity();
   beam->set_position(p);
   beam->set_heading(angle);
@@ -138,7 +141,7 @@ void Ship::fire_missile(std::weak_ptr<Ship> target) {
 
 void Ship::explode() {
   dead = true;
-  game->explosions.emplace_back(Explosion{&*team, get_position(), 10e6});
+  game->explosions.emplace_back(Explosion {&*team, get_position(), 10e6});
 }
 
 void Ship::acc_main(float acc) {
@@ -158,7 +161,7 @@ void Ship::clear_debug_lines() {
 }
 
 void Ship::debug_line(glm::vec2 a, glm::vec2 b) {
-  debug_lines.emplace_back(DebugLine{a, b});
+  debug_lines.emplace_back(DebugLine {a, b});
 }
 
 void Ship::update_forces() {
@@ -168,7 +171,8 @@ void Ship::update_forces() {
   float lateral_thrust = lateral_acc * md.mass;
   float torque = angular_acc * md.I;
   auto local_force_vec = vec2(main_thrust, lateral_thrust);
-  auto world_force_vec = glm::rotate(local_force_vec, glm::degrees(get_heading()));
+  auto world_force_vec =
+    glm::rotate(local_force_vec, glm::degrees(get_heading()));
   body->ApplyForceToCenter(n2b(world_force_vec));
   body->ApplyTorque(torque);
 }

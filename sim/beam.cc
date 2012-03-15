@@ -32,9 +32,7 @@ Beam::Beam(Game *game,
 }
 
 float Beam::damage(const Ship &ship) {
-  float e = get_def().damage * Game::tick_length;
-  //printf("ship %d; beam %p; damage %g\n", ship.id, this, e);
-  return e;
+  return get_def().damage * Game::tick_length;
 }
 
 bool Beam::should_collide(const Entity &e) const {

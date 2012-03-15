@@ -23,7 +23,7 @@ struct GunDef : public WeaponDef {
 };
 
 class Bullet {
-public:
+ public:
   std::shared_ptr<Team> team;
   const GunDef &def;
   float creation_time;

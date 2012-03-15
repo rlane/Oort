@@ -82,9 +82,10 @@ class ContactListener : public b2ContactListener {
     contact->Evaluate(&m, xfA, xfB);
     if (m.pointCount > 0) {
       b2WorldManifold worldManifold;
-      worldManifold.Initialize(&m, xfA, shapeA->m_radius, xfB, shapeB->m_radius);
+      worldManifold.Initialize(&m, xfA, shapeA->m_radius,
+                               xfB, shapeB->m_radius);
       auto cp = b2n(worldManifold.points[0]);
-      game.hits.emplace_back(Hit{ ship, weapon, cp, weapon->damage(*ship) });
+      game.hits.emplace_back(Hit { ship, weapon, cp, weapon->damage(*ship) });
     }
   }
 
@@ -104,10 +105,11 @@ class ContactListener : public b2ContactListener {
   }
 } contact_listener;
 
-Game::Game(const Scenario &scn, const vector<std::shared_ptr<AIFactory>> &ai_factories)
+Game::Game(const Scenario &scn,
+           const vector<std::shared_ptr<AIFactory>> &ai_factories)
   : ticks(0),
     time(0),
-    radius(10000) {
+    radius(10000) {  // TODO(rlane): set in scenario
   unsigned int player_ai_index = 0;
   b2Vec2 gravity(0, 0);
 #ifdef B2WORLD_OLD_CONSTRUCTOR
@@ -217,7 +219,7 @@ bool Game::check_victory(Team *&team) {
 
   std::unordered_set<Team*> set;
   BOOST_FOREACH(auto ship, ships) {
-    if (glm::length(ship->get_position()) < radius && // TODO(rlane): set in scenario
+    if (glm::length(ship->get_position()) < radius &&
         &ship->klass != &*missile) {
       set.insert(ship->team.get());
     }

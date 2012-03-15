@@ -15,7 +15,7 @@ class Team;
 class ContactListener;
 
 class Entity {
-public:
+ public:
   Game *game;
   std::shared_ptr<Team> team;
   bool dead;
@@ -47,7 +47,7 @@ public:
   Entity(const Entity&) = delete;
   Entity& operator=(const Entity&) = delete;
 
-protected:
+ protected:
   b2Body *body;
   friend void Oort::assert_contact(const Entity &a, const Entity &b);
 };

@@ -33,32 +33,22 @@ Bullet::Bullet(Game *game,
 float Bullet::damage(const Ship &ship) const {
   float dv = glm::length(ship.get_velocity() - velocity);
   float e = 0.5 * def.mass * dv*dv;
-  //printf("ship %d; bullet %p; damage %g\n", ship.id, this, e);
   return e;
 }
 
-/*
-bool Bullet::should_collide(const Entity &e) const {
-  return e.get_id() != creator_id;
-}
-*/
-
-class BulletRayCastCallback : public b2RayCastCallback
-{
-public:
+class BulletRayCastCallback : public b2RayCastCallback {
+ public:
   const Bullet &bullet;
   Ship *ship;
   glm::vec2 point;
 
   BulletRayCastCallback(const Bullet &b)
     : bullet(b),
-      ship(NULL)
-  {
+      ship(NULL) {
   }
 
-  float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
-                        const b2Vec2& normal, float32 fraction)
-  {
+  float ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+                        const b2Vec2& normal, float32 fraction) {
     auto body = fixture->GetBody();
     auto entity = (Entity*) body->GetUserData();
     auto ship = dynamic_cast<Ship*>(entity);
@@ -85,7 +75,8 @@ void Bullet::tick_all(Game &game) {
       auto ship = callback.ship;
       if (ship) {
         if (ship->team != b->team) {
-          game.hits.emplace_back(Hit{ ship, NULL, callback.point, b->damage(*ship) });
+          auto hit = Hit { ship, NULL, callback.point, b->damage(*ship) };
+          game.hits.emplace_back(hit);
         }
         b->dead = true;
       }

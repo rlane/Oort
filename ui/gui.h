@@ -8,7 +8,7 @@ class Game;
 class Test;
 
 class GUI {
-public:
+ public:
   static GUI *create(std::shared_ptr<Game> game, Test *test);
 
   virtual void start() = 0;

@@ -4,7 +4,7 @@ namespace Oort {
 
 template <typename T>
 class Bunch {
-public:
+ public:
   GLuint id;
   int size;
   float initial_time;
@@ -32,7 +32,8 @@ public:
       buffer_freelist.pop_back();
     }
     bind();
-    glBufferData(GL_ARRAY_BUFFER, data.size()*sizeof(T), &data[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, data.size()*sizeof(T),
+                 &data[0], GL_STATIC_DRAW);
     unbind();
     data.clear();
   }
@@ -48,7 +49,7 @@ public:
     glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
-private:
+ private:
   std::vector<T> data;
 };
 

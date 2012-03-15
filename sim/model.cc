@@ -34,9 +34,10 @@ std::shared_ptr<Model> Model::load(std::string name) {
   BOOST_FOREACH(json_spirit::mValue &e, shapes) {
     model->shapes.push_back(read_shape(e.get_array()));
   }
-  
+
   if (obj.count("collision_shape")) {
-    json_spirit::mArray vertices = obj.find("collision_shape")->second.get_array();
+    json_spirit::mArray vertices =
+      obj.find("collision_shape")->second.get_array();
     model->collision_shape = read_shape(vertices);
   } else {
     model->collision_shape = model->shapes[0];

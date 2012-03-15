@@ -8,7 +8,7 @@
 namespace Oort {
 
 class ExplosionCB : public b2RayCastCallback {
-public:
+ public:
   b2Fixture *fixture;
   glm::vec2 point;
 
@@ -36,7 +36,7 @@ void Explosion::tick(Game &game) {
       auto entity = (Entity*) cb.fixture->GetBody()->GetUserData();
       auto ship = dynamic_cast<Ship*>(entity);
       if (ship) {
-        game.hits.emplace_back(Hit{ ship, NULL, cb.point, e/n });
+        game.hits.emplace_back(Hit { ship, NULL, cb.point, e/n });
       }
     }
   }

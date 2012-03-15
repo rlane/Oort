@@ -10,7 +10,7 @@ namespace Oort {
 class Game;
 
 class Test {
-public:
+ public:
   static Test *registered;
   static Test *load(std::string path);
 

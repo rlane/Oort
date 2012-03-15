@@ -12,7 +12,7 @@ class Game;
 namespace RendererBatches {
 
 class Batch {
-public:
+ public:
   Renderer &renderer;
   PerfHistogram render_perf;
   PerfHistogram snapshot_perf;

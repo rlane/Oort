@@ -30,7 +30,7 @@ struct ShipClassDef {
 };
 
 class ShipClass : public ShipClassDef {
-public:
+ public:
   float density;
   b2PolygonShape shape;
 

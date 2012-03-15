@@ -19,6 +19,7 @@ std::unique_ptr<ShipClass> fighter,
 
 std::map<std::string, const ShipClass&> ShipClass::klasses;
 
+// TODO read all of this from a file.
 void ShipClass::initialize() {
   {
     ShipClassDef def;

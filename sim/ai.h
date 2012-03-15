@@ -13,13 +13,13 @@ class Ship;
 class AI;
 
 class AIFactory {
-public:
+ public:
   virtual std::unique_ptr<AI> instantiate(Ship &ship) = 0;
 };
 
 template <class T>
 class CxxAIFactory : public AIFactory {
-public:
+ public:
   CxxAIFactory() : AIFactory() {}
 
   std::unique_ptr<AI> instantiate(Ship &ship) {
@@ -28,7 +28,7 @@ public:
 };
 
 class LuaAIFactory : public AIFactory {
-public:
+ public:
   std::string filename;
   std::string code;
   LuaAIFactory(std::string filename, std::string code);
@@ -36,7 +36,7 @@ public:
 };
 
 class AI {
-public:
+ public:
   AI(Ship &ship);
   virtual void tick();
 
@@ -44,24 +44,24 @@ public:
 };
 
 class CxxAI : public AI {
-public:
+ public:
   CxxAI(Ship &ship);
   virtual void tick();
 
   template <class T>
   static std::shared_ptr<AIFactory> factory() {
-    return std::make_shared<CxxAIFactory<T>>();
+    return std::make_shared<CxxAIFactory<T> >();
   }
 };
 
 class LuaAI : public AI {
-public:
+ public:
   LuaAI(Ship &ship, std::string filename, std::string code);
   virtual ~LuaAI();
   virtual void tick();
   void register_api();
 
-private:
+ private:
   lua_State *G, *L;
   bool dead;
 };

@@ -24,7 +24,7 @@ struct ScnTeam {
 };
 
 class Scenario {
-public:
+ public:
   std::string description;
   std::string author;
   std::vector<ScnTeam> teams;

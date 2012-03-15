@@ -41,11 +41,11 @@ static void push_vector(lua_State *L, vec2 v) {
   lua_pushnumber(L, v.y);
   lua_rawseti(L, -2, 2);
 
-  lua_getglobal(L, "vector_metatable"); // XXX optimize
+  lua_getglobal(L, "vector_metatable");  // XXX optimize
   lua_setmetatable(L, -2);
 }
 
-struct LuaSensorContact { 
+struct LuaSensorContact {
   const uint32_t magic;
   const uint32_t id;
   const Team &team;
@@ -147,7 +147,7 @@ struct LuaSensorContact {
     void *ud = lua_newuserdata(L, sizeof(LuaSensorContact));
     lua_pushvalue(L, metatable_idx);
     lua_setmetatable(L, -2);
-    new (ud) LuaSensorContact(ship);
+    new(ud) LuaSensorContact(ship);
   }
 
   static LuaSensorContact *cast(lua_State *L, int narg) {
@@ -163,16 +163,14 @@ struct LuaSensorContact {
       team(*ship.team),
       klass(ship.klass),
       p(ship.get_position()),
-      v(ship.get_velocity())
-  {
+      v(ship.get_velocity()) {
   }
 };
 
 LuaAIFactory::LuaAIFactory(std::string filename, std::string code)
   : AIFactory(),
     filename(filename),
-    code(code)
-{
+    code(code) {
 }
 
 std::unique_ptr<AI> LuaAIFactory::instantiate(Ship &ship) {
@@ -182,8 +180,7 @@ std::unique_ptr<AI> LuaAIFactory::instantiate(Ship &ship) {
 static void *AI_RKEY = (void*)0xAABBCC02;
 
 LuaAI::LuaAI(Ship &ship, std::string filename, std::string code)
-  : AI(ship), dead(false)
-{
+  : AI(ship), dead(false) {
   G = luaL_newstate();
   if (!G) {
     throw std::runtime_error("Failed to create Lua state");
@@ -217,7 +214,7 @@ LuaAI::LuaAI(Ship &ship, std::string filename, std::string code)
   lua_getglobal(L, "sandbox");
 
   if (luaL_loadbuffer(L, code.c_str(), code.length(), filename.c_str())) {
-    throw std::runtime_error("Failed to load Lua AI"); // XXX message
+    throw std::runtime_error("Failed to load Lua AI");  // XXX message
   }
 
   lua_call(L, 1, 1);
@@ -248,7 +245,8 @@ void LuaAI::tick() {
       if (!lua_getinfo(L, "nSl", &ar)) {
         log("  %d: error", i);
       } else {
-        log("  %d: %s %s %s @ %s:%d", i, ar.what, ar.namewhat, ar.name, ar.short_src, ar.currentline);
+        log("  %d: %s %s %s @ %s:%d", i, ar.what, ar.namewhat, ar.name,
+                                      ar.short_src, ar.currentline);
       }
     }
     dead = true;
@@ -424,8 +422,10 @@ int api_sensor_contacts(lua_State *L) {
   BOOST_FOREACH(auto &contact, ship.game->ships) {
     if (i > limit) break;
     if (has_enemy && (contact->team != ship.team) != enemy) continue;
-    if (has_distance_lt &&
-        glm::distance(contact->get_position(), ship.get_position()) > distance_lt) continue;
+    if (has_distance_lt) {
+        auto d = glm::distance(contact->get_position(), ship.get_position());
+        if (d > distance_lt) continue;
+    }
     LuaSensorContact::push(L, *contact, mt_idx);
     lua_rawseti(L, table_idx, i);
     i += 1;
@@ -462,8 +462,9 @@ int api_spawn(lua_State *L) {
   auto &ship = lua_ai(L).ship;
   const char *klass_name = luaL_checkstring(L, 1);
   const char *orders = luaL_optstring(L, 2, "");
-  auto &klass = ShipClass::lookup(klass_name); // XXX handle failure
-  auto new_ship = std::make_shared<Ship>(ship.game, klass, ship.team, ship.id, orders);
+  auto &klass = ShipClass::lookup(klass_name);  // XXX handle failure
+  auto new_ship = std::make_shared<Ship>(ship.game, klass, ship.team,
+                                         ship.id, orders);
   new_ship->set_position(ship.get_position());
   new_ship->set_heading(ship.get_heading());
   new_ship->set_velocity(ship.get_velocity());

@@ -50,7 +50,7 @@ void turn_to(Ship &s, float angle) {
 }
 
 void turn_towards(Ship &s, vec2 tp) {
-  auto a = radians(orientedAngle(vec2(1,0), normalize(tp-s.get_position())));
+  auto a = radians(orientedAngle(vec2(1, 0), normalize(tp-s.get_position())));
   turn_to(s, a);
 }
 
@@ -58,12 +58,12 @@ void drive_towards(Ship &s, vec2 tp, float speed) {
   auto p = s.get_position();
   auto v = s.get_velocity();
   auto h = s.get_heading();
-  auto a = radians(orientedAngle(vec2(1,0), normalize(tp-p)));
+  auto a = radians(orientedAngle(vec2(1, 0), normalize(tp-p)));
   auto rv = rotate(v, degrees(-h));
   s.acc_lateral(-1*rv.y);
   turn_to(s, a);
 
-  auto diff = angle_diff(a,h);
+  auto diff = angle_diff(a, h);
   if (rv.x > speed) {
     s.acc_main(speed-rv.x);
   } else if (fabsf(diff) < pi/4) {
@@ -75,7 +75,8 @@ void drive_towards(Ship &s, vec2 tp, float speed) {
   }
 }
 
-// Return the angle to shoot a constant-velocity projectile to hit a moving target
+// Return the angle to shoot a constant-velocity projectile to hit a
+// moving target.
 float lead(vec2 p1, vec2 p2, vec2 v1, vec2 v2, float w, float t_max) {
   auto dp = p2 - p1;
   auto dv = v2 - v1;

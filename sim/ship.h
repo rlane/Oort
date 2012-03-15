@@ -24,7 +24,7 @@ struct DebugLine {
 };
 
 class Ship : public Entity {
-  public:
+ public:
   const ShipClass &klass;
   uint32_t id;
   float creation_time;
@@ -33,7 +33,8 @@ class Ship : public Entity {
   std::unique_ptr<AI> ai;
   std::vector<DebugLine> debug_lines;
 
-  Ship(Game *game, const ShipClass &klass, std::shared_ptr<Team> team, uint32_t creator_id=INVALID_SHIP_ID, const std::string &orders="");
+  Ship(Game *game, const ShipClass &klass, std::shared_ptr<Team> team,
+       uint32_t creator_id=INVALID_SHIP_ID, const std::string &orders="");
   ~Ship();
 
   virtual void tick();
@@ -49,7 +50,7 @@ class Ship : public Entity {
 
   void acc_main(float acc);
   void acc_lateral(float acc);
-  void acc_angular(float acc); // rad/s^2
+  void acc_angular(float acc);  // rad/s^2
 
   void clear_debug_lines();
   void debug_line(glm::vec2 a, glm::vec2 b);

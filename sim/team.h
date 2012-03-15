@@ -10,7 +10,7 @@
 namespace Oort {
 
 class Team {
-public:
+ public:
   std::string name;
   std::shared_ptr<AIFactory> ai_factory;
   glm::vec3 color;

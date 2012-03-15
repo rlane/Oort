@@ -5,7 +5,7 @@
 namespace Oort {
 
 class BuiltinAI : public CxxAI {
-public:
+ public:
   ProportionalNavigator nav;
   boost::random::mt19937 prng;
 
@@ -58,7 +58,8 @@ public:
           auto tgt = (i != 0 && mt) ? mt : t;
           if (ship.gun_ready(i)) {
             const GunDef &gun = ship.klass.guns[i];
-            auto gun_pos = ship.get_position() + glm::rotate(gun.origin, glm::degrees(ship.get_heading()));
+            auto o = glm::rotate(gun.origin, glm::degrees(ship.get_heading()));
+            auto gun_pos = ship.get_position() + o;
             auto a = lead(gun_pos, tgt->get_position(),
                           ship.get_velocity(), tgt->get_velocity(),
                           gun.velocity, gun.ttl);
@@ -76,7 +77,8 @@ public:
         const BeamDef &beam = ship.klass.beams[0];
         float a = angle_between(ship.get_position(), t->get_position());
         float da = angle_diff(ship.get_heading(), a);
-        if (fabsf(da) < 0.1 && length(ship.get_position() - t->get_position()) < beam.length*1.1f) {
+        auto dp = length(ship.get_position() - t->get_position());
+        if (fabsf(da) < 0.1f && dp < beam.length*1.1f) {
           ship.fire_beam(0, ship.get_heading());
         }
       } else if (&ship.klass == missile.get()) {
@@ -88,7 +90,7 @@ public:
         }
       }
     } else {
-      drive_towards(ship, vec2(0,0), ship.klass.max_main_acc*2);
+      drive_towards(ship, vec2(0, 0), ship.klass.max_main_acc*2);
     }
   }
 };
@@ -96,6 +98,7 @@ public:
 static void null_deleter(AIFactory *) {}
 
 static CxxAIFactory<BuiltinAI> builtin_ai_factory_obj;
-std::shared_ptr<AIFactory> builtin_ai_factory(static_cast<AIFactory*>(&builtin_ai_factory_obj), null_deleter);
+std::shared_ptr<AIFactory> builtin_ai_factory(
+  static_cast<AIFactory*>(&builtin_ai_factory_obj), null_deleter);
 
 }

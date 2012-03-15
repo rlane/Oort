@@ -19,7 +19,7 @@ struct WeaponDef {
 };
 
 class Weapon : public Entity {
-public:
+ public:
   Weapon(Game *game,
          std::shared_ptr<Team> team,
          uint32_t creator_id,
@@ -30,7 +30,7 @@ public:
   virtual float damage(const Ship &ship) = 0;
   virtual const WeaponDef &get_def() = 0;
 
-protected:
+ protected:
   const WeaponDef &def;
 };
 
