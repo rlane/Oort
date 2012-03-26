@@ -28,14 +28,18 @@ do
 	cd ..
 done
 
+echo creating app store zip
+zip -j oort.zip ../chrome-app/*
+
 mkdir -p www
 cd www
 
 echo symlinking Oort binaries
-ln -sf ../i686-nacl/oort_nacl oort_nacl32
-ln -sf ../x86_64-nacl/oort_nacl oort_nacl64
+ln -sf ../i686-nacl/oort_nacl oort-i686-nacl.nexe
+ln -sf ../x86_64-nacl/oort_nacl oort-x86_64-nacl.nexe
 
 echo symlinking Oort HTML
+ln -sf ../../ui/nacl/app.yaml
 ln -sf ../../ui/nacl/oort.html
 ln -sf ../../ui/nacl/oort.js
 ln -sf ../../ui/nacl/oort.css
@@ -74,8 +78,8 @@ done
 
 cat >&3 <<EOS
     "main.nexe" : {
-      "x86-64": {"url": "oort_nacl64"},
-      "x86-32": {"url": "oort_nacl32"}
+      "x86-64": {"url": "oort-x86_64-nacl.nexe"},
+      "x86-32": {"url": "oort-i686-nacl.nexe"}
     }
   }
 }

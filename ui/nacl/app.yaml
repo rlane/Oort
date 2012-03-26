@@ -1,0 +1,29 @@
+application: oort
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+
+handlers:
+- url: /
+  static_files: oort.html
+  upload: oort.html
+- url: /oort.js
+  static_files: oort.js
+  upload: oort.js
+- url: /oort.css
+  static_files: oort.css
+  upload: oort.css
+- url: /oort.nmf
+  static_files: oort.nmf
+  upload: oort.nmf
+- url: /oort-i686-nacl.nexe
+  static_files: oort-i686-nacl.nexe
+  upload: oort-i686-nacl.nexe
+- url: /oort-x86_64-nacl.nexe
+  static_files: oort-x86_64-nacl.nexe
+  upload: oort-x86_64-nacl.nexe
+- url: /lib32
+  static_dir: lib32
+- url: /lib64
+  static_dir: lib64
