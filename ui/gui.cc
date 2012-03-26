@@ -21,6 +21,7 @@
 #include "sim/math_util.h"
 #include "sim/ship.h"
 #include "sim/ship_class.h"
+#include "sim/team.h"
 #include "renderer/renderer.h"
 #include "renderer/physics_debug_renderer.h"
 
@@ -58,6 +59,7 @@ class GUIImpl : public GUI {
   uint64_t tick_time;
   uint64_t snapshot_time;
   glm::vec2 mouse_position;
+  Team *winner;
   pthread_mutex_t tick_mutex;
   pthread_mutex_t render_mutex;
   pthread_cond_t snapshot_cond;
@@ -87,7 +89,8 @@ class GUIImpl : public GUI {
       render_time(0),
       tick_time(0),
       snapshot_time(0),
-      mouse_position(0, 0) {
+      mouse_position(0, 0),
+      winner(NULL) {
     pthread_mutex_init(&tick_mutex, NULL);
     pthread_mutex_init(&render_mutex, NULL);
     pthread_cond_init(&snapshot_cond, NULL);
@@ -297,6 +300,17 @@ class GUIImpl : public GUI {
       } else if (state == State::FINISHED) {
         renderer->text(screen_width-120, screen_height-22, "test finished");
       }
+    } else {
+      if (state == State::FINISHED) {
+        if (winner != NULL) {
+          using boost::str;
+          using boost::format;
+          renderer->text(screen_width/2-85, screen_height/3,
+                         str(format("%s team wins") % winner->name.c_str()));
+        } else {
+          renderer->text(screen_width/2-15, screen_height/3, "tie");
+        }
+      }
     }
 
     if (picked_id != INVALID_SHIP_ID) {
@@ -409,9 +423,20 @@ class GUIImpl : public GUI {
         }
 
         if (state == State::RUNNING) {
-          if (test && test->finished) {
-            printf("Test finished\n");
-            state = State::FINISHED;
+          if (test) {
+            if (test->finished) {
+              printf("Test finished\n");
+              state = State::FINISHED;
+            }
+          } else {
+            if (game->check_victory(winner)) {
+              if (winner == NULL) {
+                printf("Tie\n");
+              } else {
+                printf("%s team wins\n", winner->name.c_str());
+              }
+              state = State::FINISHED;
+            }
           }
         }
 
