@@ -40,7 +40,8 @@ static uint32_t convert_keycode(uint32_t sym) {
     case SDLK_b: return 'b';
     case SDLK_v: return 'v';
     case SDLK_y: return 'y';
-    case SDLK_n: return 'n';
+    case SDLK_LEFTBRACKET: return '[';
+    case SDLK_RIGHTBRACKET: return ']';
     default: return '\0';
   }
 }

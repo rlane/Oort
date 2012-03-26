@@ -32,6 +32,8 @@ static uint32_t convert_key(uint32_t keycode) {
   case 86: return 'v';
   case 89: return 'y';
   case 78: return 'n';
+  case 221: return ']';
+  case 219: return '[';
   }
   log("unexpected keycode %d", keycode);
   return 0;

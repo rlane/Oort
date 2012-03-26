@@ -36,6 +36,7 @@ class GUIImpl : public GUI {
 
   static constexpr float zoom_const = 2.0;
   static constexpr float pan_const = 0.6;
+  static constexpr float timewarp_const = 5.0f/4;
 
   enum State state;
   bool running;
@@ -60,6 +61,8 @@ class GUIImpl : public GUI {
   uint64_t snapshot_time;
   glm::vec2 mouse_position;
   Team *winner;
+  float tps_target;
+
   pthread_mutex_t tick_mutex;
   pthread_mutex_t render_mutex;
   pthread_cond_t snapshot_cond;
@@ -90,7 +93,8 @@ class GUIImpl : public GUI {
       tick_time(0),
       snapshot_time(0),
       mouse_position(0, 0),
-      winner(NULL) {
+      winner(NULL),
+      tps_target(32.0f) {
     pthread_mutex_init(&tick_mutex, NULL);
     pthread_mutex_init(&render_mutex, NULL);
     pthread_cond_init(&snapshot_cond, NULL);
@@ -176,6 +180,12 @@ class GUIImpl : public GUI {
       log("Physics:");
       game->physics_perf.dump();
       log("");
+      break;
+    case ']':
+      tps_target *= timewarp_const;
+      break;
+    case '[':
+      tps_target *= 1.0/timewarp_const;
       break;
     default:
       break;
@@ -411,10 +421,9 @@ class GUIImpl : public GUI {
   }
 
   void ticker_func() {
-    const uint64_t target = 31250;
-
     while (running) {
       Timer timer;
+      uint64_t target_time = 1e6/tps_target;
 
       if (!paused) {
         if (single_step) {
@@ -458,7 +467,7 @@ class GUIImpl : public GUI {
       tickrate.update();
       last_tick_time = microseconds();
       tick_time = timer.elapsed();
-      int remaining = int(target - tick_time);
+      int remaining = int(target_time - tick_time);
       usleep(glm::max(remaining, 1000));
     }
 
