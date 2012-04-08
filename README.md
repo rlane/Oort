@@ -215,7 +215,7 @@ Pause: space
 
 Single-step: enter
 
-Toggle FPS display: 'f'
+Toggle FPS display: 'v'
 
 You can click on a ship to "pick" it. Data about the currently picked ship is
 shown in the lower-left corner of the display, and any debug lines this ship

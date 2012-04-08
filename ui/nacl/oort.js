@@ -124,6 +124,10 @@ $(document).ready(function(){
 		$("#newgame").show();
 	});
 
+	$("#menu-help").click(function(event){
+		window.open('https://github.com/rlane/Oort/blob/master/README.md');
+	});
+
 	$("ai-uploaders").empty()
 	create_uploader(0);
 	create_uploader(1);
