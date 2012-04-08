@@ -8,7 +8,7 @@ Oort is a programming game currently in development. Two or more space fleets,
 each ship individually controlled by the player's Lua code, battle in
 2-dimensional space with Newtonian physics.
 
-- [Chrome app]([https://chrome.google.com/webstore/detail/mkmnfnhnocdpekfinglecpbningfodof)
+- [Chrome app](https://chrome.google.com/webstore/detail/mkmnfnhnocdpekfinglecpbningfodof)
 - [Code](https://github.com/rlane/Oort)
 - [Forum](http://oort.lefora.com)
 - [Bug tracker](https://github.com/rlane/Oort/issues)
@@ -28,7 +28,7 @@ program (AI) that all ships on your team will individually execute.
 
 New players are recommended to use the Chrome app linked above, which uses
 Google Native Client to run the game in your browser. You'll need Chrome 15 or
-later. After you installed and launched the game it will begin playing a demo
+later. After you've installed and launched the game it will begin playing a demo
 scenario. Click the "New Game" button in the top left and hit "start".
 
 Once you begin writing your own AI code you can use the "choose file" buttons
