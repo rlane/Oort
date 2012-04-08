@@ -13,6 +13,7 @@ each ship individually controlled by the player's Lua code, battle in
 - [Forum](http://oort.lefora.com)
 - [Bug tracker](https://github.com/rlane/Oort/issues)
 - [Reference AI](https://github.com/rlane/Oort/blob/master/ais/reference-classic.lua)
+- IRC: #oort on irc.freenode.net
 
 Compilation
 -----------
@@ -46,9 +47,10 @@ Every ship in the game is controlled by a Lua program that calls functions
 provided by Oort to thrust, fire, etc. Each ship is given a timeslice per tick
 and preempted when its time is up. Execution resumes where it left off on the
 next tick. The ships run in independent Lua VMs and do not share any data. All
-coordination must be accomplished using ship orders and the radio. The amount
-of memory that can be allocated per ship is limited to 1 megabyte. See the
-ais/ directory in the distribution for sample AI.
+coordination must be accomplished using ship orders and the radio (which is not
+yet implemented). The amount of memory that can be allocated per ship is
+limited to 1 megabyte. See the ais/ directory in the distribution for sample
+AI.
 
 #### Oort API
 
