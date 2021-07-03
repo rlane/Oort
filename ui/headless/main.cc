@@ -2,6 +2,7 @@
 #include <boost/foreach.hpp>
 #include <boost/program_options.hpp>
 #include <memory>
+#include <iostream>
 
 #include "glm/glm.hpp"
 #include "glm/gtx/string_cast.hpp"

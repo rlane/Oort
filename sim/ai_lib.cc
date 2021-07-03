@@ -66,9 +66,9 @@ void drive_towards(Ship &s, vec2 tp, float speed) {
   auto diff = angle_diff(a, h);
   if (rv.x > speed) {
     s.acc_main(speed-rv.x);
-  } else if (fabsf(diff) < pi/4) {
+  } else if (fabsf(diff) < Oort::pi/4) {
     s.acc_main(s.klass.max_main_acc);
-  } else if (fabsf(diff) > 3*pi/4) {
+  } else if (fabsf(diff) > 3*Oort::pi/4) {
     s.acc_main(-s.klass.max_main_acc);
   } else {
     s.acc_main(0);

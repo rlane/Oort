@@ -6,13 +6,13 @@
 #include <Box2D/Box2D.h>
 #include "glm/glm.hpp"
 
+namespace Oort {
+
 const float pi = 3.141592653589793238f;
 
-namespace Oort {
-  enum {
-    SCALE = 100
-  };
-}
+enum {
+  SCALE = 100
+};
 
 static inline float normalize_angle(float a) {
   while (a < -pi) a += 2*pi;
@@ -39,6 +39,8 @@ static inline b2Vec2 n2b(glm::vec2 vec) {
 
 static inline glm::vec2 b2n(b2Vec2 vec) {
   return glm::vec2(vec.x, vec.y) * (float)Oort::SCALE;
+}
+
 }
 
 #endif

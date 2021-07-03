@@ -13,6 +13,9 @@ namespace Oort {
 class Game;
 class Team;
 class ContactListener;
+class Entity;
+
+void assert_contact(const Entity &a, const Entity &b);
 
 class Entity {
  public:

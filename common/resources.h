@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <boost/foreach.hpp>
+#include <vector>
 
 #include "common/log.h"
 
@@ -54,8 +55,6 @@ static inline void find_resource(const std::string &name, std::ifstream &file) {
 }
 
 inline std::string load_resource(const std::string &name) {
-	typedef std::istream_iterator<char> istream_iterator;
-	typedef std::ostream_iterator<char> ostream_iterator;
 	std::ifstream file;
 	find_resource(name, file);
 	file.exceptions(std::ifstream::badbit);
@@ -65,7 +64,7 @@ inline std::string load_resource(const std::string &name) {
 	std::string data;
 	data.reserve(size);
 	file.seekg(0, std::ios::beg);
-	std::copy(istream_iterator(file), istream_iterator(),
+	std::copy(std::istream_iterator<char>(file), std::istream_iterator<char>(),
 			      std::back_inserter(data));
 	file.close();
 	return data;

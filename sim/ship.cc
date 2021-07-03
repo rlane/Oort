@@ -173,8 +173,8 @@ void Ship::update_forces() {
   auto local_force_vec = vec2(main_thrust, lateral_thrust);
   auto world_force_vec =
     glm::rotate(local_force_vec, glm::degrees(get_heading()));
-  body->ApplyForceToCenter(n2b(world_force_vec));
-  body->ApplyTorque(torque);
+  body->ApplyForceToCenter(n2b(world_force_vec), true);
+  body->ApplyTorque(torque, true);
 }
 
 }
