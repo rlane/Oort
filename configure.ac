@@ -24,7 +24,8 @@ AC_PROG_RANLIB
 AC_LANG(C++)
 
 CXXFLAGS="-std=c++0x -g -O1 -Wall"
-LDFLAGS="-rdynamic -ldl"
+LDFLAGS="-rdynamic"
+LIBS="-ldl -lpthread"
 
 AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
