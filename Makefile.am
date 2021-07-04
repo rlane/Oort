@@ -55,8 +55,7 @@ RENDERER_SRCS = \
 	renderer/batches/debug_lines.cc \
 	$(NULL)
 
-TEST_SRCS := $(wildcard $(top_srcdir)/test/*.cc)
-TESTS := $(patsubst $(top_srcdir)/test/%.cc,$(top_builddir)/test/%.so,$(TEST_SRCS))
+TESTS := test/basic.so test/beam.so test/benchmark_bullet.so test/chase.so test/furball.so test/gun.so test/missile.so test/move.so
 
 TEST_SCENARIO_SRCS = $(wildcard $(top_srcdir)/test/*.scn)
 TEST_SCENARIOS = $(patsubst $(top_srcdir)/test/%.scn,$(top_builddir)/test/%.json,$(TEST_SCENARIO_SRCS))
