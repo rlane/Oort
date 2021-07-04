@@ -24,10 +24,10 @@ public:
     auto team = make_shared<Team>("green", ai_factory, vec3(0, 1, 0));
     for (int i = 0; i < n; i++) {
       auto ship = make_shared<Ship>(&*game, *fighter, team);
-      auto h = 2*pi*i/n;
+      auto h = 2*Oort::pi*i/n;
       auto p = glm::rotate(vec2(r, 0), glm::degrees(h));
       ship->set_position(p);
-      ship->set_heading(pi + h);
+      ship->set_heading(Oort::pi + h);
       game->ships.push_back(ship);
     }
   }
