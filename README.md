@@ -8,17 +8,30 @@ Oort is a programming game currently in development. Two or more space fleets,
 each ship individually controlled by the player's Lua code, battle in
 2-dimensional space with Newtonian physics.
 
-- [Chrome app](https://chrome.google.com/webstore/detail/mkmnfnhnocdpekfinglecpbningfodof)
 - [Code](https://github.com/rlane/Oort)
-- [Forum](http://oort.lefora.com)
 - [Bug tracker](https://github.com/rlane/Oort/issues)
 - [Reference AI](https://github.com/rlane/Oort/blob/master/ais/reference-classic.lua)
-- IRC: #oort on irc.freenode.net
 
 Compilation
 -----------
 
-Oort uses the standard autotools build system. It is known to compile on Linux.
+Requires SDL 1.2, Lua 5.1, Box2D, GLEW, and Ruby. On Ubuntu these can be installed with:
+
+```
+sudo apt-get install libsdl1.2-dev liblua5.1-0-dev libbox2d-dev libglew-dev ruby
+```
+
+Compile with:
+
+```
+./bootstrap && ./configure && make
+```
+
+Run a battle with the reference AI:
+
+```
+./oort_sdl -s scenarios/basic.json --ai ais/reference.lua --ai ais/reference.lua
+```
 
 Gameplay
 --------
@@ -26,15 +39,6 @@ Gameplay
 Oort is a programming game, which means that after the simulation has begun the
 players have no control over the outcome. Instead, you play by writing a
 program (AI) that all ships on your team will individually execute.
-
-New players are recommended to use the Chrome app linked above, which uses
-Google Native Client to run the game in your browser. You'll need Chrome 15 or
-later. After you've installed and launched the game it will begin playing a demo
-scenario. Click the "New Game" button in the top left and hit "start".
-
-Once you begin writing your own AI code you can use the "choose file" buttons
-in the "New Game" screen to load your AIs into the game. You should start by
-copying and modifying the reference AI linked above.
 
 ### Victory condition
 
