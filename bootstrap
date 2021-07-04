@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+git submodule update --init
 aclocal
 autoheader
 automake --gnu --add-missing
