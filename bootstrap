@@ -1,0 +1,5 @@
+#!/bin/bash -eux
+aclocal
+autoheader
+automake --gnu --add-missing
+autoconf
