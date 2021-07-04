@@ -99,7 +99,7 @@ void Ship::fire_gun(int idx, float angle) {
   boost::random::normal_distribution<float> v_dist(gun.velocity, 10);
   boost::random::normal_distribution<float> a_dist(angle, gun.deviation);
   angle = a_dist(prng);
-  auto o = glm::rotate(gun.origin, glm::degrees(get_heading()));
+  auto o = glm::rotate(gun.origin, get_heading());
   auto p = get_position() + o;
   auto v = get_velocity() + v_dist(prng) * vec2(cos(angle), sin(angle));
   auto bullet = std::make_shared<Bullet>(game, team, id, gun, p, v);
@@ -119,7 +119,7 @@ void Ship::fire_beam(int idx, float angle) {
   }
 
   auto beam = std::make_shared<Beam>(game, team, id, def);
-  auto o = glm::rotate(def.origin, glm::degrees(get_heading()));
+  auto o = glm::rotate(def.origin, get_heading());
   auto p = get_position() + o;
   auto v = get_velocity();
   beam->set_position(p);
@@ -172,7 +172,7 @@ void Ship::update_forces() {
   float torque = angular_acc * md.I;
   auto local_force_vec = vec2(main_thrust, lateral_thrust);
   auto world_force_vec =
-    glm::rotate(local_force_vec, glm::degrees(get_heading()));
+    glm::rotate(local_force_vec, get_heading());
   body->ApplyForceToCenter(n2b(world_force_vec), true);
   body->ApplyTorque(torque, true);
 }

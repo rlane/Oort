@@ -58,7 +58,7 @@ class BuiltinAI : public CxxAI {
           auto tgt = (i != 0 && mt) ? mt : t;
           if (ship.gun_ready(i)) {
             const GunDef &gun = ship.klass.guns[i];
-            auto o = glm::rotate(gun.origin, glm::degrees(ship.get_heading()));
+            auto o = glm::rotate(gun.origin, ship.get_heading());
             auto gun_pos = ship.get_position() + o;
             auto a = lead(gun_pos, tgt->get_position(),
                           ship.get_velocity(), tgt->get_velocity(),

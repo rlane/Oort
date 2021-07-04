@@ -88,7 +88,7 @@ void BeamBatch::render(float time_delta) {
 
     glm::mat4 mv_matrix{1.0f};
     mv_matrix = glm::translate(mv_matrix, glm::vec3(beam.p, 0));
-    mv_matrix = glm::rotate(mv_matrix, glm::degrees(beam.h), glm::vec3(0, 0, 1));
+    mv_matrix = glm::rotate(mv_matrix, beam.h, glm::vec3(0, 0, 1));
 
     prog.uniform("mv_matrix", mv_matrix);
     prog.uniform("color", color);

@@ -71,7 +71,7 @@ void ShipBatch::render(float time_delta) {
     auto p = ship.p + ship.v * time_delta;
     auto h = ship.h + ship.w * time_delta;
     mv_matrix = glm::translate(mv_matrix, glm::vec3(p, 0));
-    mv_matrix = glm::rotate(mv_matrix, glm::degrees(h), glm::vec3(0, 0, 1));
+    mv_matrix = glm::rotate(mv_matrix, h, glm::vec3(0, 0, 1));
     mv_matrix = glm::scale(mv_matrix, glm::vec3(1, 1, 1) * ship.klass.scale);
     glm::vec4 color(ship.team.color, ship.klass.model->alpha/Renderer::jitters.size());
 
