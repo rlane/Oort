@@ -74,7 +74,7 @@ void PhysicsDebugRenderer::begin_render(float view_radius,
                                   scaled_view_center.y + height/2);
   prog->uniform("p_matrix", p_matrix);
 
-  glm::mat4 mv_matrix;
+  glm::mat4 mv_matrix{1.0f};
   prog->uniform("mv_matrix", mv_matrix);
 
   prog->uniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));

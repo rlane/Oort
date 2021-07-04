@@ -67,7 +67,7 @@ void ShipBatch::render(float time_delta) {
   priv->vertex_buf.unbind();
 
   BOOST_FOREACH(auto &ship, priv->ships) {
-    glm::mat4 mv_matrix;
+    glm::mat4 mv_matrix{1.0f};
     auto p = ship.p + ship.v * time_delta;
     auto h = ship.h + ship.w * time_delta;
     mv_matrix = glm::translate(mv_matrix, glm::vec3(p, 0));

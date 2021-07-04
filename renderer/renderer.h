@@ -23,7 +23,7 @@ struct Text {
 
 class Renderer {
 public:
-  glm::mat4 p_matrix;
+  glm::mat4 p_matrix{1.0f};
   std::vector<Text> texts;
   int screen_width, screen_height;
   float aspect_ratio;

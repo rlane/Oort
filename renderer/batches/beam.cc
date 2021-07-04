@@ -86,7 +86,7 @@ void BeamBatch::render(float time_delta) {
   BOOST_FOREACH(auto &beam, priv->beams) {
     glm::vec4 color = glm::vec4(0.5f, 0.5f, 1.0f, 1.0f);
 
-    glm::mat4 mv_matrix;
+    glm::mat4 mv_matrix{1.0f};
     mv_matrix = glm::translate(mv_matrix, glm::vec3(beam.p, 0));
     mv_matrix = glm::rotate(mv_matrix, glm::degrees(beam.h), glm::vec3(0, 0, 1));
 

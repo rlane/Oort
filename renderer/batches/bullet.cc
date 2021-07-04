@@ -79,7 +79,7 @@ void BulletBatch::render(float time_delta) {
   prog.enable_attrib_array("vertex");
   prog.enable_attrib_array("color");
   prog.uniform("p_matrix", renderer.p_matrix);
-  prog.uniform("mv_matrix", glm::mat4());
+  prog.uniform("mv_matrix", glm::mat4{1.0f});
 
   if (!priv->buf_valid) {
     priv->buf.data(priv->bullets);
