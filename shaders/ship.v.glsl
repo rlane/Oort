@@ -1,3 +1,5 @@
+#version 120
+
 uniform mat4 mv_matrix;
 uniform mat4 p_matrix;
 uniform vec2 jitter;

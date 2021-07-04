@@ -1,3 +1,5 @@
+#version 120
+
 uniform mat4 p_matrix;
 uniform float current_time;
 uniform float view_scale;

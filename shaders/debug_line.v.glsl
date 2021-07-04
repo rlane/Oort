@@ -1,3 +1,5 @@
+#version 120
+
 uniform mat4 p_matrix;
 attribute vec2 vertex;
 

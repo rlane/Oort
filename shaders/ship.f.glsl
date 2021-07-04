@@ -1,3 +1,5 @@
+#version 120
+
 #if GL_ES
 precision mediump float;
 #endif

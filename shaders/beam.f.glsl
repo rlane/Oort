@@ -1,7 +1,7 @@
+#version 120
+
 #if GL_ES
 precision mediump float;
-#else
-#version 120
 #endif
 
 uniform vec4 color;
