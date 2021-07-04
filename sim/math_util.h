@@ -11,7 +11,7 @@ namespace Oort {
 const float pi = 3.141592653589793238f;
 
 enum {
-  SCALE = 100
+  SCALE = 1
 };
 
 static inline float normalize_angle(float a) {
